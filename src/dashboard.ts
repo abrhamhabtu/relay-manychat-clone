@@ -4,6 +4,8 @@
 // The reviewer login sees only test threads (leads.test = 1) and never Settings. Styles: theme.ts.
 
 import { accountsPage, accountsPost } from "./accounts";
+import { setupPage } from "./setup_guide";
+import { growthPage } from "./growth";
 import { esc, page, type Role } from "./admin";
 import { helpPage, profilePage } from "./console_pages";
 import { contactsPage } from "./contacts";
@@ -733,6 +735,8 @@ export async function consoleRoute(env: Env, req: Request, pathname: string, who
   if (pathname === "/admin/contacts" && req.method === "GET") return contactsPage(env, who, url.searchParams);
   if (pathname === "/admin/profile" && req.method === "GET") return profilePage(env, who);
   if (pathname === "/admin/help" && req.method === "GET") return helpPage(env, who);
+  if (pathname === "/admin/growth" && req.method === "GET") return growthPage(env, req, who, now);
+  if (pathname === "/admin/setup" && req.method === "GET") return setupPage(env, req, who);
   if (pathname === "/admin/accounts" && req.method === "GET") return accountsPage(env, who, url.searchParams.get("m"));
   if ((pathname === "/admin/accounts" || pathname === "/admin/accounts/remove") && req.method === "POST") return accountsPost(env, req, pathname, who);
   if (pathname === "/admin/inbox" && req.method === "GET") return inboxPage(env, who, url.searchParams, now);

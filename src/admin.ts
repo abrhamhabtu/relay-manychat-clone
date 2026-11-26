@@ -2,6 +2,7 @@
 // pausing/resuming a lead. There is no approval queue: the AI is on (autopilot) or off.
 
 import { linked, switcher } from "./accounts";
+import { setupProgress, setupStatus } from "./setup_guide";
 import { automationsBody } from "./admin_flows";
 import * as db from "./db";
 import { fetchAccount, recentMedia, type Media } from "./meta";
@@ -33,10 +34,11 @@ export function splitBubbles(text: string): string[] {
     .filter(Boolean);
 }
 
-export type Section = "Dashboard" | "Contacts" | "Automations" | "AI" | "Inbox" | "Settings" | "Profile" | "Help" | "Accounts";
+export type Section = "Dashboard" | "Contacts" | "Automations" | "AI" | "Inbox" | "Settings" | "Profile" | "Help" | "Accounts" | "Setup" | "Growth";
 // The sidebar, top to bottom. [section, label, href, icon]
 const NAV: [Section, string, string, string][] = [
   ["Dashboard", "Home", "/admin/dashboard", "home"],
+  ["Growth", "Growth", "/admin/growth", "trend"],
   ["Contacts", "Contacts", "/admin/contacts", "user"],
   ["Automations", "Automation", "/admin/automations", "automations"],
   ["AI", "AI", "/admin/ai", "sparkles"],
@@ -44,7 +46,7 @@ const NAV: [Section, string, string, string][] = [
   ["Accounts", "Accounts", "/admin/accounts", "users"],
   ["Settings", "Settings", "/admin/settings", "settings"],
 ];
-const TITLE: Record<Section, string> = { Dashboard: "Home", Contacts: "Contacts", Automations: "Automation", AI: "AI", Inbox: "Inbox", Settings: "Settings", Profile: "My Profile", Help: "Help", Accounts: "Accounts" };
+const TITLE: Record<Section, string> = { Dashboard: "Home", Contacts: "Contacts", Automations: "Automation", AI: "AI", Inbox: "Inbox", Settings: "Settings", Profile: "My Profile", Help: "Help", Accounts: "Accounts", Setup: "Setup guide", Growth: "Growth" };
 
 // The connected Instagram account, for the sidebar and My Profile. Asked from Instagram at most every 6 hours (setting
 // `ig_profile`); a failed read keeps the last answer, so no page ever waits on or breaks over it.
@@ -91,6 +93,7 @@ export interface PageOpts {
 export async function page(active: Section, body: string, who: Role, env: Env, opts: PageOpts = {}): Promise<Response> {
   const acct = await me(env);
   const others = await linked(env).catch(() => []);
+  const prog = await setupStatus(env).then(setupProgress).catch(() => null);
   const nav = NAV.filter(([n]) => who === "admin" || n !== "Settings")
     .map(([n, label, href, ic]) => `<a class="nv${n === active ? " on" : ""}" href="${href}" title="${label}"${n === active ? ' aria-current="page"' : ""}>${icon(ic, 24, 1.7)}<span class="l">${label}</span></a>`)
     .join("");
@@ -103,7 +106,9 @@ export async function page(active: Section, body: string, who: Role, env: Env, o
 ${who2}
 <nav>${nav}</nav><div class="gap"></div>
 <div class="fold"><button type="button" onclick="foldNav(this)" aria-label="Collapse navigation" aria-expanded="true" title="Collapse">${icon("fold", 20, 1.8)}</button></div>
-<div class="foot"><a class="nv${active === "Profile" ? " on" : ""}" href="/admin/profile" title="My Profile">${meAvatar(acct)}<span class="l">My Profile</span></a>
+<div class="foot"><a class="nv${active === "Setup" ? " on" : ""}" href="/admin/setup" title="Setup guide">${icon("compass", 24, 1.7)}<span class="l">Setup guide${prog && prog.done < prog.total ? `<em class="nb">${prog.done}/${prog.total}</em>` : ""}</span></a>
+<button type="button" class="nv" onclick="relayPalette()" title="Search and jump (⌘K)">${icon("search", 24, 1.7)}<span class="l">Search<kbd>⌘K</kbd></span></button>
+<a class="nv${active === "Profile" ? " on" : ""}" href="/admin/profile" title="My Profile">${meAvatar(acct)}<span class="l">My Profile</span></a>
 <button type="button" class="nv" onclick="flipTheme()" title="Switch between light and dark" aria-label="Switch between light and dark"><span class="th-d">${icon("moon", 24, 1.7)}<span class="l">Dark mode</span></span><span class="th-l">${icon("sun", 24, 1.7)}<span class="l">Light mode</span></span></button></div></aside>
 <main class="m-${key}"><header class="tb"><h1>${esc(title)}</h1><div class="tb-r">${opts.actions ?? ""}<a class="me" href="/admin/profile" aria-label="My Profile">${meAvatar(acct)}</a></div></header>
 <div class="wrap">

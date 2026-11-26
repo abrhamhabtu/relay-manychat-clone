@@ -5,9 +5,10 @@
 // Days are the viewer's own: the browser leaves its UTC offset in a `tz` cookie (theme.ts HEAD) and a range is whole
 // local days ending today, so "7 days" is today plus the six before it and the chart's buckets match the calendar.
 
-import { esc, page, type Role } from "./admin";
+import { esc, me, page, type Role } from "./admin";
+import { ring, setupProgress, setupStatus } from "./setup_guide";
 import { barRow, CHART_JS, lineChart } from "./charts";
-import { agoLong, RANGE_LABEL, RANGES, type Range } from "./dashboard";
+import { ago, agoLong, RANGE_LABEL, RANGES, type Range } from "./dashboard";
 import * as db from "./db";
 import { recentProblems } from "./health";
 import type { Env } from "./setter";
@@ -224,13 +225,66 @@ export async function homePage(env: Env, who: Role, range: Range, now: number, t
 ${problems.map((p) => `<div class="row"><span><b>${esc(p.kind)} ×${p.n}</b><br><small>${esc((p.detail ?? "").split("\n")[0].slice(0, 200))}</small></span><span class="st">${agoLong(now - p.last_at)}</span></div>`).join("")}</div>`
     : "";
 
+  // The top of Home: who you are, what changed, what to do next.
+  const acct = await me(env).catch(() => null);
+  const hour = new Date(now - w.off).getUTCHours();
+  const hello = hour < 5 ? "Up late" : hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const firstName = (acct?.name || acct?.username || "").split(/\s+/)[0];
+  const dateLine = new Date(now - w.off).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
+  const checks = await setupStatus(env).catch(() => []);
+  const prog = setupProgress(checks);
+  const nextCheck = checks.find((c) => !c.done);
+  const spark = (vals: number[]) => {
+    if (vals.length < 2) return "";
+    const max = Math.max(1, ...vals);
+    const pts = vals.map((v, i) => `${((i / (vals.length - 1)) * 100).toFixed(1)},${(28 - (v / max) * 26).toFixed(1)}`).join(" ");
+    return `<svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,30 ${pts} 100,30" fill="color-mix(in srgb,var(--pri) 12%,transparent)" stroke="none"/><polyline points="${pts}" fill="none" stroke="var(--pri)" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`;
+  };
+  const story =
+    inNow.msgs || reachNow.people
+      ? `${num(inNow.msgs)} message${inNow.msgs === 1 ? "" : "s"} came in ${label.toLowerCase() === "all time" ? "so far" : `over the ${label.toLowerCase()}`}, and your automations reached ${num(reachNow.people)} ${reachNow.people === 1 ? "person" : "people"}.`
+      : "It's quiet so far. Once people comment or DM, everything shows up here.";
+  const hero = `<section class="hhero"><div class="hhero-l"><p class="kicker">${esc(dateLine)}</p><h2>${hello}${firstName ? `, <em>${esc(firstName)}</em>` : ""}.</h2><p class="hstory">${story}</p>
+<div class="qa-row">${who === "admin" ? `<a class="qa-b pri" href="/admin/automations?new=1">${icon("plus", 16)}New automation</a>` : ""}<a class="qa-b" href="/admin/inbox">${icon("chat", 16)}Inbox${open ? `<em>${num(open)} open</em>` : ""}</a><a class="qa-b" href="/admin/contacts">${icon("user", 16)}Contacts<em>${num(contacts)}</em></a><button type="button" class="qa-b" onclick="relayPalette()">${icon("search", 16)}Search<kbd>⌘K</kbd></button></div></div>
+<div class="hhero-r"><div class="pulse-k"><span class="kicker">Messages in</span><b>${num(inNow.msgs)}</b></div>${spark(got)}</div></section>`;
+  const setupCard =
+    who === "admin" && prog.done < prog.total
+      ? `<a class="setup-card" href="/admin/setup${nextCheck ? "" : ""}"><span class="sc-ring">${ring(prog.done, prog.total, 52)}<b>${prog.done}/${prog.total}</b></span><span class="sc-t"><span class="kicker">Finish setting up</span><b>${nextCheck ? esc(nextCheck.label) : "Almost there"} is next</b><small>The step-by-step guide shows every click, with your own addresses filled in.</small></span><span class="sc-go">Open the guide ${icon("arrow", 16)}</span></a>`
+      : "";
+
+  // The latest things that happened: DMs in and comments read.
+  const { results: recentDms } = await D.prepare(
+    `SELECT l.subscriber_id AS id, l.username AS u, l.first_name AS n, m.text AS t, m.created_at AS at FROM messages m JOIN leads l ON l.subscriber_id = m.subscriber_id
+     WHERE m.role = 'lead' AND ${NOT_TAP} AND m.created_at >= ?1 AND ${SCOPE} ORDER BY m.created_at DESC LIMIT 8`,
+  )
+    .bind(0, who)
+    .all<{ id: string; u: string | null; n: string | null; t: string; at: number }>();
+  const { results: recentComments } =
+    who === "admin"
+      ? await D.prepare(`SELECT username AS u, text AS t, status AS s, created_at AS at FROM comments ORDER BY created_at DESC LIMIT 6`).all<{ u: string | null; t: string; s: string; at: number }>()
+      : { results: [] as { u: string | null; t: string; s: string; at: number }[] };
+  const feed = [
+    ...recentDms.map((d) => ({ at: d.at, html: `<a class="ev" href="/admin/inbox/${esc(d.id)}"><i class="ev-d dm">${icon("chat", 13)}</i><span><b>${esc(d.u ? `@${d.u}` : d.n || "Someone")}</b> sent a DM<q>${esc(d.t.replace(/\s+/g, " ").slice(0, 90))}</q></span><time>${ago(now - d.at)}</time></a>` })),
+    ...recentComments.map((c) => ({
+      at: c.at,
+      html: `<a class="ev" href="/admin/automations"><i class="ev-d cm">${icon("comment", 13)}</i><span><b>${esc(c.u ? `@${c.u}` : "Someone")}</b> commented${c.s === "sent" ? ` · <em class="ok">DM sent</em>` : c.s === "failed" ? ` · <em class="bad">failed</em>` : ""}<q>${esc(c.t.replace(/\s+/g, " ").slice(0, 90))}</q></span><time>${ago(now - c.at)}</time></a>`,
+    })),
+  ]
+    .sort((a, b) => b.at - a.at)
+    .slice(0, 8)
+    .map((e) => e.html)
+    .join("");
+  const activity = `<div class="card act"><div class="ph"><div><h2>Latest activity</h2><p>DMs and comments, newest first.</p></div><a href="/admin/inbox">Open Inbox</a></div>${
+    feed || `<p class="none">Nothing yet. Send your page a DM from another account to see it land here.</p>`
+  }</div>`;
+
   const ranges = (Object.keys(RANGES) as Range[])
     .map((r) => `<a href="?range=${r}"${r === range ? ' class="on" aria-current="true"' : ""} aria-label="${RANGE_LABEL[r]}"><span class="w">${r === "all" ? "All time" : r.replace("d", " days")}</span><span class="n">${r === "all" ? "All" : r}</span></a>`)
     .join("");
 
   return page(
     "Dashboard",
-    `<p class="meta"><span><b>${num(contacts)}</b> contacts</span><span><b>${num(live)}</b> automations live</span><span><b>${num(open)}</b> conversations open for replies</span>${w.days ? `<span class="cmp">Arrows compare with the ${w.days} days before</span>` : ""}</p>
+    `${hero}${setupCard}<p class="meta"><span><b>${num(contacts)}</b> contacts</span><span><b>${num(live)}</b> automations live</span><span><b>${num(open)}</b> conversations open for replies</span>${w.days ? `<span class="cmp">Arrows compare with the ${w.days} days before</span>` : ""}</p>
 <div class="stats">${kpis}</div>
 <div class="cols"><div class="card"><div class="ph"><div><h2>Messages per ${weekly ? "week" : "day"}</h2></div>
 <div class="lgd"><span><i style="background:var(--pri)"></i>Received<b>${num(inNow.msgs)}</b></span><span><i style="background:var(--series2)"></i>Sent<b>${num(sentTotal)}</b></span></div></div>
@@ -238,7 +292,7 @@ ${chart}</div>
 <div class="card"><div class="ph"><div><h2>What people did with your automation DMs</h2><p>Share of everyone who got one.</p></div></div>${funnel}</div></div>
 <div class="cols"><div class="card"><div class="ph"><div><h2>Top automations</h2></div><a href="/admin/automations">All automations</a></div>${topTable}</div>
 <div class="card"><div class="ph"><div><h2>What started them</h2><p>Automation runs by trigger.</p></div></div>${startRows || `<p class="none">No runs in this range.</p>`}${commentLine}</div></div>
-${problemsCard}${CHART_JS}`,
+${activity}${problemsCard}${CHART_JS}`,
     who,
     env,
     { actions: `<nav class="seg" aria-label="Date range">${ranges}</nav>` },

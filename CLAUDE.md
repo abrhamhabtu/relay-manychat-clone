@@ -58,6 +58,10 @@ The shell (`page()` in `src/admin.ts`, CSS in `src/theme.ts`): a sidebar with Ho
 
 - **Accounts** `/admin/accounts` (`src/accounts.ts`): one install = one Instagram account. Other installs are linked by handle + console origin in the `accounts` setting (https origins only, `cleanUrl`), shown on the Accounts page and in the sidebar switcher (`details.acsw`). Nothing is sent to the other installs.
 
+- **Growth** `/admin/growth` (`src/growth.ts`, `migrations/growth.sql`): cron `followers` writes one `follower_snapshots` row per UTC day (refreshed every 3h); cron `follow checks` reads `is_user_follow_business` for people an automation reached in the last 21 days (25 per run; first check sets `follow_first`, a later 0→1 sets `follows_at`). Account and post insights need the `instagram_business_manage_insights` scope (in `SCOPES`; installs connected before it must reconnect) and are cached 3h in setting `growth_cache`. The preview seeds a sample cache.
+- **Setup guide** `/admin/setup` (`src/setup_guide.ts`): twelve parts, values built from the request's origin, six live checks (`setupStatus`) shared with Home's setup card and the sidebar badge. Keep it in step with `metaSteps` in `scripts/setup.mjs` and `docs/GETTING-STARTED.md`.
+- **⌘K palette**: `relayPalette()` and `RELAY_CMDS` in the `HEAD` script of `src/theme.ts`.
+
 ## Look
 
 Relay's look is the "Relay layer" at the end of the stylesheet in `src/theme.ts`: paper/ink tokens (`LIGHT`/`DARK`), one signal color `--pri` (with `--onpri` for text on it), Instrument Serif for headings and big figures, Geist Mono for labels and numbers, 4px corners, hairlines, no soft shadows. Add new styles there or reuse the tokens; never hard-code a hex in a page. `npm run preview` shows every page with sample data.

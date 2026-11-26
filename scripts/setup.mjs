@@ -534,7 +534,7 @@ When that's done, run \`npm run setup\` again: it asks for the Instagram app ID 
 ## Connect your Instagram account (after the Meta app)
 
 1. On a computer, open ${c.url}/login and click **Log in with Instagram**.
-2. Log in as @${c.instagram_handle} and approve the three permissions. That connects your account.
+2. Log in as @${c.instagram_handle} and approve all four permissions (messages, comments, profile and insights). That connects your account.
 3. Run \`npm run check\`: it tells you whether everything is working.
 
 If the button gives an error, log in with the password instead and click **Connect Instagram** at the top left.
@@ -613,7 +613,7 @@ async function connectInstagram(c) {
   let s = settings(c);
   if (!s?.ig_token) {
     say(`  Last step. On this computer, open ${bold(`${c.url}/login`)}`);
-    say(`  Click ${bold("Log in with Instagram")}, log in as @${c.instagram_handle} and approve the three permissions.`);
+    say(`  Click ${bold("Log in with Instagram")}, log in as @${c.instagram_handle} and approve all four permissions (messages, comments, profile and insights).`);
     if (!TTY) throw waitFor(["Waiting on you to connect Instagram (see above). Then run `npm run check`."]);
     openInBrowser(`${c.url}/login`);
     await enter("When Instagram is connected, come back here.");

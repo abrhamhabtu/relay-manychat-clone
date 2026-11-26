@@ -1,3 +1,4 @@
+import { checkFollows, snapshotFollowers } from "./growth";
 import { IG_HANDLE } from "./brand";
 import { clearCookie, isPhone, loginPage, ownerId, sessionCookie } from "./session";
 import { handleEcho } from "./autonomy";
@@ -274,6 +275,8 @@ export default {
           cronStep(e, "comment backfill", Date.now(), () => syncComments(e, Date.now())), // comments the webhook missed
           cronStep(e, "next post", Date.now(), async () => lockNextPost(e.DB, await getSetting(e.DB, "ig_token"), Date.now())), // a Next Post or Reel trigger finds its post
           cronStep(e, "health", Date.now(), () => checkHealth(e, Date.now())),
+          cronStep(e, "followers", Date.now(), () => snapshotFollowers(e, Date.now())), // one follower count per day, for Growth
+          cronStep(e, "follow checks", Date.now(), () => checkFollows(e, Date.now())), // did people an automation DM'd follow after?
         ]),
       ),
     );

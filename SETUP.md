@@ -81,7 +81,7 @@ It stores the secret, puts the final version live and pauses at "Connect your In
 Tell the user to, on a computer (the button isn't shown on phones):
 
 1. Open `<url>/login` and click **Log in with Instagram**.
-2. Log in as the account they gave in step 1 and approve the three permissions. The first sign-in connects the account; any other Instagram account is turned away.
+2. Log in as the account they gave in step 1 and approve all four permissions (messages, comments, profile and insights). The first sign-in connects the account; any other Instagram account is turned away.
 
 If Instagram shows an error instead, it names the cause (the redirect URI from Meta step 6, or the tester invite from step 8). They can always get in with the password from `MY-SETUP.md` on the same page, then click **Connect Instagram** at the top left.
 

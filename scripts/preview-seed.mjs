@@ -55,5 +55,21 @@ for (let d = 44; d >= 0; d--) {
     if (rnd() < 0.08) out.push(`INSERT OR IGNORE INTO lead_tags (subscriber_id, tag, created_at) VALUES (${q(id)}, ${q(pick(["member", "hot", "agency"]))}, ${at});`);
   }
 }
+
+// Growth: 60 days of follower counts, follow checks on everyone an automation reached, and a cached Instagram
+// insights reply (the preview has no Instagram connection, so Growth shows this sample, labeled as such).
+let followers = 3120;
+for (let d = 59; d >= 0; d--) {
+  const day = Math.floor((now - d * DAY) / DAY);
+  followers += Math.round(4 + (59 - d) * 0.35 + (d === 12 || d === 5 ? 95 : 0) + (rnd() - 0.35) * 14);
+  out.push(`INSERT INTO follower_snapshots (day, followers, follows, media, at) VALUES (${day}, ${followers}, 412, ${118 + Math.floor((59 - d) / 4)}, ${now - d * DAY});`);
+}
+out.push(`UPDATE leads SET follow_checked_at = ${now - HOUR}, follow_first = CASE WHEN (CAST(subscriber_id AS INTEGER) % 5) = 0 THEN 1 ELSE 0 END WHERE subscriber_id IN (SELECT subscriber_id FROM flow_starts);`);
+out.push(`UPDATE leads SET follows = follow_first WHERE follow_checked_at IS NOT NULL;`);
+out.push(`UPDATE leads SET follows = 1, follows_at = (SELECT MIN(created_at) FROM flow_starts f WHERE f.subscriber_id = leads.subscriber_id) + 3 * ${HOUR} WHERE follow_first = 0 AND (CAST(subscriber_id AS INTEGER) % 7) IN (1, 3, 4);`);
+const captions = ["I built an AI receptionist in 20 minutes. Comment AGENT for the build", "My whole video editing stack runs on Claude. Comment EDIT", "The creator starter guide I wish I had. Comment GUIDE", "3 hooks that doubled my reach this month", "Behind the scenes: how I batch a week of content", "Stop posting without this checklist", "My studio setup under $500", "Answering your DMs about pricing", "The reel that got 400k views, broken down"];
+const posts = captions.map((caption, i) => ({ id: i < 3 ? `reel${i + 1}` : `post${i}`, caption, permalink: null, type: i % 3 === 2 ? "FEED" : "REELS", thumb: null, at: now - (i * 4 + 1) * DAY,
+  likes: Math.round(900 + rnd() * 5200), comments: Math.round(60 + rnd() * 420), reach: Math.round(9000 + rnd() * 70000), views: Math.round(20000 + rnd() * 140000), saved: Math.round(100 + rnd() * 900), shares: Math.round(40 + rnd() * 600) }));
+out.push(`INSERT INTO settings (key, value) VALUES ('growth_cache', ${q(JSON.stringify({ at: now - 40 * MIN, totals: { reach: 184320, views: 612450, accounts_engaged: 9214, total_interactions: 31870, profile_links_taps: 1288, likes: 24110, comments: 3920, shares: 2210, saves: 1630, replies: 412 }, follows: 1148, unfollows: 219, posts, error: null }))});`);
 out.push(`INSERT INTO settings (key, value) VALUES ('ig_profile', ${q(JSON.stringify({ username: "yourhandle", name: "Sam Lee", pic: null, at: now + 365 * DAY }))});`);
 console.log(out.join("\n"));

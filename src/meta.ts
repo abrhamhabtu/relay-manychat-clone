@@ -4,7 +4,7 @@
 import type { MessageUpdate, Part } from "./attachments";
 
 const GRAPH = "https://graph.instagram.com/v26.0";
-export const SCOPES = "instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments";
+export const SCOPES = "instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_manage_insights";
 
 export async function hmacHex(secret: string, body: string): Promise<string> {
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);

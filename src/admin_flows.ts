@@ -360,7 +360,7 @@ function newDialog(folder: string | null): string {
 <button><span class="em">${t.emoji}</span>${k === "blank" ? "Start from scratch" : esc(t.name)}<small>${esc(t.desc)}</small></button></form>`,
     )
     .join("");
-  return `<dialog class="au-new" id="au-new"><div class="hd"><h2>New Automation</h2><form method="dialog"><button aria-label="Close">×</button></form></div><div class="au-tpl">${cards}</div></dialog>`;
+  return `<dialog class="au-new" id="au-new"><div class="hd"><h2>New Automation</h2><form method="dialog"><button aria-label="Close">×</button></form></div><div class="au-tpl">${cards}</div></dialog><script>if(/[?&]new=1/.test(location.search)){var d=document.getElementById("au-new");if(d&&d.showModal)d.showModal();history.replaceState(null,"",location.pathname)}</script>`;
 }
 
 const menuForm = (id: number, action: string, label: string, extra = "", cls = "") =>

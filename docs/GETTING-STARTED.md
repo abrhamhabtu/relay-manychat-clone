@@ -7,6 +7,10 @@ you'll see when it worked. Plan on about **an hour** the first time; most of it 
 > a flow builder, an inbox and your numbers, all on your own account. If you already pay for ManyChat, see
 > [Moving from ManyChat](#moving-from-manychat) at the end.
 
+> **Tip:** once Relay is live (Part 3), open **Setup guide** at the bottom of the console's sidebar. It has these
+> same steps with your own addresses already filled in, Copy buttons for every value, and checks that turn green on
+> their own as each piece starts working.
+
 ---
 
 ## Part 0 · What you need (5 minutes)
@@ -114,7 +118,7 @@ Back in the terminal, type `done`. Setup asks for the **Instagram app ID** and *
 ## Part 5 · Connect Instagram (2 minutes)
 
 1. On your computer, open your console address from `MY-SETUP.md` (ends in `/login`).
-2. Click **Log in with Instagram**, log in as your new page, and approve the permissions.
+2. Click **Log in with Instagram**, log in as your new page, and approve **all** the permissions, including insights (that one powers the Growth page).
 3. You land on **Home** in your Relay console.
 
 Now, from your **second** Instagram account, send your page a DM saying "hi".
@@ -142,6 +146,19 @@ npm run check
 ✅ From your second account, comment `GUIDE` on the post. The DM arrives in about a second.
 
 > Buttons and quick replies only appear in the Instagram **phone app**, not on instagram.com. Test on a phone.
+
+---
+
+## Part 6½ · Watch your growth
+
+Open **Growth** in the sidebar. You'll see your follower count (Relay reads it once a day, so the chart fills in over
+the following days), your reach, views and profile link taps from Instagram, your latest posts with how many comments
+turned into DMs, and **how many people followed you after an automation DM'd them**.
+
+Instagram never tells apps *why* someone followed. Relay checks whether each person your automation reached was already
+following, and checks again later: "followed after your DM" counts the ones who weren't, and then were.
+
+Instagram only reports follows and unfollows for accounts with 100+ followers; the rest of Growth works from day one.
 
 ---
 

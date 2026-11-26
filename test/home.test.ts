@@ -160,12 +160,14 @@ describe("the shell and its other pages", () => {
     const html = await get(env, "/admin/contacts");
     expect([...html.matchAll(/<a class="nv[^"]*" href="([^"]+)" title="([^"]+)"/g)].map((m) => `${m[2]} ${m[1]}`)).toEqual([
       "Home /admin/dashboard",
+      "Growth /admin/growth",
       "Contacts /admin/contacts",
       "Automation /admin/automations",
       "AI /admin/ai",
       "Inbox /admin/inbox",
       "Accounts /admin/accounts",
       "Settings /admin/settings",
+      "Setup guide /admin/setup",
       "My Profile /admin/profile",
     ]);
     // The last thing in the sidebar is the light / dark toggle; Help is reached from My Profile.
