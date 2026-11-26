@@ -62,4 +62,18 @@ describe("demo mode", () => {
     expect(html).toContain('href="/admin/help#demo"');
     expect(html).not.toContain('class="demo-bar"');
   });
+
+  it("switches between demo workspaces, and remembers the choice on refresh", async () => {
+    const env = makeEnv();
+    await page(env, "/admin/dashboard", "relay_demo=on");
+    const form = new URLSearchParams({ persona: "bakery" });
+    await worker.fetch(req("/admin/demo/reset", "relay_demo=on", { method: "POST", body: form, headers: { "Content-Type": "application/x-www-form-urlencoded" } }), env, ctx);
+    let html = await page(env, "/admin/automations", "relay_demo=on");
+    expect(html).toContain("Bloom Bakery");
+    expect(html).toContain("Weekend menu");
+    await worker.fetch(req("/admin/demo/reset", "relay_demo=on", { method: "POST" }), env, ctx); // plain refresh
+    html = await page(env, "/admin/dashboard", "relay_demo=on");
+    expect(html).toContain("Bloom Bakery");
+    expect(await count(env.DB)).toBe(0);
+  });
 });

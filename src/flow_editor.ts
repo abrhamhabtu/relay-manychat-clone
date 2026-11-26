@@ -200,32 +200,49 @@ dialog.fe-dlg,.fe-test .card{border-radius:20px;box-shadow:var(--sh2)}
 .ro-hint{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-top:.5px solid var(--line);font-size:13px;color:var(--mut)}
 .ro-hint .lnk{margin:0;border-radius:980px;padding:7px 12px;background:var(--grad);color:#fff;font-weight:600;font-size:12.5px}
 /* live phone preview: what the person sees in Instagram */
-.pv-wrap{display:flex;flex-direction:column;align-items:center;margin:0 0 16px}
-.pv-cap{margin:10px 0 0;color:var(--mut);font-size:12px;text-align:center}
-.phone{width:100%;max-width:292px;padding:9px;border-radius:38px;background:linear-gradient(150deg,#3a3a3f,#0d0d10 60%,#26262b);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 1px 0 rgba(255,255,255,.04),0 24px 50px -20px rgba(0,0,0,.55)}
-.phone>*{background:var(--bg)}
-.ph-top{display:flex;align-items:center;gap:10px;padding:26px 14px 10px;border-radius:30px 30px 0 0;border-bottom:.5px solid var(--line);position:relative}
-.ph-top:before{content:"";position:absolute;top:8px;left:50%;width:74px;height:20px;margin-left:-37px;border-radius:999px;background:#0d0d10}
-.ph-av{width:28px;height:28px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px #f2541b}
-.ph-top b{display:block;font-size:13px;line-height:15px}.ph-top small{display:block;color:var(--mut);font-size:10.5px;line-height:13px}
-.ph-chat{display:flex;flex-direction:column;gap:5px;padding:12px 10px;min-height:220px;max-height:360px;overflow-y:auto;font-size:13px;line-height:17px}
-.ph-ctx{align-self:center;display:flex;align-items:center;gap:5px;color:var(--mut);font-size:11px;padding:2px 0 6px}
-.ph-ctx span{display:grid}.ph-ctx svg{width:12px;height:12px}
-.ph-in{align-self:flex-end;max-width:78%;padding:7px 12px;border-radius:18px;background:linear-gradient(160deg,#a43bff,#5b52ff 55%,#2f7bff);color:#fff;white-space:pre-wrap}
-.ph-out{align-self:flex-start;max-width:84%;display:flex;flex-direction:column;gap:4px;animation:ph-pop .35s cubic-bezier(.32,.72,0,1)}
-.ph-b{padding:7px 12px;border-radius:18px;background:var(--soft);color:var(--ink);white-space:pre-wrap;word-break:break-word}
-.ph-b.card{border-radius:18px 18px 6px 18px}
-.ph-btns{display:flex;flex-direction:column;gap:3px}
-.ph-btns span{display:block;padding:7px 12px;border-radius:12px;background:var(--soft);color:#2f7bff;font-weight:600;text-align:center;min-width:150px}
-.ph-typing{align-self:flex-start;display:flex;gap:3px;padding:9px 12px;border-radius:18px;background:var(--soft)}
+.pv-wrap{display:flex;flex-direction:column;align-items:center;margin:4px 0 18px}
+.pv-cap{margin:12px 0 0;color:var(--mut);font-size:12px;text-align:center}
+.phone{position:relative;width:272px;padding:7px;border-radius:50px;background:linear-gradient(145deg,#4a4a50,#1a1a1e 35%,#0b0b0d 70%,#2e2e33);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.12),inset 0 0 0 5px #0b0b0d,0 30px 60px -28px rgba(0,0,0,.55),0 10px 20px -12px rgba(0,0,0,.3)}
+.phone:before,.phone:after{content:"";position:absolute;width:3px;border-radius:2px;background:#2a2a2e}
+.phone:before{left:-2px;top:110px;height:48px}.phone:after{right:-2px;top:130px;height:70px}
+.ph-screen{position:relative;display:flex;flex-direction:column;height:540px;border-radius:43px;overflow:hidden;background:var(--bg)}
+.ph-status{display:flex;align-items:center;justify-content:space-between;height:44px;padding:4px 26px 0 30px;flex:none;color:var(--ink)}
+.ph-status b{font-size:14px;font-weight:650;letter-spacing:-.02em}
+.ph-isl{position:absolute;top:10px;left:50%;width:86px;height:25px;margin-left:-43px;border-radius:999px;background:#000}
+.ph-sys{display:flex;gap:5px;align-items:center}.ph-sys svg{fill:currentColor;color:var(--ink)}
+.ph-top{display:flex;align-items:center;gap:9px;padding:4px 14px 10px 10px;border-bottom:.5px solid var(--line);flex:none}
+.ph-back{font-size:28px;line-height:20px;color:var(--ink);font-weight:300;width:14px}
+.ph-av{width:30px;height:30px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px #f2541b;flex:none}
+.ph-top b{display:block;font-size:13.5px;line-height:16px;letter-spacing:-.01em}.ph-top small{display:block;color:var(--mut);font-size:11px;line-height:13px}
+.ph-chat{flex:1;display:flex;flex-direction:column;gap:4px;padding:10px 12px 12px;overflow-y:auto;font-size:13.5px;line-height:18px;scrollbar-width:none}
+.ph-chat::-webkit-scrollbar{display:none}
+.ph-day{align-self:center;color:var(--mut);font-size:10.5px;font-weight:600;padding:2px 0 8px}
+.ph-ctx{align-self:flex-end;display:flex;align-items:center;gap:6px;max-width:84%;padding:7px 11px;border-radius:16px;border:.5px solid var(--line);color:var(--mut);font-size:12px;margin-bottom:6px}
+.ph-ctx b{color:var(--ink)}.ph-ci{display:grid}.ph-ci svg{width:13px;height:13px}
+.ph-in{align-self:flex-end;max-width:76%;padding:7px 12px;border-radius:19px;background:linear-gradient(170deg,#9f3dff,#5f4dff 50%,#2d7cff);color:#fff;white-space:pre-wrap;margin-bottom:6px}
+.ph-out{align-self:flex-start;max-width:80%;display:flex;flex-direction:column;gap:3px;animation:ph-pop .4s cubic-bezier(.32,.72,0,1)}
+.ph-b{padding:7px 12px;border-radius:19px;background:var(--soft);color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.ph-btns{display:flex;flex-direction:column;gap:2px;margin-top:1px}
+.ph-btns span{display:block;padding:8px 12px;border-radius:14px;background:var(--soft);color:#2d7cff;font-weight:600;text-align:center;font-size:13px}
+.ph-typing{align-self:flex-start;display:flex;gap:3px;padding:10px 12px;border-radius:19px;background:var(--soft);margin-top:2px}
 .ph-typing i{width:6px;height:6px;border-radius:50%;background:var(--mut);animation:ph-dot 1.2s infinite}
 .ph-typing i:nth-child(2){animation-delay:.15s}.ph-typing i:nth-child(3){animation-delay:.3s}
-.ph-gate{align-self:stretch;text-align:center;color:var(--mut);font-size:10.5px;line-height:14px;padding:6px 8px;margin:4px 0;border-radius:10px;background:color-mix(in srgb,var(--pri) 8%,transparent)}
-.ph-qr{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:6px}
-.ph-qr span{padding:5px 11px;border-radius:999px;border:1px solid #2f7bff;color:#2f7bff;font-weight:600;font-size:12px}
-.ph-empty{align-self:center;color:var(--mut);font-size:12px;padding:30px 0}
-.ph-bar{padding:8px 10px 18px;border-radius:0 0 30px 30px}
-.ph-bar span{display:block;padding:7px 12px;border-radius:999px;border:.5px solid var(--track);color:var(--mut);font-size:12px}
+.ph-gate{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:10.5px;font-weight:600;margin:8px 0 4px}
+.ph-gate i{flex:1;height:.5px;background:var(--line)}
+.ph-qr{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end;margin-top:8px}
+.ph-qr span{padding:6px 12px;border-radius:999px;border:1px solid color-mix(in srgb,#2d7cff 55%,transparent);color:#2d7cff;font-weight:600;font-size:12px}
+.ph-empty{align-self:flex-start;color:var(--mut);font-size:12px;padding:8px 12px;border-radius:19px;border:1px dashed var(--track)}
+.ph-add{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin:6px 0 0;padding:6px 12px 6px 6px!important;border-radius:19px!important;border:1px dashed color-mix(in srgb,var(--pri) 55%,var(--track))!important;background:transparent!important;color:var(--pri)!important;font-size:12.5px;font-weight:600;box-shadow:none!important;filter:none!important}
+.ph-add b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--grad);color:#fff;font-size:15px;line-height:1}
+.ph-add:hover{background:color-mix(in srgb,var(--pri) 8%,transparent)!important}
+.ph-bar{display:flex;align-items:center;gap:8px;padding:8px 10px 24px;flex:none}
+.ph-cam{width:30px;height:30px;border-radius:50%;background:linear-gradient(170deg,#9f3dff,#2d7cff);flex:none}
+.ph-field{flex:1;padding:7px 12px;border-radius:999px;background:var(--soft);color:var(--mut);font-size:12.5px}
+.ph-home{position:absolute;bottom:7px;left:50%;width:100px;height:4px;margin-left:-50px;border-radius:3px;background:var(--ink);opacity:.85}
+/* + on a card's Next Step: add what happens next */
+.nd .ft .plus{display:grid;place-items:center;width:22px;height:22px;margin:0 auto 0 0!important;padding:0!important;border-radius:50%!important;background:color-mix(in srgb,var(--pri) 12%,transparent)!important;color:var(--pri)!important;font-size:16px;line-height:1;font-weight:600;box-shadow:none!important;transition:transform .2s cubic-bezier(.32,.72,0,1),background .2s!important}
+.nd .ft .plus:hover{background:var(--grad)!important;color:#fff!important;transform:scale(1.12)!important}
+.ro-hint{padding:12px 16px 14px}.ro-hint .lnk{padding:7px 16px}
 @keyframes ph-pop{from{opacity:0;transform:translateY(4px) scale(.97)}}
 @keyframes ph-dot{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-2px)}}
 @media (prefers-reduced-motion:reduce){.ph-out,.ph-typing i{animation:none}}
@@ -593,7 +610,14 @@ function head(n) {
   if (n.kind === "message") title += " #" + (G.nodes.filter(function (x) { return x.kind === "message"; }).indexOf(n) + 1);
   return h("div", { class: "hd" }, [h("span", { class: "ic", icon: k.ic }), h("div", null, [n.kind === "message" ? h("small", { text: "Instagram" }) : null, title])]);
 }
-function nextRow(n, label) { return h("div", { class: "ft" }, [label || "Next Step", port(n.id, "next")]); }
+function nextRow(n, label) {
+  var plus = RO || edgeFrom(n.id, "next") ? null : h("button", { type: "button", class: "plus", title: "Add the next step", onclick: function (e) {
+    e.stopPropagation();
+    var r = e.currentTarget.getBoundingClientRect();
+    openPicker(r.right + 10, r.top - 10, { x: n.x + 380, y: n.y }, { from: n.id, port: "next" });
+  } }, "+");
+  return h("div", { class: "ft" }, [plus, label || "Next Step", port(n.id, "next")]);
+}
 
 function card(n) {
   var st = stat(n.id), d = n.data, body = [], foot = null;
@@ -808,7 +832,7 @@ function fit() {
 var touches = {}, gest = null;
 function count() { return Object.keys(touches).length; }
 vp.addEventListener("pointerdown", function (e) {
-  if (e.button > 0 || e.target.closest(".fe-zoom,.fe-help,.fe-ban,.fe-add,.fe-pn,.edel,.fe-pick")) return;
+  if (e.button > 0 || e.target.closest(".fe-zoom,.fe-help,.fe-ban,.fe-add,.fe-pn,.edel,.fe-pick,.plus")) return;
   closePicker();
   if (tmp) { tmp = null; draw(); }
   touches[e.pointerId] = { x: e.clientX, y: e.clientY };
@@ -1030,31 +1054,53 @@ var phoneUpd = null;
 function linkText(t) { return t.replace(/\{\{SKOOL_LINK\}\}/g, "yourlink.com"); }
 function drawPhone(box, d) {
   box.innerHTML = "";
-  var isComment = G.trigger && G.trigger.source === "comment";
+  var tr = G.trigger || {};
+  var isComment = tr.source === "comment";
+  var kw = tr.keyword && tr.keyword !== "*" ? tr.keyword.split(/[ ,]+/)[0] : "";
   var bubbles = d.bubbles.filter(function (b) { return b.text.trim() || b.buttons.length; });
   var chat = h("div", { class: "ph-chat" });
-  if (isComment) chat.appendChild(h("div", { class: "ph-ctx" }, [h("span", { icon: "chat" }), "They commented " + ((G.trigger.keyword && G.trigger.keyword !== "*") ? "“" + G.trigger.keyword.split(/[ ,]+/)[0].toUpperCase() + "”" : "on your post")]));
-  else chat.appendChild(h("div", { class: "ph-in" }, G.trigger && G.trigger.source === "story" ? "Replied to your story" : (G.trigger && G.trigger.keyword && G.trigger.keyword !== "*" ? G.trigger.keyword.split(/[ ,]+/)[0] : "hey!")));
-  if (!bubbles.length) chat.appendChild(h("div", { class: "ph-empty", text: "Start typing: your message appears here." }));
+  chat.appendChild(h("div", { class: "ph-day", text: "Today" }));
+  if (isComment) chat.appendChild(h("div", { class: "ph-ctx" }, [h("span", { class: "ph-ci", icon: "chat" }), h("span", null, ["You commented ", h("b", { text: kw ? kw.toUpperCase() : "on a post" })])]));
+  else chat.appendChild(h("div", { class: "ph-in", text: tr.source === "story" ? "↩︎ replied to your story" : kw || "hey!" }));
+  if (!bubbles.length) chat.appendChild(h("div", { class: "ph-empty", text: "Your first text appears here as you type." }));
   bubbles.forEach(function (b, i) {
     if (i > 0) {
-      if (isComment && i === 1) chat.appendChild(h("div", { class: "ph-gate", text: "Sent after they tap a button or reply · Instagram allows one reply per comment" }));
+      if (isComment && i === 1) chat.appendChild(h("div", { class: "ph-gate" }, [h("i"), h("span", { text: "after they tap or reply" }), h("i")]));
       chat.appendChild(h("div", { class: "ph-typing" }, [h("i"), h("i"), h("i")]));
     }
-    var col = h("div", { class: "ph-out" }, [h("div", { class: "ph-b" + (b.buttons.length ? " card" : ""), text: linkText(b.text) || " " })]);
+    var last = i === bubbles.length - 1;
+    var col = h("div", { class: "ph-out" + (last ? " last" : "") }, [h("div", { class: "ph-b", text: linkText(b.text) || " " })]);
     if (b.buttons.length) col.appendChild(h("div", { class: "ph-btns" }, b.buttons.map(function (x) { return h("span", { text: x.title || "Button" }); })));
     chat.appendChild(col);
   });
   if (d.quick_replies.length && bubbles.length) chat.appendChild(h("div", { class: "ph-qr" }, d.quick_replies.map(function (q) { return h("span", { text: q.title || "Reply" }); })));
-  add(box, [h("div", { class: "ph-top" }, [h("span", { class: "ph-av" }), h("div", null, [h("b", { text: "Your page" }), h("small", { text: "Instagram · what they see" })])]), chat,
-    h("div", { class: "ph-bar" }, [h("span", { text: "Message…" })])]);
+  if (!RO && d.bubbles.length < 10) chat.appendChild(h("button", { type: "button", class: "ph-add", title: "Add another text", onclick: function () { addText(d); } }, [h("b", { text: "+" }), "Add text"]));
+  var sig = '<svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>';
+  var bat = '<svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="21" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23" y="4" width="1.6" height="4" rx=".8" opacity=".4"/></svg>';
+  var status = h("div", { class: "ph-status" }, [h("b", { text: "9:41" }), h("span", { class: "ph-isl" }), h("span", { class: "ph-sys" })]);
+  status.lastChild.innerHTML = sig + bat;
+  var screen = h("div", { class: "ph-screen" }, [
+    status,
+    h("div", { class: "ph-top" }, [h("span", { class: "ph-back", text: "‹" }), h("span", { class: "ph-av" }), h("div", null, [h("b", { text: "Your page" }), h("small", { text: "Business chat" })])]),
+    chat,
+    h("div", { class: "ph-bar" }, [h("span", { class: "ph-cam" }), h("span", { class: "ph-field", text: "Message…" })]),
+    h("span", { class: "ph-home" })
+  ]);
+  box.appendChild(screen);
+  chat.scrollTop = chat.scrollHeight;
+}
+function addText(d) {
+  if (d.bubbles.length >= 10) return;
+  d.bubbles.push({ text: "", buttons: [] });
+  changed(true);
+  setTimeout(function () { var t = panel.querySelectorAll(".pb textarea"); if (t.length) { t[t.length - 1].focus(); t[t.length - 1].scrollIntoView({ block: "center", behavior: "smooth" }); } }, 0);
 }
 function messageForm(n) {
   var d = n.data, out = [];
   var phone = h("div", { class: "phone", "aria-label": "Preview in Instagram" });
   drawPhone(phone, d);
   phoneUpd = function () { drawPhone(phone, d); };
-  out.push(h("div", { class: "pv-wrap" }, [phone, h("p", { class: "pv-cap", text: d.bubbles.length > 1 ? d.bubbles.length + " texts, each its own bubble, with typing dots in between" : "Live preview · add more texts below" })]));
+  out.push(h("div", { class: "pv-wrap" }, [phone, h("p", { class: "pv-cap", text: d.bubbles.length > 1 ? d.bubbles.length + " texts · each its own bubble, typing dots in between" : RO ? "Live preview" : "Live preview · tap + to add another text" })]));
   d.bubbles.forEach(function (b, i) {
     var cnt = h("span", { class: "cnt" });
     function count() { var max = b.buttons.length ? 640 : 1000; cnt.textContent = b.text.length + " / " + max; cnt.className = "cnt" + (b.text.length > max ? " bad" : ""); }
@@ -1076,7 +1122,7 @@ function messageForm(n) {
     add(g, more("+ Add button", function () { b.buttons.push({ id: rid("b"), title: "", url: undefined }); }, b.buttons.length >= 3));
     out.push(g);
   });
-  if (!RO) out.push(h("button", { class: "addtext", disabled: d.bubbles.length >= 10, onclick: function () { d.bubbles.push({ text: "", buttons: [] }); changed(true); setTimeout(function () { var t = panel.querySelectorAll(".pb textarea"); if (t.length) t[t.length - 1].focus(); }, 0); } },
+  if (!RO) out.push(h("button", { class: "addtext", disabled: d.bubbles.length >= 10, onclick: function () { addText(d); } },
     [h("b", { text: "+ Add another text" }), h("small", { text: d.bubbles.length >= 10 ? "10 texts is the most one step can send" : "Sent as its own bubble, a moment after the one before (" + d.bubbles.length + " of 10)" })]));
   if (G.trigger && G.trigger.source === "comment" && d.bubbles.length > 1) out.push(h("p", { class: "hint note", text: "Comment automations: Instagram lets you send one private reply per comment. Text 1 goes out right away; the rest follow as soon as they tap a button or reply." }));
   var q = h("div", { class: "grp" }, [lbl("Quick replies"), h("p", { class: "hint", text: "Tappable chips under the last text (13 max, 20 characters). Instagram app only, not desktop. With a button on that text they show as buttons instead (3 max in all)." })]);
@@ -1139,7 +1185,7 @@ function renderPanel() {
   add(panel, [
     h("div", { class: "ph" }, [h("span", { class: "ic", icon: k.ic }), k.t, h("button", { class: "x", title: "Close", onclick: function () { select(null); } }, "×")]),
     h("div", { class: "pb" }, body),
-    RO && CAN ? h("div", { class: "ro-hint" }, [h("span", { text: "Viewing the live version." }), h("button", { class: "lnk", onclick: enterEdit }, "Edit to add texts, buttons or steps →")]) : null,
+    RO && CAN ? h("div", { class: "ro-hint" }, [h("span", { text: "This is the live version" }), h("button", { class: "lnk", onclick: enterEdit }, "Edit")]) : null,
     RO || n.kind === "trigger" ? null : h("div", { class: "foot" }, [
       h("button", { class: "ghost", onclick: function () { duplicate(n.id); } }, "Duplicate"),
       h("button", { class: "dz", onclick: function () { removeNode(n.id); } }, "Delete step")

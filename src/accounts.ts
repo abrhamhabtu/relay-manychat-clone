@@ -88,7 +88,23 @@ export function switcher(current: { username: string | null; name: string | null
   return `<details class="acsw"><summary title="Switch account">${meAvatar(current)}<span class="l">${esc(name)}<small>${esc(handle)}</small></span><span class="ud2">${icon("chevron", 14)}</span></summary>
 <div class="acsw-pop" role="menu"><h6>This console</h6><a href="/admin/profile">${meAvatar(current)}<span class="grow">${esc(name)}<small>${esc(handle)}</small></span><span class="cur">Live</span></a>
 ${rows ? `<hr><h6>Your other pages</h6>${rows}` : ""}<hr><a class="mg" href="/admin/accounts">${icon("plus", 16)}<span class="grow">${others.length ? "Manage accounts" : "Add another Instagram page"}</span></a></div></details>
-<script>document.addEventListener("click",function(e){document.querySelectorAll("details.acsw[open]").forEach(function(d){if(!d.contains(e.target))d.removeAttribute("open")})})</script>`;
+<script>document.addEventListener("click",function(e){document.querySelectorAll("details.acsw[open],details.db-ws[open]").forEach(function(d){if(!d.contains(e.target))d.removeAttribute("open")})})</script>`;
+}
+
+
+// Where Relay can talk to people, honestly: what works today, what's possible next, and what the platform doesn't allow.
+const PLATFORMS: { name: string; tone: string; mark: string; state: "live" | "next" | "gated" | "no"; label: string; text: string }[] = [
+  { name: "Instagram", mark: "IG", tone: "linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 60%,#962fbf 80%,#4f5bd5)", state: "live", label: "Live", text: "Comment-to-DM, story replies, DM keywords, the inbox and Growth. Official Instagram API." },
+  { name: "Facebook Messenger", mark: "M", tone: "linear-gradient(135deg,#00b2ff,#006aff)", state: "next", label: "Possible next", text: "Same Meta app and the same rules as Instagram (24-hour window, one private reply per comment). Not built yet." },
+  { name: "WhatsApp", mark: "W", tone: "linear-gradient(135deg,#5af07a,#1fa855)", state: "next", label: "Possible next", text: "Through Meta's WhatsApp Cloud API. Replies are free inside 24 hours; messages after that need paid, pre-approved templates. Not built yet." },
+  { name: "TikTok", mark: "T", tone: "linear-gradient(135deg,#25f4ee,#000 45%,#000 55%,#fe2c55)", state: "gated", label: "Needs TikTok's approval", text: "TikTok's Business Messaging API needs a Business account, a developer app and TikTok's approval, and isn't offered in the EU, UK or Switzerland. Not built yet." },
+  { name: "Threads", mark: "@", tone: "linear-gradient(135deg,#3a3a3c,#000)", state: "no", label: "Not possible", text: "Threads' API covers posts and replies, not direct messages." },
+];
+function platformsCard(): string {
+  return `<div class="card plat"><div class="ph"><div><h2>Platforms</h2><p>Where Relay can reach people. Want one of the next ones? <a href="https://github.com/abrhamhabtu/relay-manychat-clone/issues" target="_blank" rel="noopener">Ask or help build it on GitHub</a>.</p></div></div>
+<div class="plat-g">${PLATFORMS.map(
+    (p) => `<div class="pf ${p.state}"><span class="pf-m" style="background:${p.tone}">${esc(p.mark)}</span><div class="pf-t"><b>${esc(p.name)}</b><span class="pf-s">${esc(p.label)}</span><p>${esc(p.text)}</p></div></div>`,
+  ).join("")}</div></div>`;
 }
 
 export async function accountsPage(env: Env, who: Role, note: string | null): Promise<Response> {
@@ -119,6 +135,7 @@ export async function accountsPage(env: Env, who: Role, note: string | null): Pr
   const body = `${note ? `<div class="card" role="status" style="border-color:var(--pri)">${esc(note)}</div>` : ""}
 <p class="kicker" style="margin:0 0 12px;color:var(--mut)">${others.length + 1} Instagram ${others.length ? "pages" : "page"}</p>
 <div class="acc-grid">${here}${cards}${add}</div>
+${platformsCard()}
 <div class="cols"><div class="card"><div class="ph"><div><h2>Add a new Instagram page</h2><p>Each page runs on its own Relay install: its own address, database, inbox and numbers. It takes about 20 minutes, and most of it is Meta's site.</p></div></div>
 <ol class="steps">
 <li>Make sure the new page is a <b>Professional</b> account: in the Instagram app, Settings → Account type and tools → Switch to professional.</li>
@@ -131,7 +148,7 @@ export async function accountsPage(env: Env, who: Role, note: string | null): Pr
 <div class="qa"><h3>Why separate installs?</h3><p>Every account gets its own database, so contacts, automations and numbers never mix, and a problem on one page can't touch another.</p></div>
 <div class="qa"><h3>Does it cost more?</h3><p>Cloudflare's free plan covers a few small pages. Busy pages are best on Workers Paid ($5 a month for the whole Cloudflare account, not per page).</p></div>
 <div class="qa"><h3>Is anything shared?</h3><p>Only this list of links, stored in this console. Unlinking removes the shortcut; the other page keeps running.</p></div></div></div>`;
-  return page("Accounts", body, who, env, { title: "Accounts" });
+  return page("Accounts", body, who, env, { title: "Accounts & platforms" });
 }
 
 export async function accountsPost(env: Env, req: Request, pathname: string, who: Role): Promise<Response> {

@@ -1034,4 +1034,50 @@ body.demo .side .brand:after{background:var(--grad);border-radius:999px;padding:
   .stat b{font-size:30px!important}
   body.demo .tb{top:0}
 }
+
+/* ---------- collapsed rail: only icons, nothing peeking out ---------- */
+html.nav-min .nv .l,html.nav-min .nv kbd,html.nav-min .nv .nb,html.nav-min .demo-nv .tg,html.nav-min body.demo .side .brand:after,html.nav-min .acsw summary .l,html.nav-min .acsw summary .ud2,html.nav-min .side nav:before{display:none!important}
+html.nav-min .acsw summary{margin:6px 8px;padding:0;justify-content:center;background:transparent;box-shadow:none}
+html.nav-min .nv{justify-content:center;padding:0}
+html.nav-min .brand{justify-content:center;padding:0}
+html.nav-min .brand .l{display:none}
+html.nav-min .side nav,html.nav-min .side .foot{padding-left:8px;padding-right:8px}
+@media (max-width:1263px){
+  .nv .l,.nv kbd,.nv .nb,.demo-nv .tg,body.demo .side .brand:after,.acsw summary .l,.acsw summary .ud2,.side nav:before,.brand .l{display:none!important}
+  .acsw summary{margin:6px 8px;padding:0;justify-content:center;background:transparent;box-shadow:none}
+  .nv{justify-content:center;padding:0}.brand{justify-content:center;padding:0}
+  .side nav,.side .foot{padding-left:8px;padding-right:8px}
+}
+@media (max-width:767px){.nv{padding:0 10px}}
+/* the editor and the inbox fit under the demo banner */
+body.demo .fe{height:calc(100vh - 42px);height:calc(100dvh - 42px)}
+
+/* demo workspace picker */
+.db-ws{position:relative}
+.db-ws summary{list-style:none;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px 0 12px;border-radius:999px;background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.5);font-weight:600;font-size:12px;cursor:pointer;white-space:nowrap}
+.db-ws summary::-webkit-details-marker{display:none}
+.db-ws summary:hover{background:rgba(255,255,255,.3)}
+.db-ws summary svg:last-child{transform:rotate(90deg);opacity:.8}
+.db-menu{position:absolute;right:0;top:36px;z-index:40;width:300px;margin:0;padding:6px;border-radius:16px;color:var(--ink);background:color-mix(in srgb,var(--elev) 90%,transparent);backdrop-filter:saturate(180%) blur(30px);-webkit-backdrop-filter:saturate(180%) blur(30px);box-shadow:var(--sh2);animation:rl-pop .22s var(--ease2)}
+.db-menu h6{margin:6px 10px 6px;font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--mut)}
+.db-menu p{margin:4px 10px 6px;color:var(--mut);font-size:11.5px;line-height:15px}
+.pm{display:flex!important;align-items:center;gap:10px;width:100%;margin:0!important;padding:8px 10px!important;border-radius:10px!important;background:transparent!important;color:var(--ink)!important;box-shadow:none!important;filter:none!important;text-align:left;font-weight:500}
+.pm:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)!important}
+.pm.on{background:color-mix(in srgb,var(--pri) 10%,transparent)!important}.pm svg{color:var(--pri);margin-left:auto}
+.pm-av{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--grad);color:#fff;font-weight:700;flex:none}
+.pm-t b{display:block;font-size:13px;font-weight:600}.pm-t small{display:block;color:var(--mut);font-size:11.5px}
+@media (max-width:767px){.db-ws summary{height:26px}.db-menu{right:auto;left:0}}
+
+/* platforms */
+.plat-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.pf{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:14px;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+.pf-m{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;color:#fff;font-weight:800;font-size:14px;letter-spacing:-.02em;flex:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 4px 10px -4px rgba(0,0,0,.3)}
+.pf-t{min-width:0}.pf-t b{font-size:14px;font-weight:650;margin-right:6px}
+.pf-s{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;vertical-align:1px}
+.pf.live .pf-s{background:color-mix(in srgb,#34c759 16%,transparent);color:var(--green)}
+.pf.next .pf-s{background:color-mix(in srgb,#0a84ff 14%,transparent);color:#0a6cdb}
+.pf.gated .pf-s{background:color-mix(in srgb,#ff9f0a 18%,transparent);color:var(--amber)}
+.pf.no .pf-s{background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--mut)}
+.pf.no .pf-m{filter:grayscale(1);opacity:.6}
+.pf p{margin:5px 0 0;color:var(--mut);font-size:12.5px;line-height:17px}
 </style>`;

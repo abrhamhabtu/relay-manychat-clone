@@ -5,7 +5,7 @@
 // always use the real one. In demo, nothing can reach Instagram: the demo database has no Instagram token, the send
 // queue is swapped for one that drops jobs, and live updates are off.
 
-import { demoSeed } from "./demo_seed.js";
+import { demoSeed, PERSONAS } from "./demo_seed.js";
 import * as db from "./db";
 import type { Env } from "./setter";
 
@@ -29,12 +29,13 @@ export function demoEnv(env: Env): Env {
 const KEEP = new Set(["_relay_migrations", "d1_migrations"]);
 
 // Empties every table in the demo database and fills it again, dated around `now`.
-export async function resetDemo(d1: D1Database, now: number): Promise<number> {
+export async function resetDemo(d1: D1Database, now: number, persona?: string): Promise<number> {
+  const keep = persona && PERSONAS[persona] ? persona : ((await db.getSetting(d1, "demo_persona").catch(() => null)) ?? "creator");
   const { results } = await d1.prepare(`SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%'`).all<{ name: string }>();
   const tables = results.map((r) => r.name).filter((n) => !KEEP.has(n));
   if (!tables.includes("leads")) throw new Error("The demo database has no tables yet. Run `npm run setup` (or `npm run update`) to build it.");
   await d1.batch(tables.map((t) => d1.prepare(`DELETE FROM "${t.replace(/"/g, "")}"`)));
-  const stmts = demoSeed(now);
+  const stmts = demoSeed(now, keep);
   for (let i = 0; i < stmts.length; i += 400) await d1.batch(stmts.slice(i, i + 400).map((s) => d1.prepare(s)));
   await db.setSetting(d1, "demo_seeded_at", String(now));
   return stmts.length;
@@ -70,6 +71,14 @@ export function demoToggle(req: Request, env: Env): Response {
 
 export async function demoResetRoute(req: Request, env: Env): Promise<Response> {
   if (env.DEMO_ON !== "1") return new Response("demo mode is off", { status: 400 });
-  await resetDemo(env.DB, Date.now());
+  const persona = String((await req.formData().catch(() => null))?.get("persona") ?? "");
+  await resetDemo(env.DB, Date.now(), persona || undefined);
   return Response.redirect(new URL(safeBack(req), req.url).toString(), 303);
 }
+
+// The picker in the demo banner: which sample workspace is showing.
+export async function demoPersona(env: Env): Promise<string> {
+  const p = await db.getSetting(env.DB, "demo_persona").catch(() => null);
+  return p && PERSONAS[p] ? p : "creator";
+}
+export { PERSONAS };

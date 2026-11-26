@@ -2,6 +2,7 @@
 // pausing/resuming a lead. There is no approval queue: the AI is on (autopilot) or off.
 
 import { linked, switcher } from "./accounts";
+import { demoPersona, PERSONAS } from "./demo";
 import { setupProgress, setupStatus } from "./setup_guide";
 import { automationsBody } from "./admin_flows";
 import * as db from "./db";
@@ -105,8 +106,14 @@ export async function page(active: Section, body: string, who: Role, env: Env, o
   const modeSwitch = `<a class="mode${demoOn ? " is-demo" : ""}${canDemo ? "" : " na"}" href="${demoHref}" role="switch" aria-checked="${demoOn}" aria-label="Demo mode" title="${
     canDemo ? (demoOn ? "You're looking at sample data. Click for your real data." : "Look around with sample data. Your real data isn't touched.") : "Demo mode needs its own database: run npm run setup"
   }"><span class="m-live"><i></i>Live</span><span class="m-demo">Demo</span></a>`;
+  const persona = demoOn ? await demoPersona(env) : "creator";
+  const personaMenu = Object.entries(PERSONAS)
+    .map(([k, p]) => `<button name="persona" value="${k}" class="pm${k === persona ? " on" : ""}"><span class="pm-av">${esc(p.name.charAt(0))}</span><span class="pm-t"><b>${esc(p.name)}</b><small>${esc(p.blurb)}</small></span>${k === persona ? icon("check", 14, 2.5) : ""}</button>`)
+    .join("");
   const demoBar = demoOn
-    ? `<div class="demo-bar" role="status"><span class="db-k">Demo mode</span><span class="db-t">Sample data from made-up people. Nothing here touches your real contacts or reaches Instagram.</span><form method="post" action="/admin/demo/reset"><button class="db-b" title="Fill the demo again with fresh, recent sample data">${icon("clock", 14)}Refresh sample data</button></form><a class="db-x" href="/admin/demo?to=off">Back to live ${icon("arrow", 14)}</a></div>`
+    ? `<div class="demo-bar" role="status"><span class="db-k">Demo mode</span><span class="db-t">Sample data from made-up people. Nothing here touches your real contacts or reaches Instagram.</span>
+<details class="db-ws"><summary>${icon("users", 14)}${esc(PERSONAS[persona]?.label ?? "Creator")}${icon("chevron", 12)}</summary><form method="post" action="/admin/demo/reset" class="db-menu"><h6>Demo workspace</h6>${personaMenu}<p>Switching refills the demo with that workspace's sample data.</p></form></details>
+<form method="post" action="/admin/demo/reset"><button class="db-b" title="Fill the demo again with fresh, recent sample data">${icon("clock", 14)}Refresh</button></form><a class="db-x" href="/admin/demo?to=off">Back to live ${icon("arrow", 14)}</a></div>`
     : "";
   const title = opts.title ?? TITLE[active];
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">

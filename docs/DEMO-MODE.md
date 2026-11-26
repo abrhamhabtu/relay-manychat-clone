@@ -38,6 +38,19 @@ You can't break anything. Click, edit, publish and delete as much as you like.
 - **Your real automations keep running.** Instagram's messages, comments and the every-minute background jobs always
   use your real database, whether demo is on or off in your browser.
 
+## Three demo workspaces
+
+Pick one from the **workspace menu** in the orange banner. Each is a different kind of Instagram page, with its own
+automations, keywords, posts, conversations and numbers:
+
+| Workspace | What it shows |
+|---|---|
+| **Demo Studio** · Creator | Guides and courses sold from reels: comment `AGENT`, `EDIT` or `GUIDE` for a DM |
+| **Bloom Bakery** · Local business | Preorders by DM: comment `MENU` or `ORDER`, custom cake inquiries, a welcome message |
+| **Peak Coaching** · Coach | A free plan funnel: comment `PLAN` or `MEALS`, a 21-day challenge, coaching inquiries |
+
+Switching refills the demo with that workspace (a few seconds). **Refresh** keeps the one you picked.
+
 ## What's in the sample data
 
 | Page | Sample |
@@ -48,12 +61,12 @@ You can't break anything. Click, edit, publish and delete as much as you like.
 | **Automation** | Six automations: comment keywords, a story reply, a DM keyword and a draft |
 | **Inbox** | Conversations with buttons tapped, links opened and replies |
 
-None of these people exist. The sample account is called **Demo Studio** (@demo.studio).
+None of these people exist. The sample accounts (Demo Studio, Bloom Bakery, Peak Coaching) aren't real pages either.
 
 ## Refresh the sample data
 
 Sample dates are set relative to when the demo was filled. To make them recent again (or to undo anything you changed
-while trying things out), click **Refresh sample data** in the orange banner. It takes a few seconds.
+while trying things out), click **Refresh** in the orange banner. It takes a few seconds.
 
 Relay also refreshes the demo on its own once a week, so the dates never look stale.
 

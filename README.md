@@ -38,8 +38,9 @@ More in [docs/DEMO-MODE.md](docs/DEMO-MODE.md).
 Relay started as a fork of [FewChat](https://github.com/jasonc00person/fewchat) (MIT), and adds:
 
 - **A console that feels native.** San Francisco type, frosted glass, soft depth, capsule buttons and iOS-style controls, in light and dark, on desktop and phone.
-- **Demo mode.** One switch at the top right fills every page with sample data from its own database. Your real contacts are never touched and nothing can reach Instagram. Great for trying Relay, and for showing it off.
-- **Messages that feel human.** Send up to 10 texts in a row per step, each its own bubble with typing dots in between, and watch a **live iPhone preview** of exactly what people will see as you type.
+- **Demo mode.** One switch at the top right fills every page with sample data from its own database, in three workspaces (a creator, a local bakery, a fitness coach). Your real contacts are never touched and nothing can reach Instagram.
+- **Messages that feel human.** Send up to 10 texts in a row per step, each its own bubble with typing dots in between, and watch a **live iPhone preview** of exactly what people will see as you type. A **+** on the phone adds a text; a **+** on any card adds the next step.
+- **Honest about platforms.** Instagram works today. Accounts & platforms shows what's possible next (Messenger, WhatsApp), what needs the platform's approval (TikTok) and what isn't possible (Threads DMs).
 - **Several Instagram pages.** An **Accounts** page and a switcher at the top of the sidebar link every page you run, each on its own install so their data never mixes.
 - **Growth.** Followers over time, reach, views, profile link taps and follows/unfollows straight from Instagram's insights, your latest posts with the comments that became DMs, and **who followed you after an automation DM'd them**, per automation.
 - **A Setup guide inside the console.** Twelve parts, every click explained, your own addresses filled in with Copy buttons, and six live checks that tick themselves off as each piece starts working. The same steps are in [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md).
