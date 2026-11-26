@@ -52,11 +52,11 @@ Instagram only lets apps send DMs from **professional** accounts.
 In your terminal, go to the folder where you keep projects and run these one at a time:
 
 ```bash
-git clone https://github.com/abrhamhabtu/relay.git
+git clone https://github.com/abrhamhabtu/relay-manychat-clone.git
 ```
 
 ```bash
-cd relay
+cd relay-manychat-clone
 ```
 
 ```bash
@@ -171,7 +171,7 @@ cd ..
 ```
 
 ```bash
-git clone https://github.com/abrhamhabtu/relay.git relay-two
+git clone https://github.com/abrhamhabtu/relay-manychat-clone.git relay-two
 ```
 
 ```bash

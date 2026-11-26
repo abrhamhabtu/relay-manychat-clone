@@ -71,11 +71,11 @@ Set aside about 45 minutes. Most of it is clicking through Meta's developer site
 Open a terminal. On a Mac that's the **Terminal** app; on Windows, **PowerShell**. Then paste:
 
 ```bash
-git clone https://github.com/abrhamhabtu/relay.git
+git clone https://github.com/abrhamhabtu/relay-manychat-clone.git
 ```
 
 ```bash
-cd relay
+cd relay-manychat-clone
 ```
 
 No `git`? Install it from [git-scm.com](https://git-scm.com) and run the two lines again. (The green **Code** button → **Download ZIP** also works, but `npm run update` needs git to fetch new versions.)
@@ -147,7 +147,7 @@ The longer tour, with a glossary: [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md).
 
 ## Everyday commands
 
-Run these in the `relay` folder.
+Run these in the `relay-manychat-clone` folder.
 
 | Command | What it does |
 | --- | --- |

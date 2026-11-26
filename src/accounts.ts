@@ -122,7 +122,7 @@ export async function accountsPage(env: Env, who: Role, note: string | null): Pr
 <div class="cols"><div class="card"><div class="ph"><div><h2>Add a new Instagram page</h2><p>Each page runs on its own Relay install: its own address, database, inbox and numbers. It takes about 20 minutes, and most of it is Meta's site.</p></div></div>
 <ol class="steps">
 <li>Make sure the new page is a <b>Professional</b> account: in the Instagram app, Settings → Account type and tools → Switch to professional.</li>
-<li>In a terminal, next to your current Relay folder, get a second copy: <code>git clone https://github.com/abrhamhabtu/relay.git relay-two</code> then <code>cd relay-two</code>.</li>
+<li>In a terminal, next to your current Relay folder, get a second copy: <code>git clone https://github.com/abrhamhabtu/relay-manychat-clone.git relay-two</code> then <code>cd relay-two</code>.</li>
 <li>Run <code>npm run setup -- --name=relay-two</code>. The name keeps its database and address apart from this one. Answer the three questions with the new page's username.</li>
 <li>Follow the new <code>MY-SETUP.md</code> it writes. Give it its own Meta app: a Meta app sends webhooks to one address, and each install has its own.</li>
 <li>Come back here and link it with its console address, so you can jump between pages from the sidebar. Do the same from the new console to link back.</li>

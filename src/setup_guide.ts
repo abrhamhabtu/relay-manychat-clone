@@ -161,7 +161,7 @@ ${step("App domains", copy(host))}
 ${step("Privacy policy URL", copy(`${origin}/privacy`))}
 ${step("Terms of service URL", copy(`${origin}/terms`))}
 ${step("User data deletion", `Choose <b>Data deletion instructions URL</b> (or callback) and paste ${copy(`${origin}/data-deletion`)}`)}
-${step("Category and icon", `Pick any category (for example <b>Business and pages</b>). For the icon, download <a href="https://raw.githubusercontent.com/abrhamhabtu/relay/main/assets/icon.png" target="_blank" rel="noopener">Relay's icon</a> or use any square picture.`)}
+${step("Category and icon", `Pick any category (for example <b>Business and pages</b>). For the icon, download <a href="https://raw.githubusercontent.com/abrhamhabtu/relay-manychat-clone/main/assets/icon.png" target="_blank" rel="noopener">Relay's icon</a> or use any square picture.`)}
 ${step("Save changes", "At the bottom of the page.")}
 </ol>`,
     },
@@ -250,7 +250,7 @@ ${see("this check turning green, and the automation's numbers on <a href=\"/admi
 <div class="ghero-s"><div class="gring">${ring(done, total, 96)}<b>${done}<small>/${total}</small></b></div><ul class="gchecks">${checkList}</ul></div></section>
 <div class="glist">${chapterHtml}</div>
 <div class="card"><div class="ph"><div><h2>Still stuck?</h2><p>In the terminal, in your Relay folder:</p></div></div>
-<p>${copy("npm run check")}</p><p class="note">It looks at your live setup and says, in plain words, what works and what to fix. The full list of fixes is in <a href="https://github.com/abrhamhabtu/relay/blob/main/docs/TROUBLESHOOTING.md" target="_blank" rel="noopener">TROUBLESHOOTING.md</a>.</p></div>
+<p>${copy("npm run check")}</p><p class="note">It looks at your live setup and says, in plain words, what works and what to fix. The full list of fixes is in <a href="https://github.com/abrhamhabtu/relay-manychat-clone/blob/main/docs/TROUBLESHOOTING.md" target="_blank" rel="noopener">TROUBLESHOOTING.md</a>.</p></div>
 <script>
 function relayCopy(b){var v=b.getAttribute("data-copy");(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(function(){b.textContent="Copied";b.classList.add("did");setTimeout(function(){b.textContent="Copy";b.classList.remove("did")},1600)},function(){var r=document.createRange();r.selectNodeContents(b.previousElementSibling.tagName==="CODE"?b.previousElementSibling:b.parentNode.querySelector("code"));var s=getSelection();s.removeAllRanges();s.addRange(r)})}
 (function(){var k="relay-setup-marks",m={};try{m=JSON.parse(localStorage.getItem(k)||"{}")}catch(e){}
