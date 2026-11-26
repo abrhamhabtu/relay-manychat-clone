@@ -891,7 +891,8 @@ label{font-size:12px;font-weight:600;letter-spacing:0;text-transform:none}
 .logo{width:28px;height:28px;filter:drop-shadow(0 1px 1.5px rgba(242,84,27,.35))}
 
 /* materials: sidebar, title bar */
-.side{background:color-mix(in srgb,var(--canvas) 82%,var(--panel));border-right:.5px solid var(--line);backdrop-filter:saturate(180%) blur(30px);-webkit-backdrop-filter:saturate(180%) blur(30px)}
+/* no backdrop-filter on the desktop sidebar: it would trap the account menu (position:fixed) inside the sidebar's box */
+.side{background:color-mix(in srgb,var(--canvas) 82%,var(--panel));border-right:.5px solid var(--line)}
 .brand,.acsw,.side .foot{border-color:transparent!important}
 .side .foot{border-top:.5px solid var(--line)!important}
 .tb{background:var(--glass);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-bottom:.5px solid var(--line);height:64px}
@@ -906,7 +907,7 @@ label{font-size:12px;font-weight:600;letter-spacing:0;text-transform:none}
 .side .foot{padding:8px 10px}
 .acsw summary{margin:6px 10px;height:52px;padding:0 10px;border-radius:12px;background:var(--panel);box-shadow:var(--sh1)}
 .acsw summary:hover{background:var(--panel)}
-.acsw-pop{left:14px;top:120px;border:0;border-radius:16px;padding:6px;background:color-mix(in srgb,var(--elev) 86%,transparent);backdrop-filter:saturate(180%) blur(30px);-webkit-backdrop-filter:saturate(180%) blur(30px);box-shadow:var(--sh2);animation:rl-pop .22s var(--ease2)}
+.acsw-pop{left:16px;top:118px;z-index:60;border:0;border-radius:16px;padding:6px;background:color-mix(in srgb,var(--elev) 86%,transparent);backdrop-filter:saturate(180%) blur(30px);-webkit-backdrop-filter:saturate(180%) blur(30px);box-shadow:var(--sh2);animation:rl-pop .22s var(--ease2)}
 .acsw-pop a{border-radius:10px}
 .acsw-pop .cur{font-weight:600;color:var(--green);text-transform:none;letter-spacing:0;font-size:11px}
 @keyframes rl-pop{from{opacity:0;transform:translateY(-4px) scale(.98)}}
