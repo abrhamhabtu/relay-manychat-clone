@@ -111,6 +111,45 @@ dialog.au-new::backdrop{background:rgba(0,0,0,.45)}
 .st-b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border-radius:2px}
 .au-m>div,.au-bulk,dialog.au-new{box-shadow:6px 6px 0 color-mix(in srgb,var(--ink) 12%,transparent);border:1px solid var(--ink)}
 .live-pill{color:var(--pri);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+
+/* scenario gallery */
+dialog.tpd{max-width:1080px;width:calc(100% - 48px);height:min(760px,calc(100vh - 64px));padding:0;border:0!important;border-radius:22px!important;overflow:hidden;background:var(--canvas);box-shadow:0 40px 120px -20px rgba(0,0,0,.45)!important}
+dialog.tpd[open]{display:flex;flex-direction:column;animation:rl-pop .3s cubic-bezier(.32,.72,0,1)}
+dialog.tpd::backdrop{background:rgba(0,0,0,.28);backdrop-filter:blur(6px)}
+.tpd-h{display:flex;align-items:center;gap:16px;padding:20px 22px 16px 26px;border-bottom:.5px solid var(--line);background:var(--glass);backdrop-filter:saturate(180%) blur(20px)}
+.tpd-h h2{font:700 22px/1.1 var(--serif);letter-spacing:-.025em;margin:0}.tpd-h p{margin:4px 0 0;color:var(--mut);font-size:13px}
+.tpd-h>div{flex:1}
+.tpd-s{position:relative;display:flex;align-items:center;margin:0;text-transform:none;letter-spacing:0}.tpd-s svg{position:absolute;left:12px;color:var(--mut)}
+.tpd-s input{width:240px;margin:0;padding:9px 12px 9px 36px;border-radius:10px;border:0;background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.tpd-h form{margin:0}.tpd-x{display:grid;place-items:center;width:32px;height:32px;padding:0!important;margin:0!important;border-radius:50%!important;background:color-mix(in srgb,var(--ink) 7%,transparent)!important;color:var(--ink)!important;box-shadow:none!important}
+.tpd-b{flex:1;display:grid;grid-template-columns:210px minmax(0,1fr);min-height:0}
+.tpd-r{display:flex;flex-direction:column;gap:2px;padding:14px 10px;border-right:.5px solid var(--line);overflow-y:auto}
+.tp-cat{display:flex!important;align-items:center;justify-content:space-between;width:100%;margin:0!important;padding:8px 12px!important;border-radius:9px!important;background:transparent!important;color:var(--ink)!important;box-shadow:none!important;font-weight:500!important;text-align:left;font-size:13.5px}
+.tp-cat span{color:var(--mut);font-size:12px;font-weight:500}
+.tp-cat:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)!important}
+.tp-cat.on{background:color-mix(in srgb,var(--pri) 12%,transparent)!important;color:var(--pri)!important;font-weight:600!important}.tp-cat.on span{color:var(--pri)}
+.tpd-blank{margin:auto 0 0}.tpd-blank button{display:flex;align-items:center;gap:8px;justify-content:center;width:100%;margin:12px 0 0;border-radius:12px!important}
+.tpd-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;align-content:start;padding:18px 22px 24px;overflow-y:auto}
+.tp{margin:0}.tp[hidden]{display:none}
+.tp>button{display:flex!important;flex-direction:column;width:100%;height:100%;margin:0!important;padding:0!important;border-radius:18px!important;background:var(--panel)!important;color:var(--ink)!important;text-align:left;font-weight:400!important;box-shadow:var(--sh1)!important;overflow:hidden;transition:transform .25s cubic-bezier(.32,.72,0,1),box-shadow .25s!important}
+.tp>button:hover{transform:translateY(-3px)!important;box-shadow:var(--sh2)!important;filter:none!important}
+.tp-pv{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:132px;padding:14px 14px 12px;background:linear-gradient(160deg,color-mix(in srgb,var(--pri) 7%,var(--soft)),var(--soft))}
+.tp-trg{align-self:center;font-size:10.5px;color:var(--mut);margin-bottom:4px}.tp-trg b{color:var(--ink);font-weight:700}
+.tp-b{max-width:92%;padding:7px 11px;border-radius:16px;background:var(--panel);font-size:12.5px;line-height:16px;white-space:pre-line;box-shadow:0 1px 1px rgba(0,0,0,.04)}
+.tp-btn{max-width:92%;padding:6px 11px;border-radius:12px;background:var(--panel);color:#2d7cff;font-size:12px;font-weight:600}
+.tp-bd{display:flex;flex-direction:column;gap:6px;padding:12px 14px 14px;flex:1}
+.tp-t{display:flex;align-items:center;gap:8px;font-weight:650;font-size:14px;letter-spacing:-.01em}
+.tp-em{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:color-mix(in srgb,var(--ink) 5%,transparent);font-size:14px;flex:none}
+.tp-bd small{color:var(--mut);font-size:12.5px;line-height:17px}
+.tp-ch{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;padding-top:4px}
+.tp-ch i{font-style:normal;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
+.c-ig{background:linear-gradient(135deg,rgba(250,126,30,.14),rgba(214,41,118,.14));color:#c1306b}
+.c-fb{background:rgba(0,132,255,.12);color:#0a6cdb}
+.c-tt{background:rgba(37,244,238,.16);color:#0b7f7b}
+.c-yt{background:rgba(255,0,0,.1);color:#c4151c}
+.tp-how{font-size:11px;line-height:15px;color:var(--mut);padding:7px 9px;border-radius:9px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+.tpd-none{grid-column:1/-1;color:var(--mut);text-align:center;padding:40px 0}
+@media (max-width:767px){.tpd-b{grid-template-columns:1fr}.tpd-r{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:.5px solid var(--line)}.tp-cat{width:auto;white-space:nowrap;gap:6px}.tpd-blank{margin:0}.tpd-s input{width:140px}.tpd-h p{display:none}}
 </style>`;
 
 const SOURCES: { value: Trigger["source"]; label: string }[] = [
@@ -221,10 +260,25 @@ const tg = (source: Trigger["source"], keyword: string, nodes: Node[], edges: [s
   edges: edges.map(([from, port, to]) => ({ from, port, to })),
 });
 
-export const TEMPLATES: Record<string, { name: string; emoji: string; desc: string; graph: () => Graph }> = {
+// Where a template runs. TikTok and YouTube scenarios bring that audience into your Instagram DMs (a DM keyword you
+// mention in the video or bio): Relay doesn't send on TikTok or YouTube.
+export const CHANNEL: Record<string, string> = { ig: "Instagram", fb: "Messenger", tt: "TikTok → Instagram", yt: "YouTube → Instagram" };
+export const CATEGORIES: [string, string][] = [
+  ["popular", "Popular"],
+  ["instagram", "Instagram"],
+  ["messenger", "Messenger"],
+  ["tiktok", "From TikTok"],
+  ["youtube", "From YouTube"],
+  ["sell", "Sell & launch"],
+  ["community", "Community"],
+];
+
+export const TEMPLATES: Record<string, { name: string; emoji: string; desc: string; cats?: string[]; ch?: string[]; how?: string; graph: () => Graph }> = {
   comment: {
     name: "Comment keyword → DM link",
     emoji: "💬",
+    cats: ["popular", "instagram"],
+    ch: ["ig", "fb"],
     desc: "Someone comments a keyword, they get a DM with a button that sends the link.",
     graph: () =>
       tg(
@@ -241,6 +295,8 @@ export const TEMPLATES: Record<string, { name: string; emoji: string; desc: stri
   followers: {
     name: "Comment keyword → link for followers",
     emoji: "🔒",
+    cats: ["popular", "instagram"],
+    ch: ["ig"],
     desc: "The link only goes to people who follow you; everyone else is asked to follow first.",
     graph: () =>
       tg(
@@ -258,6 +314,8 @@ export const TEMPLATES: Record<string, { name: string; emoji: string; desc: stri
   dm: {
     name: "DM keyword → link + follow-up",
     emoji: "✉️",
+    cats: ["instagram", "messenger"],
+    ch: ["ig", "fb"],
     desc: "A DM with the keyword gets the link, then a nudge an hour later if they go quiet.",
     graph: () =>
       tg(
@@ -274,6 +332,8 @@ export const TEMPLATES: Record<string, { name: string; emoji: string; desc: stri
   story: {
     name: "Story reply → tag and hand to the AI",
     emoji: "📸",
+    cats: ["instagram", "community"],
+    ch: ["ig"],
     desc: "Thank people who reply to your Story, ask what they're after, tag them and let the AI take over.",
     graph: () =>
       tg(
@@ -290,6 +350,8 @@ export const TEMPLATES: Record<string, { name: string; emoji: string; desc: stri
   welcome: {
     name: "Welcome Message",
     emoji: "👋",
+    cats: ["instagram", "messenger", "community"],
+    ch: ["ig", "fb"],
     desc: "First DM ever and no keyword matched: say hi, sort them with quick replies, hand off to the AI.",
     graph: () =>
       tg(
@@ -307,12 +369,232 @@ export const TEMPLATES: Record<string, { name: string; emoji: string; desc: stri
   mention: {
     name: "Story Mention Reply",
     emoji: "🙌",
+    cats: ["instagram", "community"],
+    ch: ["ig"],
     desc: "Thank people who mention you in their Story.",
     graph: () => tg("mention", "*", [msg("m1", 380, 0, [{ text: "thanks for the shoutout 🙏 means a lot" }])], [["trigger", "next", "m1"]]),
+  },
+  unlock: {
+    name: "Tap to unlock the link",
+    emoji: "🔓",
+    desc: "They comment, you DM a friendly hello with a button. One tap and the link lands, plus a question that starts a real chat.",
+    cats: ["popular", "instagram"],
+    ch: ["ig", "fb"],
+    graph: () =>
+      tg(
+        "comment",
+        "KIT",
+        [
+          msg("m1", 380, 0, [{ text: "yo {{first_name}}! 👋 you just watched it run live 😄 tap below and I'll send the whole thing over", buttons: [{ id: "send", title: "Send me the link 👉" }] }]),
+          msg("m2", 760, 0, [{ text: "you got it 🙌" }, { text: "here it is 👉 {{SKOOL_LINK}}" }, { text: "what's the first thing you'd make with it?" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "send", "m2"]],
+        "just sent it 📩",
+      ),
+  },
+  bundle: {
+    name: "Send a bundle of links",
+    emoji: "🧰",
+    desc: "One keyword, a whole stack: a neat, numbered list of tools or resources, spaced out so it's easy to read on a phone.",
+    cats: ["popular", "instagram"],
+    ch: ["ig", "fb"],
+    graph: () =>
+      tg(
+        "comment",
+        "TOOLS",
+        [
+          msg("m1", 380, 0, [
+            { text: "here's all 5 👇" },
+            { text: "1. Tool one (what it does)\n→ {{SKOOL_LINK}}\n\n2. Tool two (what it does)\n→ https://\n\n3. Tool three (what it does)\n→ https://\n\n4. Tool four (what it does)\n→ https://\n\n5. Tool five (what it does)\n→ https://" },
+            { text: "save this one, you'll want it later 🔖" },
+          ]),
+        ],
+        [["trigger", "next", "m1"]],
+        "sent you all 5 📩",
+      ),
+  },
+  followgate: {
+    name: "Follow first, then the link",
+    emoji: "🤝",
+    desc: "A warm ask to follow before you send it over. They tap “Following” and get the goods.",
+    cats: ["instagram"],
+    ch: ["ig"],
+    graph: () =>
+      tg(
+        "comment",
+        "SETUP",
+        [
+          msg("m1", 380, 0, [{ text: "hey! sending you this setup 🙌 just make sure you're following so you catch the next one", buttons: [{ id: "ok", title: "Following ✅" }] }]),
+          msg("m2", 760, 0, [{ text: "legend 🙏 here it is", buttons: [{ id: "open", title: "Open the setup", url: "{{SKOOL_LINK}}" }] }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "ok", "m2"]],
+      ),
+  },
+  launch: {
+    name: "Launch: it's live!",
+    emoji: "🚀",
+    desc: "For a course, product or drop: the link the moment they ask, then a friendly check-in the next day.",
+    cats: ["sell"],
+    ch: ["ig", "fb"],
+    graph: () =>
+      tg(
+        "comment",
+        "LIVE",
+        [
+          msg("m1", 380, 0, [{ text: "it's officially live 🎉" }, { text: "tap below and I'll send you the link", buttons: [{ id: "send", title: "Send it" }] }]),
+          msg("m2", 760, 0, [{ text: "here you go 👉", buttons: [{ id: "open", title: "See what's inside", url: "{{SKOOL_LINK}}" }] }]),
+          { id: "d1", kind: "delay", x: 1140, y: 0, data: { seconds: 86400 } },
+          msg("m3", 1520, 0, [{ text: "hey! did you get a chance to look? any questions, just reply here 🙂" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "send", "m2"], ["m2", "next", "d1"], ["d1", "next", "m3"]],
+      ),
+  },
+  email: {
+    name: "Link + ask for their email",
+    emoji: "📩",
+    desc: "Send the link, then offer the full version by email. Their reply lands in your Inbox, tagged.",
+    cats: ["sell"],
+    ch: ["ig", "fb"],
+    graph: () =>
+      tg(
+        "dm",
+        "FREE",
+        [
+          msg("m1", 380, 0, [{ text: "here's the free version 👇", buttons: [{ id: "open", title: "Get it", url: "{{SKOOL_LINK}}" }] }, { text: "want the full one too? I'll email it over" }], ["Yes please", "I'm good"]),
+          msg("m2", 760, -80, [{ text: "you got it, shoot over your email 📩" }]),
+          act("a1", 1140, -80, [{ type: "add_tag", value: "wants-email" }, { type: "pause_ai", value: "" }]),
+          msg("m3", 760, 200, [{ text: "all good! enjoy it ✌️" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "m1q0", "m2"], ["m2", "next", "a1"], ["m1", "m1q1", "m3"]],
+      ),
+  },
+  call: {
+    name: "Qualify, then book a call",
+    emoji: "📅",
+    desc: "Two quick questions sort who's ready; ready people get your booking link, the rest get a free resource.",
+    cats: ["sell"],
+    ch: ["ig", "fb"],
+    graph: () =>
+      tg(
+        "dm",
+        "CALL",
+        [
+          msg("m1", 380, 0, [{ text: "love that 🙌 quick one so I point you the right way: where are you at right now?" }], ["Just starting", "Already making money"]),
+          msg("m2", 760, -120, [{ text: "perfect, start here, it'll save you months 👇", buttons: [{ id: "open", title: "Free starter guide", url: "{{SKOOL_LINK}}" }] }]),
+          msg("m3", 760, 200, [{ text: "let's talk then 🤝 grab a time that works", buttons: [{ id: "book", title: "Book a call", url: "{{SKOOL_LINK}}" }] }]),
+          act("a1", 1140, 200, [{ type: "add_tag", value: "hot lead" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "m1q0", "m2"], ["m1", "m1q1", "m3"], ["m3", "next", "a1"]],
+      ),
+  },
+  tiktok: {
+    name: "TikTok viewers → your DMs",
+    emoji: "🎵",
+    desc: "Say “DM me TIKTOK on Instagram” in your TikTok video or bio. They message the word, they get what you promised.",
+    cats: ["tiktok", "popular"],
+    ch: ["tt"],
+    how: "Relay doesn't send on TikTok. Put “DM me TIKTOK on Instagram” in your TikTok bio, captions or pinned comment.",
+    graph: () =>
+      tg(
+        "dm",
+        "TIKTOK",
+        [
+          msg("m1", 380, 0, [{ text: "ayy you came over from TikTok 🙌" }, { text: "here's what I promised 👇", buttons: [{ id: "open", title: "Get it", url: "{{SKOOL_LINK}}" }] }]),
+          act("a1", 760, 0, [{ type: "add_tag", value: "from-tiktok" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "next", "a1"]],
+      ),
+  },
+  tiktok_series: {
+    name: "TikTok series → part 2 on Instagram",
+    emoji: "🎬",
+    desc: "End a TikTok with “part 2 is in my DMs, send PART2 on Instagram”. They get the link to the full video.",
+    cats: ["tiktok"],
+    ch: ["tt"],
+    how: "Relay doesn't send on TikTok. Say the keyword at the end of the TikTok.",
+    graph: () =>
+      tg(
+        "dm",
+        "PART2",
+        [msg("m1", 380, 0, [{ text: "you made it 😂 here's part 2", buttons: [{ id: "open", title: "Watch part 2", url: "{{SKOOL_LINK}}" }] }, { text: "lmk if you want part 3 👀" }])],
+        [["trigger", "next", "m1"]],
+      ),
+  },
+  youtube: {
+    name: "YouTube viewers → the template",
+    emoji: "▶️",
+    desc: "Add “DM me YOUTUBE on Instagram for the template” to your description or pinned comment. Then ask which video sent them.",
+    cats: ["youtube", "popular"],
+    ch: ["yt"],
+    how: "Relay doesn't send on YouTube. Put the line in your video description, pinned comment or end screen.",
+    graph: () =>
+      tg(
+        "dm",
+        "YOUTUBE",
+        [
+          msg("m1", 380, 0, [{ text: "welcome over from YouTube 👋" }, { text: "here's the template from the video", buttons: [{ id: "open", title: "Get the template", url: "{{SKOOL_LINK}}" }] }]),
+          { id: "d1", kind: "delay", x: 760, y: 0, data: { seconds: 600 } },
+          msg("m2", 1140, 0, [{ text: "curious, which video sent you here?" }], ["The newest one", "An older one"]),
+          act("a1", 1520, 0, [{ type: "add_tag", value: "from-youtube" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "next", "d1"], ["d1", "next", "m2"], ["m2", "next", "a1"]],
+      ),
+  },
+  youtube_live: {
+    name: "YouTube Live → replay and slides",
+    emoji: "🎙️",
+    desc: "Tell your live chat to “DM me REPLAY on Instagram”. They get the replay and slides when it's up.",
+    cats: ["youtube"],
+    ch: ["yt"],
+    how: "Relay doesn't send on YouTube. Say the keyword during the live and pin it in chat.",
+    graph: () =>
+      tg(
+        "dm",
+        "REPLAY",
+        [msg("m1", 380, 0, [{ text: "thanks for hanging out on the live 🙏" }, { text: "replay + slides 👇", buttons: [{ id: "open", title: "Watch the replay", url: "{{SKOOL_LINK}}" }] }])],
+        [["trigger", "next", "m1"]],
+      ),
+  },
+  fbpage: {
+    name: "Facebook Page post → DM",
+    emoji: "💙",
+    desc: "Someone comments on your Facebook Page post; Messenger sends them the info, privately. Works on Instagram posts too.",
+    cats: ["messenger"],
+    ch: ["fb", "ig"],
+    how: "Facebook Page posts need Messenger connected (Accounts & platforms).",
+    graph: () =>
+      tg(
+        "comment",
+        "INFO",
+        [msg("m1", 380, 0, [{ text: "hi {{first_name}}! thanks for commenting 😊 here's everything you asked about", buttons: [{ id: "open", title: "See the details", url: "{{SKOOL_LINK}}" }] }])],
+        [["trigger", "next", "m1"]],
+        "sent you a message 💬",
+      ),
+  },
+  faq: {
+    name: "FAQ menu for new messages",
+    emoji: "❓",
+    desc: "First message ever: tap a question, get the answer. Great for shops and local businesses on Messenger.",
+    cats: ["messenger", "community"],
+    ch: ["fb", "ig"],
+    graph: () =>
+      tg(
+        "welcome",
+        "*",
+        [
+          msg("m1", 380, 0, [{ text: "hi! thanks for messaging 👋 what can I help with?" }], ["Prices", "Hours", "Talk to a person"]),
+          msg("m2", 760, -160, [{ text: "here's everything with prices 👇", buttons: [{ id: "open", title: "See prices", url: "{{SKOOL_LINK}}" }] }]),
+          msg("m3", 760, 60, [{ text: "we're open Tue–Sun, 8am to 4pm ☕" }]),
+          act("a1", 760, 280, [{ type: "add_tag", value: "needs-reply" }, { type: "pause_ai", value: "" }]),
+        ],
+        [["trigger", "next", "m1"], ["m1", "m1q0", "m2"], ["m1", "m1q1", "m3"], ["m1", "m1q2", "a1"]],
+      ),
   },
   blank: {
     name: "Untitled automation",
     emoji: "✨",
+    cats: [],
+    ch: ["ig", "fb"],
     desc: "Start from scratch on an empty canvas.",
     graph: () => tg("dm", "", [msg("m1", 380, 0, [{ text: "" }])], [["trigger", "next", "m1"]]),
   },
@@ -353,14 +635,38 @@ export async function automationsBody(env: Env, req: Request, who: Role, label: 
 }
 
 function newDialog(folder: string | null): string {
+  const first = (g: Graph) => {
+    const m = g.nodes.find((n) => n.kind === "message");
+    const bubbles = m ? (m.data as { bubbles: { text: string; buttons: { title: string }[] }[] }).bubbles : [];
+    return bubbles.slice(0, 2).map((b) => ({ text: b.text.replace(/\{\{SKOOL_LINK\}\}/g, "yourlink.com").replace(/\{\{first_name\}\}/g, "Maya"), btn: b.buttons[0]?.title ?? null }));
+  };
+  const kw = (g: Graph) => (g.trigger.keyword && g.trigger.keyword !== "*" ? g.trigger.keyword : null);
+  const how = (g: Graph) => ({ comment: "Comments", dm: "DM keyword", story: "Story reply", mention: "Story mention", welcome: "First message", none: "Started by another automation" })[g.trigger.source] ?? "";
+  const hidden = (k: string) => (folder ? `<input type="hidden" name="folder" value="${esc(folder)}">` : "") + `<input type="hidden" name="template" value="${k}">`;
   const cards = Object.entries(TEMPLATES)
-    .filter(([k]) => k !== "mention")
-    .map(
-      ([k, t]) => `<form method="post" action="/admin/automations/new"><input type="hidden" name="template" value="${k}">${folder ? `<input type="hidden" name="folder" value="${esc(folder)}">` : ""}
-<button><span class="em">${t.emoji}</span>${k === "blank" ? "Start from scratch" : esc(t.name)}<small>${esc(t.desc)}</small></button></form>`,
-    )
+    .filter(([k]) => k !== "blank")
+    .map(([k, t]) => {
+      const g = t.graph();
+      const bub = first(g)
+        .map((b) => `<span class="tp-b">${esc(b.text.length > 90 ? `${b.text.slice(0, 88)}…` : b.text)}</span>${b.btn ? `<span class="tp-btn">${esc(b.btn)}</span>` : ""}`)
+        .join("");
+      return `<form method="post" action="/admin/automations/new" class="tp" data-cats="${esc((t.cats ?? []).join(" "))}" data-q="${esc(`${t.name} ${t.desc} ${kw(g) ?? ""}`.toLowerCase())}">${hidden(k)}
+<button><span class="tp-pv"><span class="tp-trg">${esc(how(g))}${kw(g) ? ` · <b>${esc(kw(g)!)}</b>` : ""}</span>${bub}</span>
+<span class="tp-bd"><span class="tp-t"><span class="tp-em">${t.emoji}</span>${esc(t.name)}</span><small>${esc(t.desc)}</small>
+<span class="tp-ch">${(t.ch ?? []).map((c) => `<i class="c-${c}">${esc(CHANNEL[c] ?? c)}</i>`).join("")}</span>${t.how ? `<span class="tp-how">${esc(t.how)}</span>` : ""}</span></button></form>`;
+    })
     .join("");
-  return `<dialog class="au-new" id="au-new"><div class="hd"><h2>New Automation</h2><form method="dialog"><button aria-label="Close">×</button></form></div><div class="au-tpl">${cards}</div></dialog><script>if(/[?&]new=1/.test(location.search)){var d=document.getElementById("au-new");if(d&&d.showModal)d.showModal();history.replaceState(null,"",location.pathname)}</script>`;
+  const rail = [["all", "All scenarios"], ...CATEGORIES]
+    .map(([k, l], i) => `<button type="button" class="tp-cat${i === 0 ? " on" : ""}" data-cat="${k}">${esc(l)}<span>${k === "all" ? Object.keys(TEMPLATES).length - 1 : Object.values(TEMPLATES).filter((t) => (t.cats ?? []).includes(k)).length}</span></button>`)
+    .join("");
+  return `<dialog class="au-new tpd" id="au-new"><div class="tpd-h"><div><h2>New automation</h2><p>Start from a scenario and make it yours, or start from scratch.</p></div>
+<label class="tpd-s">${icon("search", 16)}<input type="search" placeholder="Search scenarios" aria-label="Search scenarios" oninput="tpFilter()"></label>
+<form method="dialog"><button class="tpd-x" aria-label="Close">${icon("close", 18)}</button></form></div>
+<div class="tpd-b"><nav class="tpd-r">${rail}<form method="post" action="/admin/automations/new" class="tpd-blank">${hidden("blank")}<button>${icon("plus", 16)}Start from scratch</button></form></nav>
+<div class="tpd-g">${cards}<p class="tpd-none" hidden>No scenarios match. Try another word, or start from scratch.</p></div></div></dialog>
+<script>var tpCat="all";function tpFilter(){var q=(document.querySelector(".tpd-s input").value||"").toLowerCase().trim(),n=0;document.querySelectorAll(".tp").forEach(function(c){var ok=(tpCat==="all"||(" "+c.dataset.cats+" ").indexOf(" "+tpCat+" ")>=0)&&(!q||c.dataset.q.indexOf(q)>=0);c.hidden=!ok;if(ok)n++});document.querySelector(".tpd-none").hidden=n>0}
+document.querySelectorAll(".tp-cat").forEach(function(b){b.addEventListener("click",function(){tpCat=b.dataset.cat;document.querySelectorAll(".tp-cat").forEach(function(x){x.classList.toggle("on",x===b)});tpFilter()})});
+if(/[?&]new=1/.test(location.search)){var d=document.getElementById("au-new");if(d&&d.showModal)d.showModal();history.replaceState(null,"",location.pathname)}</script>`;
 }
 
 const menuForm = (id: number, action: string, label: string, extra = "", cls = "") =>

@@ -140,7 +140,8 @@ npm run check
 ## Part 6 · Your first comment-to-DM automation (5 minutes)
 
 1. Post a reel or photo on your page. In the caption, write something like *Comment GUIDE and I'll DM you the link*.
-2. In the console: **Automation → New Automation → Comment keyword → DM link**.
+2. In the console: **Automation → New Automation**. Pick a scenario (try **Tap to unlock the link**), or browse by
+   category: Instagram, Messenger, From TikTok, From YouTube, Sell & launch.
 3. Choose the post and type the keyword `GUIDE`.
 4. Click the message card and write your DM. Add a button with your link.
 5. Click **Test**: you get a 3-digit code. DM that code to your page from your second account and watch the whole flow run. Tests never touch your real numbers.

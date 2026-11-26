@@ -40,6 +40,8 @@ Relay started as a fork of [FewChat](https://github.com/jasonc00person/fewchat) 
 - **A console that feels native.** San Francisco type, frosted glass, soft depth, capsule buttons and iOS-style controls, in light and dark, on desktop and phone.
 - **Demo mode.** One switch at the top right fills every page with sample data from its own database, in three workspaces (a creator, a local bakery, a fitness coach). Your real contacts are never touched and nothing can reach Instagram.
 - **Messages that feel human.** Send up to 10 texts in a row per step, each its own bubble with typing dots in between, and watch a **live iPhone preview** of exactly what people will see as you type. A **+** on the phone adds a text; a **+** on any card adds the next step.
+- **18 ready-made scenarios.** A gallery sorted by Instagram, Messenger, From TikTok, From YouTube, Sell & launch and Community: tap-to-unlock, follow-first, link bundles, launches, email capture, booking calls, FAQ menus, and ways to bring TikTok and YouTube viewers into your DMs.
+- **Quick lines.** A **+ Quick lines** drawer on every text: casual openers, hand-offs, follow asks, lists, questions that start a real chat, sign-offs. Plus one-tap **recipes** that drop in a whole sequence, and **{first name}** personalization that tidies itself when a name isn't shared.
 - **Facebook Messenger.** Connect your Facebook Page and its DMs and post comments run the same automations, in the same Inbox (blue badge). Built in; switch it on with your Meta app's keys ([guide](docs/GETTING-STARTED.md), Part 6¾).
 - **Honest about platforms.** Accounts & platforms shows what works (Instagram, Messenger), what's possible next (WhatsApp), what needs the platform's approval (TikTok) and what isn't possible (Threads DMs).
 - **Several Instagram pages.** An **Accounts** page and a switcher at the top of the sidebar link every page you run, each on its own install so their data never mixes.
@@ -55,6 +57,10 @@ Relay started as a fork of [FewChat](https://github.com/jasonc00person/fewchat) 
 | ![The Setup guide with live checks](assets/screenshots/setup.png) | ![Growth in dark mode](assets/screenshots/growth-dark.png) | ![Home on a phone](assets/screenshots/mobile.png) |
 
 ![The automation editor with a live iPhone preview of a three-text message](assets/screenshots/editor.png)
+
+| Scenario gallery | Quick lines |
+| --- | --- |
+| ![New automation: scenarios by platform and goal](assets/screenshots/scenarios.png) | ![Quick lines and recipes in the message editor](assets/screenshots/quick-lines.png) |
 
 ## What it does
 

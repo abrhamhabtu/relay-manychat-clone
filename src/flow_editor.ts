@@ -246,6 +246,35 @@ dialog.fe-dlg,.fe-test .card{border-radius:20px;box-shadow:var(--sh2)}
 @keyframes ph-pop{from{opacity:0;transform:translateY(4px) scale(.97)}}
 @keyframes ph-dot{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-2px)}}
 @media (prefers-reduced-motion:reduce){.ph-out,.ph-typing i{animation:none}}
+
+/* quick lines + recipes */
+.fe-pn .tools{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.fe-pn .tools .lnk{margin:0;padding:6px 11px;font-size:12px}
+.fe-pn .ql-open.on{background:var(--grad)!important;color:#fff!important}
+.ql{margin:8px 0 4px;padding:10px;border-radius:14px;background:color-mix(in srgb,var(--ink) 4%,transparent);animation:ph-pop .3s cubic-bezier(.32,.72,0,1)}
+.ql[hidden]{display:none}
+.ql-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:0 0 8px;padding-bottom:2px}
+.ql-tabs::-webkit-scrollbar{display:none}
+.ql-tab{flex:none;margin:0!important;padding:5px 10px!important;border-radius:999px!important;background:transparent!important;color:var(--mut)!important;font-size:11.5px!important;font-weight:600!important;box-shadow:none!important;white-space:nowrap}
+.ql-tab:hover{color:var(--ink)!important}.ql-tab.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 1px 2px rgba(0,0,0,.08)!important}
+.ql-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ql-chip{display:inline-flex!important;align-items:center;gap:6px;max-width:100%;margin:0!important;padding:6px 11px 6px 6px!important;border-radius:999px!important;background:var(--panel)!important;color:var(--ink)!important;font-size:12.5px!important;font-weight:500!important;text-align:left;box-shadow:0 1px 2px rgba(0,0,0,.06)!important;transition:transform .15s,box-shadow .15s!important}
+.ql-chip b{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:color-mix(in srgb,var(--pri) 14%,transparent);color:var(--pri);font-size:13px;flex:none}
+.ql-chip:hover{transform:translateY(-1px)!important;box-shadow:0 4px 12px -4px rgba(0,0,0,.18)!important}
+.ql-chip:hover b{background:var(--grad);color:#fff}
+.ql-chip:active{transform:scale(.97)!important}
+.ql-hint{margin:8px 2px 0;color:var(--mut);font-size:11.5px;line-height:15px}
+.rcp{margin:0 0 14px}
+.rcp-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 2px 8px}
+.rcp-h b{font-size:13px}.rcp-h small{color:var(--mut);font-size:11.5px}
+.rcp-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 6px;margin:0 -2px}
+.rcp-row::-webkit-scrollbar{display:none}
+.rcp-c{flex:none;display:flex!important;flex-direction:column;align-items:flex-start;gap:2px;width:132px;margin:0!important;padding:12px!important;border-radius:16px!important;background:var(--panel)!important;color:var(--ink)!important;text-align:left;box-shadow:var(--sh1)!important;transition:transform .2s cubic-bezier(.32,.72,0,1),box-shadow .2s!important}
+.rcp-c:hover{transform:translateY(-2px)!important;box-shadow:var(--sh2)!important}
+.rcp-em{font-size:20px;line-height:24px;margin-bottom:4px}
+.rcp-c b{font-size:12.5px;font-weight:650}.rcp-c small{color:var(--mut);font-size:11px;line-height:14px;font-weight:400}
+
+.nd .tx .tok,.ph-b .tok{display:inline-block;padding:0 6px;border-radius:6px;background:color-mix(in srgb,var(--pri) 13%,transparent);color:var(--pri);font-weight:600;font-size:.92em;line-height:1.35}
 `;
 
 export const EDITOR_JS = String.raw`(function () {
@@ -588,8 +617,12 @@ function port(id, p) { return h("span", { class: "pt" + (edgeFrom(id, p) ? " on"
 function statsRow(items) { return h("div", { class: "stats" }, items.map(function (i) { return h("div", null, [String(i[0]), h("small", { text: i[1] })]); })); }
 function richText(t) {
   if (!t) return h("span", { class: "ph", text: "Add a text" });
-  var parts = t.split("{{SKOOL_LINK}}"), out = [];
-  parts.forEach(function (p, i) { if (i) out.push(h("span", { class: "lk", text: B.link })); out.push(p); });
+  var out = [];
+  t.split(/(\{\{SKOOL_LINK\}\}|\{\{\s*first_name\s*\}\})/).forEach(function (p) {
+    if (p === "{{SKOOL_LINK}}") out.push(h("span", { class: "lk", text: B.link }));
+    else if (/^\{\{\s*first_name\s*\}\}$/.test(p)) out.push(h("span", { class: "tok", text: "first name" }));
+    else if (p) out.push(p);
+  });
   return out;
 }
 function chips(kw) {
@@ -1051,7 +1084,7 @@ function triggerForm() {
 }
 // A live preview of what the person sees in Instagram, redrawn on every keystroke.
 var phoneUpd = null;
-function linkText(t) { return t.replace(/\{\{SKOOL_LINK\}\}/g, "yourlink.com"); }
+function linkText(t) { return t.replace(/\{\{SKOOL_LINK\}\}/g, "yourlink.com").replace(/\{\{\s*first_name\s*\}\}/g, "Maya"); }
 function drawPhone(box, d) {
   box.innerHTML = "";
   var tr = G.trigger || {};
@@ -1095,21 +1128,93 @@ function addText(d) {
   changed(true);
   setTimeout(function () { var t = panel.querySelectorAll(".pb textarea"); if (t.length) { t[t.length - 1].focus(); t[t.length - 1].scrollIntoView({ block: "center", behavior: "smooth" }); } }, 0);
 }
+
+// ---------- quick lines: casual things people actually say, one tap away ----------
+var LINES = {
+  "Openers": ["yo {{first_name}}! 👋", "heyyy thanks for commenting 🙌", "ayy you're quick 😂", "yo what's up {{first_name}}!", "omg hi! glad you caught that one", "appreciate you watching 🙏", "hey hey 👋 saw your comment"],
+  "Hand it over": ["tap below and I'll send it over 👇", "click below and it's yours in a sec", "here you go 🎁", "sending it now 📩", "you got it 🙌", "here it is 👉 {{SKOOL_LINK}}", "no catch, it's all yours"],
+  "Follow first": ["quick thing, make sure you're following so you catch the next one 🙏", "follow me real quick and I'll send it straight over", "you following? tap below once you are 👇", "legend 🙏 here it is"],
+  "Lists": ["here's all 5 👇", "1. Name (what it does)\n→ https://\n\n2. Name (what it does)\n→ https://\n\n3. Name (what it does)\n→ https://", "the full stack 👇", "save this one, you'll want it later 🔖"],
+  "Start a chat": ["what's the first thing you'd make with it?", "what are you working on right now?", "curious, how'd you find me?", "lmk once you try it, I wanna see what you make", "which part are you most excited about?"],
+  "Email": ["want the full version? shoot over your email 📩", "drop your email and I'll send the rest", "all good if not, enjoy it ✌️"],
+  "Sign-offs": ["lmk if you get stuck 🤝", "go crush it 🚀", "talk soon ✌️", "have fun with it!", "any questions, just reply here 🙂"],
+};
+var RECIPES = [
+  { em: "🔓", t: "Tap to unlock", d: "Hello + a button that sends the link", texts: [{ text: "yo {{first_name}}! 👋 tap below and I'll send it over", btn: "Send me the link 👉" }], then: [{ text: "you got it 🙌" }, { text: "here it is 👉 {{SKOOL_LINK}}" }] },
+  { em: "🤝", t: "Follow first", d: "Ask for a follow, then send it", texts: [{ text: "hey! sending you this now 🙌 just make sure you're following so you catch the next one", btn: "Following ✅" }], then: [{ text: "legend 🙏 here it is 👉 {{SKOOL_LINK}}" }] },
+  { em: "🧰", t: "The bundle", d: "A clean, numbered list of links", texts: [{ text: "here's all 5 👇" }, { text: "1. Name (what it does)\n→ {{SKOOL_LINK}}\n\n2. Name (what it does)\n→ https://\n\n3. Name (what it does)\n→ https://" }, { text: "save this one 🔖" }] },
+  { em: "💬", t: "Link + question", d: "Send it, then start a real chat", texts: [{ text: "here's the link to the kit 👉 {{SKOOL_LINK}}" }, { text: "what's the first thing you'd make with it?" }] },
+  { em: "📩", t: "Ask for email", d: "Offer more by email", texts: [{ text: "here's the free version 👉 {{SKOOL_LINK}}" }, { text: "want the full one too? shoot over your email 📩" }] },
+  { em: "🚀", t: "It's live", d: "Launch announcement", texts: [{ text: "it's officially live 🎉" }, { text: "tap below and I'll send you the link", btn: "Send it" }], then: [{ text: "here you go 👉 {{SKOOL_LINK}}" }] },
+];
+function insertAt(ta, b, str) {
+  var s0 = ta.selectionStart == null ? b.text.length : ta.selectionStart, e0 = ta.selectionEnd == null ? s0 : ta.selectionEnd;
+  var before = b.text.slice(0, s0), after = b.text.slice(e0);
+  var sep = before && !/[\s\n]$/.test(before) ? (str.indexOf("\n") >= 0 ? "\n\n" : " ") : "";
+  b.text = before + sep + str + after;
+  ta.value = b.text;
+  var p = (before + sep + str).length; ta.focus(); ta.setSelectionRange(p, p);
+  ta.dispatchEvent(new Event("input"));
+}
+function quickLines(ta, b) {
+  var cats = Object.keys(LINES), cur = cats[0];
+  var box = h("div", { class: "ql", hidden: true });
+  function draw() {
+    box.innerHTML = "";
+    add(box, [
+      h("div", { class: "ql-tabs" }, cats.concat(["Personal"]).map(function (c) { return h("button", { type: "button", class: "ql-tab" + (c === cur ? " on" : ""), onclick: function () { cur = c; draw(); } }, c); })),
+      h("div", { class: "ql-chips" }, (cur === "Personal" ? ["{{first_name}}", "{{SKOOL_LINK}}"] : LINES[cur]).map(function (line) {
+        var label = line.replace(/\{\{first_name\}\}/g, "‹first name›").replace(/\{\{SKOOL_LINK\}\}/g, "‹your link›").replace(/\n/g, " ↵ ");
+        return h("button", { type: "button", class: "ql-chip", title: "Add this line", onclick: function () { insertAt(ta, b, line); } }, [h("b", { text: "+" }), label.length > 70 ? label.slice(0, 68) + "…" : label]);
+      })),
+      h("p", { class: "ql-hint", text: cur === "Personal" ? "‹first name› becomes their first name when it's sent (or nothing, tidied, if Instagram doesn't share it)." : "Tap to drop a line in where your cursor is. Edit it to sound like you." })
+    ]);
+  }
+  draw();
+  return box;
+}
+function applyRecipe(n, r) {
+  var d = n.data;
+  var empty = d.bubbles.length === 1 && !d.bubbles[0].text.trim() && !d.bubbles[0].buttons.length;
+  if (empty) d.bubbles = [];
+  var link = null;
+  r.texts.forEach(function (t) {
+    if (d.bubbles.length >= 10) return;
+    var bub = { text: t.text, buttons: [] };
+    if (t.btn) { var id = rid("b"); bub.buttons.push({ id: id, title: t.btn, url: undefined }); link = { from: n.id, port: id }; }
+    d.bubbles.push(bub);
+  });
+  if (r.then && link) {
+    addNode("message", { x: n.x + 380, y: n.y }, link);
+    var m = node(sel);
+    m.data = { bubbles: r.then.map(function (t) { return { text: t.text, buttons: [] }; }), quick_replies: [] };
+    sel = n.id;
+  }
+  changed(true);
+}
 function messageForm(n) {
   var d = n.data, out = [];
   var phone = h("div", { class: "phone", "aria-label": "Preview in Instagram" });
   drawPhone(phone, d);
   phoneUpd = function () { drawPhone(phone, d); };
   out.push(h("div", { class: "pv-wrap" }, [phone, h("p", { class: "pv-cap", text: d.bubbles.length > 1 ? d.bubbles.length + " texts · each its own bubble, typing dots in between" : RO ? "Live preview" : "Live preview · tap + to add another text" })]));
+  if (!RO) out.push(h("div", { class: "rcp" }, [h("div", { class: "rcp-h" }, [h("b", { text: "Recipes" }), h("small", { text: "Drop in a whole sequence, then make it yours" })]),
+    h("div", { class: "rcp-row" }, RECIPES.map(function (r) { return h("button", { type: "button", class: "rcp-c", onclick: function () { applyRecipe(n, r); } }, [h("span", { class: "rcp-em", text: r.em }), h("b", { text: r.t }), h("small", { text: r.d })]); }))]));
   d.bubbles.forEach(function (b, i) {
     var cnt = h("span", { class: "cnt" });
     function count() { var max = b.buttons.length ? 640 : 1000; cnt.textContent = b.text.length + " / " + max; cnt.className = "cnt" + (b.text.length > max ? " bad" : ""); }
     count();
     var ta = inp(b.text, function (v) { b.text = v; count(); }, { rows: 4, maxlength: 1000, placeholder: "yoooo what up! tap the button below and I'll send it over" });
+    var ql = RO ? null : quickLines(ta, b);
     var g = h("div", { class: "grp" }, [
       h("div", { class: "rw" }, [lbl("Text " + (i + 1), cnt), d.bubbles.length > 1 ? xBtn(function () { d.bubbles.splice(i, 1); }, "Remove this text") : null]),
       ta,
-      RO ? null : h("button", { class: "lnk", onclick: function () { var p = ta.selectionStart || ta.value.length; b.text = b.text.slice(0, p) + "{{SKOOL_LINK}}" + b.text.slice(p); renderPanel(); changed(false); } }, "+ Insert your link")
+      RO ? null : h("div", { class: "tools" }, [
+        h("button", { type: "button", class: "lnk ql-open", onclick: function (e) { ql.hidden = !ql.hidden; e.currentTarget.classList.toggle("on", !ql.hidden); } }, "+ Quick lines"),
+        h("button", { type: "button", class: "lnk", onclick: function () { insertAt(ta, b, "{{first_name}}"); } }, "+ Their name"),
+        h("button", { type: "button", class: "lnk", onclick: function () { insertAt(ta, b, "{{SKOOL_LINK}}"); } }, "+ Your link")
+      ]),
+      ql
     ]);
     b.buttons.forEach(function (x, j) {
       g.appendChild(h("div", { class: "rw" }, [

@@ -27,6 +27,14 @@ export function flowTypingMs(text: string, rand = Math.random()): number {
 
 export { findByName };
 
+// {{first_name}} in a message: their first name, or nothing, tidied so "yo, what's up {{first_name}}!" never reads
+// "yo, what's up !" for someone whose name Instagram doesn't share.
+export function personalize(text: string, name: string | null): string {
+  const first = (name ?? "").trim().split(/\s+/)[0] ?? "";
+  const t = text.replace(/\{\{\s*first_name\s*\}\}/g, first);
+  return first ? t : t.replace(/[ ,]+([!?.])/g, "$1").replace(/ {2,}/g, " ").replace(/^[ ,]+/gm, "");
+}
+
 // Button links go through /f/<send id>/<button> on the Worker so clicks count; cron sends have no request to read it from.
 import { ORIGIN } from "./brand";
 export { ORIGIN };
@@ -212,6 +220,10 @@ export async function sendFlowMessage(
     .bind(triggerId, nodeId, part, leadId, now)
     .first<{ id: number }>();
   const sendId = row!.id;
+  if (/\{\{\s*first_name\s*\}\}/.test(b.text)) {
+    const who = await env.DB.prepare(`SELECT first_name FROM leads WHERE subscriber_id = ?1`).bind(leadId).first<{ first_name: string | null }>();
+    b = { ...b, text: personalize(b.text, who?.first_name ?? null) };
+  }
   const built = buildMessage(b, qrs, sendId, env.SKOOL_LINK);
   const fail = (e: unknown) => env.DB.prepare(`UPDATE flow_sends SET status = 'failed', error = ?2 WHERE id = ?1`).bind(sendId, String(e)).run();
   let res: { recipient_id?: string; message_id: string };
