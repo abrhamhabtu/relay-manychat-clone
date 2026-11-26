@@ -54,36 +54,38 @@ export function loginPage(error: string | null = null, req: Request | null = nul
   return new Response(
     `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Log in · Relay</title>${FAVICON}${FONTS}
 <style>
-:root{--bg:#f2efe7;--panel:#fbfaf6;--ink:#16140f;--mut:#665f53;--line:#ddd7ca;--pri:#c73a0c;--onpri:#fffaf5}
-@media (prefers-color-scheme:dark){:root{--bg:#0b0a09;--panel:#13120f;--ink:#f0ebe0;--mut:#9d968a;--line:#2b2823;--pri:#ff5a24;--onpri:#0b0a09}}
+:root{--bg:#f5f5f7;--panel:rgba(255,255,255,.72);--ink:#1d1d1f;--mut:#6e6e73;--line:#d2d2d7;--pri:#f2541b}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--panel:rgba(28,28,30,.72);--ink:#f5f5f7;--mut:#98989d;--line:#3a3a3c;--pri:#ff6b2c}}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(360px,1fr);background:var(--bg);color:var(--ink);font:14px/20px "Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-.art{position:relative;overflow:hidden;border-right:1px solid var(--line);padding:48px;display:flex;flex-direction:column;justify-content:space-between;
-  background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 48px,var(--bg)}
-.art .k{font:500 10.5px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
-.art h2{font:400 clamp(44px,6vw,92px)/.95 "Instrument Serif",Georgia,serif;letter-spacing:-.025em;margin:0;max-width:11ch}
-.art h2 em{color:var(--pri)}
-.feed{display:grid;gap:10px;max-width:380px}
-.feed div{display:flex;gap:10px;align-items:baseline;font:400 12px/18px "Geist Mono",ui-monospace,monospace;color:var(--mut);padding:10px 12px;border:1px solid var(--line);background:var(--panel);border-radius:4px;opacity:0;transform:translateY(8px);animation:in .6s cubic-bezier(.16,1,.3,1) forwards}
-.feed div:nth-child(2){animation-delay:.35s}.feed div:nth-child(3){animation-delay:.7s}
-.feed b{color:var(--ink);font-weight:500}.feed i{font-style:normal;color:var(--pri)}
+body{margin:0;min-height:100vh;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(380px,1fr);background:var(--bg);color:var(--ink);font:15px/21px -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+.art{position:relative;overflow:hidden;padding:56px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;
+  background:radial-gradient(60% 70% at 15% 20%,#ff9a52 0,transparent 60%),radial-gradient(55% 60% at 85% 30%,#ff3d7a 0,transparent 60%),radial-gradient(70% 70% at 50% 100%,#7a3cff 0,transparent 65%),#f2541b}
+.art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.18))}
+.art>*{position:relative;z-index:1}
+.art .k{font-size:13px;font-weight:600;opacity:.9}
+.art h2{font:700 clamp(40px,5.2vw,76px)/1.0 -apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;letter-spacing:-.045em;margin:0;max-width:12ch;text-shadow:0 2px 30px rgba(0,0,0,.12)}
+.art h2 em{font-style:normal;opacity:.82}
+.feed{display:grid;gap:8px;max-width:360px}
+.feed div{display:flex;gap:8px;align-items:baseline;font-size:13.5px;line-height:19px;padding:10px 14px;border-radius:16px;background:rgba(255,255,255,.18);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.35);opacity:0;transform:translateY(10px);animation:in .7s cubic-bezier(.32,.72,0,1) forwards}
+.feed div:nth-child(2){animation-delay:.4s;margin-left:24px}.feed div:nth-child(3){animation-delay:.8s}
+.feed b{font-weight:650}.feed i{font-style:normal;font-weight:650}
 @keyframes in{to{opacity:1;transform:none}}
 main{display:grid;place-items:center;padding:40px 24px}
-.box{width:min(340px,100%)}
-.logo{width:44px;height:44px;margin:0 0 28px}
-h1{font:400 44px/1 "Instrument Serif",Georgia,serif;letter-spacing:-.02em;margin:0 0 8px}p{color:var(--mut);margin:0 0 28px}
-a.btn,.pw button{display:flex;align-items:center;justify-content:center;gap:10px;height:46px;border-radius:4px;background:var(--ink);color:var(--bg);font:600 14px/1 inherit;text-decoration:none;border:0;cursor:pointer;width:100%;transition:transform .12s,box-shadow .12s}
-a.btn:hover,.pw button:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--pri)}
-.err{color:var(--pri);margin:0 0 18px}
-.pw{display:grid;gap:8px}.pw input{height:44px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink);padding:0 12px;font:inherit;width:100%}
-.pw input:focus{outline:none;border-color:var(--ink)}
-.pw input[readonly]{color:var(--mut);font-family:"Geist Mono",ui-monospace,monospace;font-size:13px}
-.or{display:flex;align-items:center;gap:14px;color:var(--mut);font:500 10.5px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.14em;margin:22px 0}.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.box{width:min(360px,100%)}
+.logo{width:64px;height:64px;margin:0 0 24px;filter:drop-shadow(0 8px 18px rgba(242,84,27,.35))}
+h1{font:700 34px/1.1 -apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;letter-spacing:-.035em;margin:0 0 8px}p{color:var(--mut);margin:0 0 28px}
+a.btn,.pw button{display:flex;align-items:center;justify-content:center;gap:10px;height:48px;border-radius:14px;background:linear-gradient(180deg,#ff8a4a,#f2541b);color:#fff;font:600 15px/1 inherit;letter-spacing:-.01em;text-decoration:none;border:0;cursor:pointer;width:100%;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 24px -10px rgba(242,84,27,.7);transition:transform .2s,filter .2s}
+a.btn:hover,.pw button:hover{filter:brightness(1.06)}a.btn:active,.pw button:active{transform:scale(.98)}
+.err{color:#ff3b30;margin:0 0 18px}
+.pw{display:grid;gap:10px}.pw input{height:48px;border:.5px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:0 16px;font:inherit;width:100%;transition:box-shadow .2s,border-color .2s}
+.pw input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px rgba(242,84,27,.18)}
+.pw input[readonly]{color:var(--mut)}
+.or{display:flex;align-items:center;gap:14px;color:var(--mut);font-size:12px;font-weight:500;margin:22px 0}.or:before,.or:after{content:"";flex:1;height:.5px;background:var(--line)}
 .hint{color:var(--mut);font-size:12px;margin:12px 0 0}
 @media (max-width:860px){body{grid-template-columns:1fr}.art{display:none}}
 @media (prefers-reduced-motion:reduce){.feed div{animation:none;opacity:1;transform:none}}
 </style></head><body><aside class="art" aria-hidden="true"><span class="k">Relay · Instagram DM automation you own</span>
-<h2>Every comment, <em>answered</em> in a second.</h2>
+<h2>Every comment, answered <em>in a second.</em></h2>
 <div class="feed"><div><b>@maya.builds</b> commented <i>GUIDE</i></div><div><b>Relay</b> sent the DM · 0.9s</div><div><b>@maya.builds</b> tapped <i>Get the guide</i></div></div></aside>
 <main><div class="box">
 <div class="logo" aria-hidden="true">${LOGO}</div>

@@ -60,11 +60,13 @@ The shell (`page()` in `src/admin.ts`, CSS in `src/theme.ts`): a sidebar with Ho
 
 - **Growth** `/admin/growth` (`src/growth.ts`, `migrations/growth.sql`): cron `followers` writes one `follower_snapshots` row per UTC day (refreshed every 3h); cron `follow checks` reads `is_user_follow_business` for people an automation reached in the last 21 days (25 per run; first check sets `follow_first`, a later 0→1 sets `follows_at`). Account and post insights need the `instagram_business_manage_insights` scope (in `SCOPES`; installs connected before it must reconnect) and are cached 3h in setting `growth_cache`. The preview seeds a sample cache.
 - **Setup guide** `/admin/setup` (`src/setup_guide.ts`): twelve parts, values built from the request's origin, six live checks (`setupStatus`) shared with Home's setup card and the sidebar badge. Keep it in step with `metaSteps` in `scripts/setup.mjs` and `docs/GETTING-STARTED.md`.
+- **Demo mode** (`src/demo.ts`, sample data in `src/demo_seed.js`, shared with `scripts/preview-seed.mjs` and setup): cookie `relay_demo`; console requests swap `env.DB` for the `DEMO_DB` binding (`REAL_DB` keeps the real one for setup checks), drop queue sends and live updates. Webhooks and the cron never read it. Setup creates and fills `<name>-demo`; if Cloudflare refuses, `build()` leaves the binding out so deploys aren't blocked. Docs: `docs/DEMO-MODE.md`.
+- **Messages**: up to 10 texts per message step; after the first, each is typed out (dots) inside the walk's time budget. The editor's panel draws a live phone preview (`drawPhone` in `src/flow_editor.ts`).
 - **⌘K palette**: `relayPalette()` and `RELAY_CMDS` in the `HEAD` script of `src/theme.ts`.
 
 ## Look
 
-Relay's look is the "Relay layer" at the end of the stylesheet in `src/theme.ts`: paper/ink tokens (`LIGHT`/`DARK`), one signal color `--pri` (with `--onpri` for text on it), Instrument Serif for headings and big figures, Geist Mono for labels and numbers, 4px corners, hairlines, no soft shadows. Add new styles there or reuse the tokens; never hard-code a hex in a page. `npm run preview` shows every page with sample data.
+Relay's look is the stylesheet in `src/theme.ts`, ending in the "Material layer" (which wins): Apple-style tokens (`LIGHT`/`DARK`), one accent `--pri` with `--grad` for primary buttons, San Francisco / Inter, frosted materials (`--glass`), soft shadows `--sh1`/`--sh2`, 14–20px corners, capsule buttons, iOS segmented controls. The editor's polish is at the end of `EDITOR_CSS`. Reuse the tokens; never hard-code a hex in a page. `npm run preview` shows every page with sample data.
 
 ## Autonomy
 

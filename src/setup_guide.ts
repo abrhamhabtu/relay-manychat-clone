@@ -17,6 +17,7 @@ export interface SetupCheck {
 const placeholder = (v: string | undefined) => !v || /REPLACE/.test(v);
 
 export async function setupStatus(env: Env): Promise<SetupCheck[]> {
+  env = env.REAL_DB ? { ...env, DB: env.REAL_DB } : env; // demo mode: setup is about the real install
   const [webhookAt, token, msg, auto] = await Promise.all([
     db.getSetting(env.DB, "webhook_at").catch(() => null),
     db.getSetting(env.DB, "ig_token").catch(() => null),

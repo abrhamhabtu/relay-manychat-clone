@@ -1,3 +1,4 @@
+import { demoAvailable, demoEnv, demoResetRoute, demoToggle, demoWanted, ensureDemoData } from "./demo";
 import { checkFollows, snapshotFollowers } from "./growth";
 import { IG_HANDLE } from "./brand";
 import { clearCookie, isPhone, loginPage, ownerId, sessionCookie } from "./session";
@@ -235,9 +236,15 @@ async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Res
         return new Response("login required", { status: 401, headers: { "WWW-Authenticate": 'Basic realm="relay"' } });
       }
       if (pathname === "/admin/password") return Response.redirect(`${new URL(req.url).origin}/admin/dashboard`, 302);
-      if (pathname.startsWith("/admin/media/")) return mediaRoute(env.DB, req, pathname, who === "review");
-      if (pathname === "/admin/live/ws") return env.LIVE ? env.LIVE.get(env.LIVE.idFromName("inbox")).fetch(req) : new Response("live updates off", { status: 501 });
-      const e = await withSettings(env);
+      if (pathname === "/admin/demo" && req.method === "GET") return demoToggle(req, env);
+      // Demo mode: the console runs on the sample database (src/demo.ts). Webhooks and the cron never do.
+      const demo = demoAvailable(env) && demoWanted(req, env);
+      const base = demo ? demoEnv(env) : env;
+      if (demo) await ensureDemoData(base, Date.now()).catch((err) => console.error("demo data", err));
+      if (pathname.startsWith("/admin/media/")) return mediaRoute(base.DB, req, pathname, who === "review");
+      if (pathname === "/admin/live/ws") return base.LIVE ? base.LIVE.get(base.LIVE.idFromName("inbox")).fetch(req) : new Response("live updates off", { status: 501 });
+      const e = await withSettings(base);
+      if (pathname === "/admin/demo/reset" && req.method === "POST") return demoResetRoute(req, e);
       if (pathname.startsWith("/admin/flows")) return req.method === "POST" ? flowsAdminPost(e, req, pathname, who) : flowsPage(e, req, pathname, who);
       if (pathname.startsWith("/admin/automations/") && req.method === "POST") return flowsAdminPost(e, req, pathname, who);
       const own = await consoleRoute(e, req, pathname, who);

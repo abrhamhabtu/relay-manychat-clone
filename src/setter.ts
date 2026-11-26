@@ -35,6 +35,10 @@ export interface Env {
   ALERT_TOPIC?: string; // ntfy.sh topic for phone alerts (src/health.ts) // The owner's Skool auth_token cookie (one-year JWT): reads new members for join matching
   TYPING?: string; // "true": autopilot sends show seen + typing and pause per bubble
   SEND_QUEUE?: Queue<SendJob>; // autopilot sends run as queue jobs (typing pauses outlast a webhook's waitUntil)
+  DEMO_DB?: D1Database; // demo mode's own database of sample data (src/demo.ts)
+  REAL_DB?: D1Database; // in demo mode: the real database, for the few things that always read it (setup checks)
+  DEMO_ON?: string; // "1" while a console request runs in demo mode
+  DEMO_DEFAULT?: string; // "on": start in demo when no choice was made (the local preview)
   LIVE?: DurableObjectNamespace; // real-time Inbox: open tabs' WebSockets (src/live.ts)
 }
 

@@ -25,6 +25,10 @@ export async function profilePage(env: Env, who: Role): Promise<Response> {
 
 const HELP: [q: string, a: string][] = [
   [
+    "What is demo mode?",
+    "A full copy of the console filled with made-up people, automations and numbers, so you (or anyone you show) can try every page without an Instagram account. Flip Live / Demo at the top right. Demo data lives in its own database: your real contacts are never touched, and nothing in demo can send anything to Instagram. Refresh sample data in the demo banner makes the dates recent again. If the switch is greyed out, run npm run setup once: it builds the demo database.",
+  ],
+  [
     "Why didn't a DM send?",
     "Instagram only lets automations message someone within 24 hours of their last message, comment or button tap. After that the window is closed until they write again. You can still reply by hand from the Instagram app, which has no limit.",
   ],
@@ -50,5 +54,5 @@ const HELP: [q: string, a: string][] = [
 ];
 
 export async function helpPage(env: Env, who: Role): Promise<Response> {
-  return page("Help", `<div class="card">${HELP.map(([q, a]) => `<div class="qa"><h3>${q}</h3><p>${a}</p></div>`).join("")}</div>`, who, env);
+  return page("Help", `<div class="card">${HELP.map(([q, a]) => `<div class="qa"${q.startsWith("What is demo mode") ? ' id="demo"' : ""}><h3>${q}</h3><p>${a}</p></div>`).join("")}</div>`, who, env);
 }

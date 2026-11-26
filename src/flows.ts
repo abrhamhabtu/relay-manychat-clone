@@ -338,8 +338,9 @@ async function step(run: Run, n: Node): Promise<string | null> {
       if (!inWindow(await db.getLead(d, run.lead), run.now)) return null;
       for (const [i, b] of bubbles.entries()) {
         const ms = flowTypingMs(b.text);
-        // Out of time for this walk: the rest still goes out, just without the dots.
-        if (run.typing && run.slept + ms <= WALK_SLEEP_MS) {
+        // Every text after the first is typed out (dots, then the text), like a person sending a few in a row. Out of
+        // time for this walk: the rest still goes out, just without the dots.
+        if ((run.typing || i > 0) && run.slept + ms <= WALK_SLEEP_MS) {
           await senderAction(run.token, run.lead, "typing_on").catch(() => {});
           await pace.sleep(ms);
           run.now += ms;

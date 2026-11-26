@@ -262,7 +262,7 @@ export async function growthPage(env: Env, req: Request, who: Role, now: number)
 
   const notice = !connected
     ? data
-      ? `<div class="banner">${icon("info", 16)}<span><b>Sample data.</b> This is the local preview. On your live console these numbers come straight from Instagram.</span></div>`
+      ? `<div class="banner">${icon("info", 16)}<span><b>${env.DEMO_ON === "1" ? "Demo mode." : "Sample data."}</b> These are invented numbers. With demo off, this page shows your own, straight from Instagram.</span></div>`
       : `<div class="banner">${icon("info", 16)}<span><b>Connect Instagram to see your growth.</b> <a href="/admin/setup">Open the Setup guide</a>.</span></div>`
     : data?.error
       ? `<div class="banner warn">${icon("info", 16)}<span><b>Instagram didn't share insights.</b> Relay now asks for the insights permission: <a href="/auth/start">reconnect Instagram</a> and approve it. Followers and DM numbers below still work.<small>${esc(data.error)}</small></span></div>`

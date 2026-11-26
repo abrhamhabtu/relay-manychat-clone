@@ -5,7 +5,9 @@
   "compatibility_flags": ["nodejs_compat"],
   "d1_databases": [
     // Your database: `npm run setup` creates it and fills in the id.
-    { "binding": "DB", "database_name": "relay", "database_id": "REPLACE_D1_DATABASE_ID" }
+    { "binding": "DB", "database_name": "relay", "database_id": "REPLACE_D1_DATABASE_ID" },
+    // Demo mode's own database of made-up sample data, so the Live / Demo switch never touches your real contacts.
+    { "binding": "DEMO_DB", "database_name": "relay-demo", "database_id": "REPLACE_DEMO_D1_DATABASE_ID" }
   ],
   // Workers AI: Deepgram/Whisper transcribe voice notes (src/media.ts).
   "ai": { "binding": "AI" },

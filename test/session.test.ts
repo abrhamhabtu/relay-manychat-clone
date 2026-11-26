@@ -142,7 +142,7 @@ describe("favicon", () => {
     const env = makeEnv();
     const login = await (await worker.fetch(new Request("https://x/login"), env, ctx)).text();
     expect(login).toContain('<link rel="icon" href="data:image/svg+xml,');
-    expect(login).toContain(encodeURIComponent("#ff5a24"));
+    expect(login).toContain(encodeURIComponent("#ef4511"));
     const ico = await worker.fetch(new Request("https://x/favicon.ico"), env, ctx);
     expect(ico.headers.get("Content-Type")).toBe("image/svg+xml");
     expect(await ico.text()).toContain('xmlns="http://www.w3.org/2000/svg"');

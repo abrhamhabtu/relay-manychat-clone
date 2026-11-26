@@ -7,6 +7,9 @@ you'll see when it worked. Plan on about **an hour** the first time; most of it 
 > a flow builder, an inbox and your numbers, all on your own account. If you already pay for ManyChat, see
 > [Moving from ManyChat](#moving-from-manychat) at the end.
 
+> **Just want to look around first?** Run `npm run preview` after Part 2 and you get the whole console with sample data,
+> no Instagram needed. See [DEMO-MODE.md](DEMO-MODE.md).
+>
 > **Tip:** once Relay is live (Part 3), open **Setup guide** at the bottom of the console's sidebar. It has these
 > same steps with your own addresses already filled in, Copy buttons for every value, and checks that turn green on
 > their own as each piece starts working.

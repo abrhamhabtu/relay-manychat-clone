@@ -132,6 +132,7 @@ const BLANK = {
   worker_name: "relay",
   cloudflare_account_id: "",
   database_id: "",
+  demo_database_id: "",
   instagram_app_id: "",
   url: "",
 };
@@ -148,6 +149,7 @@ function adopt() {
   c.worker_name = fromW("name") || c.worker_name;
   c.cloudflare_account_id = fromW("account_id");
   c.database_id = fromW("database_id");
+  c.demo_database_id = real(w.match(/"binding":\s*"DEMO_DB"[^}]*"database_id":\s*"([^"]*)"/)?.[1]);
   c.instagram_app_id = fromW("META_IG_APP_ID");
   c.link = fromW("SKOOL_LINK");
   c.url = fromB("ORIGIN");
@@ -214,8 +216,13 @@ function build(c) {
   w = w
     .replace('"name": "relay"', `"name": ${ts(name)}${c.cloudflare_account_id ? `,\n  "account_id": ${ts(c.cloudflare_account_id)}` : ""}`)
     .replace('"database_name": "relay"', `"database_name": ${ts(name)}`)
+    .replace('"database_name": "relay-demo"', `"database_name": ${ts(`${name}-demo`)}`)
     .replaceAll('"queue": "relay-send"', `"queue": ${ts(`${name}-send`)}`);
   if (c.database_id) w = w.replace("REPLACE_D1_DATABASE_ID", c.database_id);
+  if (c.demo_database_id) w = w.replace("REPLACE_DEMO_D1_DATABASE_ID", c.demo_database_id);
+  // No demo database on a live install (Cloudflare refused it): leave the binding out so nothing is blocked. A fresh
+  // folder keeps the placeholder, which the local preview runs on.
+  else if (c.demo_disabled || c.url) w = w.replace(/,\s*\/\/ Demo mode's own database[^\n]*\n\s*\{ "binding": "DEMO_DB"[^}]*\}/, "");
   if (c.instagram_app_id) w = w.replace("REPLACE_INSTAGRAM_APP_ID", c.instagram_app_id);
   if (c.link) w = w.replace("https://REPLACE_YOUR_LINK", c.link);
   writeIfChanged(at("wrangler.jsonc"), `// BUILT by \`npm run setup\` from templates/wrangler.jsonc and relay.config.json. Edit those, not this file.\n${w}`);
@@ -360,8 +367,8 @@ function ensureQueue(c) {
 }
 
 // One SQL statement against the database, as rows. Never printed.
-function sql(c, query) {
-  const r = wrangler(["d1", "execute", c.worker_name, LOCAL ? "--local" : "--remote", "--json", "--command", query]);
+function sql(c, query, dbName = c.worker_name) {
+  const r = wrangler(["d1", "execute", dbName, LOCAL ? "--local" : "--remote", "--json", "--command", query]);
   if (!r.ok) return { ok: false, rows: [], out: r.out };
   try {
     const parsed = JSON.parse(r.out.slice(r.out.indexOf("[")));
@@ -370,8 +377,8 @@ function sql(c, query) {
     return { ok: false, rows: [], out: r.out };
   }
 }
-function runSqlFile(c, file) {
-  return wrangler(["d1", "execute", c.worker_name, LOCAL ? "--local" : "--remote", "--file", file, "-y"], { timeout: 600_000 });
+function runSqlFile(c, file, dbName = c.worker_name) {
+  return wrangler(["d1", "execute", dbName, LOCAL ? "--local" : "--remote", "--file", file, "-y"], { timeout: 600_000 });
 }
 const migrationFiles = () => readdirSync(at("migrations")).filter((f) => f.endsWith(".sql")).sort();
 // Several SQL files as one upload. Cloudflare refuses an empty statement, so they are joined with nothing in between
@@ -380,8 +387,8 @@ const joined = (...texts) => texts.map((t) => t.trim()).filter(Boolean).join("\n
 const record = (names) => `CREATE TABLE IF NOT EXISTS ${TRACK} (name TEXT PRIMARY KEY, applied_at INTEGER NOT NULL);\n` + names.map((n) => `INSERT OR IGNORE INTO ${TRACK} (name, applied_at) VALUES ('${n}', ${Date.now()});`).join("\n") + "\n";
 
 // Brings the database up to this folder's version: everything on a new one, only what's new on an existing one.
-function migrate(c) {
-  const seen = sql(c, `SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('leads', '${TRACK}')`);
+function migrate(c, dbName = c.worker_name, label = "database") {
+  const seen = sql(c, `SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('leads', '${TRACK}')`, dbName);
   if (!seen.ok) throw fail(["Couldn't read the database:", `      ${reason(seen.out)}`]);
   const has = new Set(seen.rows.map((r) => r.name));
   const all = migrationFiles();
@@ -391,35 +398,78 @@ function migrate(c) {
   if (!has.has("leads")) {
     // New database: the base tables, every change since, and the list of what's in, as one upload.
     writeFileSync(scratch, joined(readFileSync(at("schema.sql"), "utf8"), ...all.map((f) => readFileSync(at("migrations", f), "utf8")), record(all)));
-    const r = runSqlFile(c, scratch);
+    const r = runSqlFile(c, scratch, dbName);
     if (!r.ok) throw fail(["Building the database tables failed:", `      ${reason(r.out)}`, "Run `npm run setup` again. If it keeps failing, the details are in .wrangler/setup.log."]);
-    return ok(`Built the database tables (${all.length + 1} files)`);
+    return ok(`Built the ${label} tables (${all.length + 1} files)`);
   }
 
   let applied;
   if (has.has(TRACK)) {
-    applied = new Set(sql(c, `SELECT name FROM ${TRACK}`).rows.map((r) => r.name));
+    applied = new Set(sql(c, `SELECT name FROM ${TRACK}`, dbName).rows.map((r) => r.name));
   } else {
     // A database from before this installer kept track. Try each change: one that is already in says so ("duplicate
     // column", "already exists") and is ticked off; anything else is a real error.
     applied = new Set();
     for (const f of all) {
-      const r = runSqlFile(c, at("migrations", f));
+      const r = runSqlFile(c, at("migrations", f), dbName);
       if (!r.ok && !/duplicate column name|already exists/i.test(r.out)) throw fail([`Database change ${f} failed:`, `      ${reason(r.out)}`]);
       applied.add(f);
     }
     writeFileSync(scratch, record(all));
-    runSqlFile(c, scratch);
+    runSqlFile(c, scratch, dbName);
     return ok("Database was set up before this installer: checked every change and noted them");
   }
   const fresh = all.filter((f) => !applied.has(f));
-  if (!fresh.length) return ok("Database is up to date");
+  if (!fresh.length) return ok(`${label[0].toUpperCase() + label.slice(1)} is up to date`);
   for (const f of fresh) {
     writeFileSync(scratch, joined(readFileSync(at("migrations", f), "utf8"), record([f])));
-    const r = runSqlFile(c, scratch);
+    const r = runSqlFile(c, scratch, dbName);
     if (!r.ok) throw fail([`Database change ${f} failed:`, `      ${reason(r.out)}`, "Nothing was deployed. The details are in .wrangler/setup.log."]);
   }
-  ok(`Applied ${fresh.length} new database change${fresh.length === 1 ? "" : "s"}`);
+  ok(`Applied ${fresh.length} new ${label} change${fresh.length === 1 ? "" : "s"}`);
+}
+
+// Demo mode's database: made like the real one, then filled with invented sample data (src/demo_seed.js) once. The
+// console refreshes it from then on ("Refresh sample data" in the demo banner).
+function ensureDemoDatabase(c) {
+  const name = `${c.worker_name}-demo`;
+  if (LOCAL) {
+    c.demo_database_id ||= "00000000-0000-0000-0000-000000000001";
+  } else {
+    const mine = d1List().find((d) => d.name === name);
+    if (mine) c.demo_database_id = mine.uuid;
+    else {
+      const made = wrangler(["d1", "create", name]);
+      const created = made.ok ? d1List().find((d) => d.name === name) : null;
+      if (!created) {
+        warn(`Couldn't create the demo database "${name}" (${reason(made.out)}). Everything else works; the Live / Demo switch stays off until \`npm run setup\` makes it.`);
+        c.demo_disabled = true;
+        saveConfig(c);
+        build(c);
+        return false;
+      }
+      c.demo_database_id = created.uuid;
+      delete c.demo_disabled;
+      ok(`Created the demo database "${name}"`);
+    }
+  }
+  saveConfig(c);
+  build(c);
+  migrate(c, name, "demo database");
+  const has = sql(c, "SELECT COUNT(*) AS n FROM leads", name);
+  if (has.ok && Number(has.rows[0]?.n ?? 0) === 0) {
+    const r = spawnSync(process.execPath, [at("scripts", "preview-seed.mjs")], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    const seedFile = at(".wrangler", "demo-seed.sql");
+    if (r.status !== 0 || !r.stdout.trim()) {
+      warn(`Couldn't make the sample data (${(r.stderr || "no output").trim().split("\n")[0]}). It fills itself the first time you switch to Demo in the console.`);
+      return true;
+    }
+    writeFileSync(seedFile, r.stdout);
+    const done = runSqlFile(c, seedFile, name);
+    if (done.ok) ok("Filled the demo with sample data");
+    else warn("Couldn't fill the demo yet. It fills itself the first time you switch to Demo in the console.");
+  }
+  return true;
 }
 
 function pushSecrets(c) {
@@ -636,7 +686,7 @@ async function connectInstagram(c) {
 
 async function setup() {
   say();
-  say(bold("📫 Relay setup"));
+  say(bold("◆ Relay setup"));
   say(dim("   Sets everything up on your own Cloudflare account. Safe to stop and run again: it continues where it left off."));
 
   step("Getting this folder ready");
@@ -653,6 +703,7 @@ async function setup() {
     saveConfig(c);
     build(c);
     migrate(c);
+    ensureDemoDatabase(c);
     return;
   }
 
@@ -673,6 +724,7 @@ async function setup() {
   build(c);
   ensureQueue(c);
   migrate(c);
+  ensureDemoDatabase(c);
 
   step("Passwords and keys", "Made on this computer, saved in .env, and stored encrypted in your Worker.");
   const env = readEnv();
@@ -730,7 +782,7 @@ async function setup() {
 
 async function check() {
   say();
-  say(bold("📫 Relay check"));
+  say(bold("◆ Relay check"));
   const c = readConfig();
   build(c);
   let problems = 0;
@@ -817,12 +869,13 @@ function done(problems) {
 
 async function update() {
   say();
-  say(bold("📫 Relay update"));
+  say(bold("◆ Relay update"));
   const c = readConfig();
   build(c);
   if (!c.url || !c.database_id || placeholders().length) throw fail("Relay isn't set up yet in this folder. Run `npm run setup`.");
   step("Database");
   migrate(c);
+  ensureDemoDatabase(c);
   step("Putting the new version live");
   await deploy(c, "update");
   ok(`Live at ${c.url}`);

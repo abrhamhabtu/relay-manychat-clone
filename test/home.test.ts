@@ -168,6 +168,7 @@ describe("the shell and its other pages", () => {
       "Accounts /admin/accounts",
       "Settings /admin/settings",
       "Setup guide /admin/setup",
+      "Demo mode /admin/help#demo",
       "My Profile /admin/profile",
     ]);
     // The last thing in the sidebar is the light / dark toggle; Help is reached from My Profile.

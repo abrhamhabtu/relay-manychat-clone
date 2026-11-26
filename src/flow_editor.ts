@@ -164,7 +164,72 @@ dialog.fe-dlg::backdrop{background:rgba(0,0,0,.45)}
   .fe-zoom{right:12px}.fe-help{right:12px;bottom:20px}
   .fe-pn{top:auto;left:0;width:auto;height:62%;border-left:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.15)}
   .fe-add{top:auto;bottom:20px;right:62px}
-}`;
+}
+/* ---------- Relay material polish ---------- */
+.fe-top{background:var(--glass);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border-bottom:.5px solid var(--line);height:60px}
+.fe-pick button,.fe-menu>div button,.fe-zoom button,.fe-help,.fe-pn .x,.fe-pn .lnk,.fe-ban button,.fe-dlg .x,.fe-dlg .dtabs button,.fe-km .tile,.fe-edit,.fe-test .x,.fe-pn .foot .dz,.fe-kmh,.addtext,.ro-hint .lnk{box-shadow:none!important;filter:none!important;transform:none!important}
+.fe-edit{border-radius:980px;border:0;background:color-mix(in srgb,var(--ink) 7%,transparent);height:34px;padding:0 14px}
+.fe-edit:hover{background:color-mix(in srgb,var(--ink) 11%,transparent)}
+.fe-st{border-radius:6px}.fe-st.live{background:var(--grad)}
+.fe-vp{background-color:var(--canvas);background-image:radial-gradient(circle,color-mix(in srgb,var(--ink) 10%,transparent) 1px,transparent 1.2px);background-size:22px 22px}
+.nd{border:0;border-radius:20px;box-shadow:var(--sh1);transition:box-shadow .25s var(--ease2)}
+.nd:hover{box-shadow:var(--sh2)}
+.nd.sel{box-shadow:0 0 0 2px var(--pri),var(--sh2)}
+.nd .hd{border-radius:20px 20px 0 0}
+.nd .stats div{background:none;-webkit-background-clip:initial}
+.fe-km{border-right:.5px solid var(--line);box-shadow:var(--sh2)}
+.fe-km .tile{border:0;border-radius:14px;background:var(--soft)}
+.fe-km .tile:hover{background:var(--sel)}
+.fe-ban{border:0;border-radius:0 0 14px 14px;box-shadow:var(--sh1);background:color-mix(in srgb,var(--panel) 88%,transparent);backdrop-filter:blur(20px)}
+.fe-zoom button,.fe-help{border:0;border-radius:12px;background:var(--panel);box-shadow:var(--sh1)!important}
+.fe-add{background:var(--grad);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 20px -6px rgba(242,84,27,.6)}
+.fe-pick,.fe-menu>div{border:0;border-radius:16px;box-shadow:var(--sh2);background:color-mix(in srgb,var(--elev) 88%,transparent);backdrop-filter:saturate(180%) blur(30px);-webkit-backdrop-filter:saturate(180%) blur(30px)}
+.fe-pn{border-left:.5px solid var(--line);box-shadow:-20px 0 60px -30px rgba(0,0,0,.35);background:color-mix(in srgb,var(--canvas) 92%,transparent);backdrop-filter:saturate(180%) blur(30px);-webkit-backdrop-filter:saturate(180%) blur(30px)}
+.fe-pn .ph{border-bottom:.5px solid var(--line);font-size:16px;font-weight:650;letter-spacing:-.015em}
+.fe-pn .grp{border:0;border-radius:16px;background:var(--panel);box-shadow:var(--sh1);padding:14px}
+.fe-pn .lnk{border-radius:980px;background:color-mix(in srgb,var(--pri) 10%,transparent);color:var(--pri);font-weight:600}
+.fe-pn .lnk:hover{background:color-mix(in srgb,var(--pri) 16%,transparent)}
+.fe-pn label{font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--mut)}
+.fe-pn .hint.note{background:color-mix(in srgb,var(--pri) 9%,transparent);color:var(--ink);border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:12.5px;line-height:17px}
+.fe-pn .foot{border-top:.5px solid var(--line)}
+dialog.fe-dlg,.fe-test .card{border-radius:20px;box-shadow:var(--sh2)}
+.addtext{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin:0 0 12px;padding:14px 16px;border-radius:16px;border:1.5px dashed color-mix(in srgb,var(--pri) 45%,var(--line));background:color-mix(in srgb,var(--pri) 5%,transparent);color:var(--pri);text-align:left;font-weight:600}
+.addtext:hover{background:color-mix(in srgb,var(--pri) 10%,transparent);border-color:var(--pri)}
+.addtext b{font-size:14px}.addtext small{color:var(--mut);font-weight:400;font-size:12px}
+.addtext:disabled{opacity:.6}
+.ro-hint{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-top:.5px solid var(--line);font-size:13px;color:var(--mut)}
+.ro-hint .lnk{margin:0;border-radius:980px;padding:7px 12px;background:var(--grad);color:#fff;font-weight:600;font-size:12.5px}
+/* live phone preview: what the person sees in Instagram */
+.pv-wrap{display:flex;flex-direction:column;align-items:center;margin:0 0 16px}
+.pv-cap{margin:10px 0 0;color:var(--mut);font-size:12px;text-align:center}
+.phone{width:100%;max-width:292px;padding:9px;border-radius:38px;background:linear-gradient(150deg,#3a3a3f,#0d0d10 60%,#26262b);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 1px 0 rgba(255,255,255,.04),0 24px 50px -20px rgba(0,0,0,.55)}
+.phone>*{background:var(--bg)}
+.ph-top{display:flex;align-items:center;gap:10px;padding:26px 14px 10px;border-radius:30px 30px 0 0;border-bottom:.5px solid var(--line);position:relative}
+.ph-top:before{content:"";position:absolute;top:8px;left:50%;width:74px;height:20px;margin-left:-37px;border-radius:999px;background:#0d0d10}
+.ph-av{width:28px;height:28px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px #f2541b}
+.ph-top b{display:block;font-size:13px;line-height:15px}.ph-top small{display:block;color:var(--mut);font-size:10.5px;line-height:13px}
+.ph-chat{display:flex;flex-direction:column;gap:5px;padding:12px 10px;min-height:220px;max-height:360px;overflow-y:auto;font-size:13px;line-height:17px}
+.ph-ctx{align-self:center;display:flex;align-items:center;gap:5px;color:var(--mut);font-size:11px;padding:2px 0 6px}
+.ph-ctx span{display:grid}.ph-ctx svg{width:12px;height:12px}
+.ph-in{align-self:flex-end;max-width:78%;padding:7px 12px;border-radius:18px;background:linear-gradient(160deg,#a43bff,#5b52ff 55%,#2f7bff);color:#fff;white-space:pre-wrap}
+.ph-out{align-self:flex-start;max-width:84%;display:flex;flex-direction:column;gap:4px;animation:ph-pop .35s cubic-bezier(.32,.72,0,1)}
+.ph-b{padding:7px 12px;border-radius:18px;background:var(--soft);color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.ph-b.card{border-radius:18px 18px 6px 18px}
+.ph-btns{display:flex;flex-direction:column;gap:3px}
+.ph-btns span{display:block;padding:7px 12px;border-radius:12px;background:var(--soft);color:#2f7bff;font-weight:600;text-align:center;min-width:150px}
+.ph-typing{align-self:flex-start;display:flex;gap:3px;padding:9px 12px;border-radius:18px;background:var(--soft)}
+.ph-typing i{width:6px;height:6px;border-radius:50%;background:var(--mut);animation:ph-dot 1.2s infinite}
+.ph-typing i:nth-child(2){animation-delay:.15s}.ph-typing i:nth-child(3){animation-delay:.3s}
+.ph-gate{align-self:stretch;text-align:center;color:var(--mut);font-size:10.5px;line-height:14px;padding:6px 8px;margin:4px 0;border-radius:10px;background:color-mix(in srgb,var(--pri) 8%,transparent)}
+.ph-qr{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:6px}
+.ph-qr span{padding:5px 11px;border-radius:999px;border:1px solid #2f7bff;color:#2f7bff;font-weight:600;font-size:12px}
+.ph-empty{align-self:center;color:var(--mut);font-size:12px;padding:30px 0}
+.ph-bar{padding:8px 10px 18px;border-radius:0 0 30px 30px}
+.ph-bar span{display:block;padding:7px 12px;border-radius:999px;border:.5px solid var(--track);color:var(--mut);font-size:12px}
+@keyframes ph-pop{from{opacity:0;transform:translateY(4px) scale(.97)}}
+@keyframes ph-dot{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-2px)}}
+@media (prefers-reduced-motion:reduce){.ph-out,.ph-typing i{animation:none}}
+`;
 
 export const EDITOR_JS = String.raw`(function () {
 "use strict";
@@ -960,8 +1025,36 @@ function triggerForm() {
   if (t.source === "none") out.push(h("p", { class: "hint", text: "Starts only from a quick reply, Conversation Starter, Main Menu item or another automation's Start action." }));
   return out;
 }
+// A live preview of what the person sees in Instagram, redrawn on every keystroke.
+var phoneUpd = null;
+function linkText(t) { return t.replace(/\{\{SKOOL_LINK\}\}/g, "yourlink.com"); }
+function drawPhone(box, d) {
+  box.innerHTML = "";
+  var isComment = G.trigger && G.trigger.source === "comment";
+  var bubbles = d.bubbles.filter(function (b) { return b.text.trim() || b.buttons.length; });
+  var chat = h("div", { class: "ph-chat" });
+  if (isComment) chat.appendChild(h("div", { class: "ph-ctx" }, [h("span", { icon: "chat" }), "They commented " + ((G.trigger.keyword && G.trigger.keyword !== "*") ? "“" + G.trigger.keyword.split(/[ ,]+/)[0].toUpperCase() + "”" : "on your post")]));
+  else chat.appendChild(h("div", { class: "ph-in" }, G.trigger && G.trigger.source === "story" ? "Replied to your story" : (G.trigger && G.trigger.keyword && G.trigger.keyword !== "*" ? G.trigger.keyword.split(/[ ,]+/)[0] : "hey!")));
+  if (!bubbles.length) chat.appendChild(h("div", { class: "ph-empty", text: "Start typing: your message appears here." }));
+  bubbles.forEach(function (b, i) {
+    if (i > 0) {
+      if (isComment && i === 1) chat.appendChild(h("div", { class: "ph-gate", text: "Sent after they tap a button or reply · Instagram allows one reply per comment" }));
+      chat.appendChild(h("div", { class: "ph-typing" }, [h("i"), h("i"), h("i")]));
+    }
+    var col = h("div", { class: "ph-out" }, [h("div", { class: "ph-b" + (b.buttons.length ? " card" : ""), text: linkText(b.text) || " " })]);
+    if (b.buttons.length) col.appendChild(h("div", { class: "ph-btns" }, b.buttons.map(function (x) { return h("span", { text: x.title || "Button" }); })));
+    chat.appendChild(col);
+  });
+  if (d.quick_replies.length && bubbles.length) chat.appendChild(h("div", { class: "ph-qr" }, d.quick_replies.map(function (q) { return h("span", { text: q.title || "Reply" }); })));
+  add(box, [h("div", { class: "ph-top" }, [h("span", { class: "ph-av" }), h("div", null, [h("b", { text: "Your page" }), h("small", { text: "Instagram · what they see" })])]), chat,
+    h("div", { class: "ph-bar" }, [h("span", { text: "Message…" })])]);
+}
 function messageForm(n) {
   var d = n.data, out = [];
+  var phone = h("div", { class: "phone", "aria-label": "Preview in Instagram" });
+  drawPhone(phone, d);
+  phoneUpd = function () { drawPhone(phone, d); };
+  out.push(h("div", { class: "pv-wrap" }, [phone, h("p", { class: "pv-cap", text: d.bubbles.length > 1 ? d.bubbles.length + " texts, each its own bubble, with typing dots in between" : "Live preview · add more texts below" })]));
   d.bubbles.forEach(function (b, i) {
     var cnt = h("span", { class: "cnt" });
     function count() { var max = b.buttons.length ? 640 : 1000; cnt.textContent = b.text.length + " / " + max; cnt.className = "cnt" + (b.text.length > max ? " bad" : ""); }
@@ -970,7 +1063,7 @@ function messageForm(n) {
     var g = h("div", { class: "grp" }, [
       h("div", { class: "rw" }, [lbl("Text " + (i + 1), cnt), d.bubbles.length > 1 ? xBtn(function () { d.bubbles.splice(i, 1); }, "Remove this text") : null]),
       ta,
-      RO ? null : h("button", { class: "lnk", onclick: function () { var p = ta.selectionStart || ta.value.length; b.text = b.text.slice(0, p) + "{{SKOOL_LINK}}" + b.text.slice(p); renderPanel(); changed(false); } }, "+ Skool link")
+      RO ? null : h("button", { class: "lnk", onclick: function () { var p = ta.selectionStart || ta.value.length; b.text = b.text.slice(0, p) + "{{SKOOL_LINK}}" + b.text.slice(p); renderPanel(); changed(false); } }, "+ Insert your link")
     ]);
     b.buttons.forEach(function (x, j) {
       g.appendChild(h("div", { class: "rw" }, [
@@ -983,7 +1076,9 @@ function messageForm(n) {
     add(g, more("+ Add button", function () { b.buttons.push({ id: rid("b"), title: "", url: undefined }); }, b.buttons.length >= 3));
     out.push(g);
   });
-  out.push(more("+ Add text", function () { d.bubbles.push({ text: "", buttons: [] }); }, d.bubbles.length >= 10));
+  if (!RO) out.push(h("button", { class: "addtext", disabled: d.bubbles.length >= 10, onclick: function () { d.bubbles.push({ text: "", buttons: [] }); changed(true); setTimeout(function () { var t = panel.querySelectorAll(".pb textarea"); if (t.length) t[t.length - 1].focus(); }, 0); } },
+    [h("b", { text: "+ Add another text" }), h("small", { text: d.bubbles.length >= 10 ? "10 texts is the most one step can send" : "Sent as its own bubble, a moment after the one before (" + d.bubbles.length + " of 10)" })]));
+  if (G.trigger && G.trigger.source === "comment" && d.bubbles.length > 1) out.push(h("p", { class: "hint note", text: "Comment automations: Instagram lets you send one private reply per comment. Text 1 goes out right away; the rest follow as soon as they tap a button or reply." }));
   var q = h("div", { class: "grp" }, [lbl("Quick replies"), h("p", { class: "hint", text: "Tappable chips under the last text (13 max, 20 characters). Instagram app only, not desktop. With a button on that text they show as buttons instead (3 max in all)." })]);
   d.quick_replies.forEach(function (r, j) { q.appendChild(h("div", { class: "rw" }, [inp(r.title, function (v) { r.title = v; }, { maxlength: 20, placeholder: "Yes please" }), xBtn(function () { d.quick_replies.splice(j, 1); })])); });
   add(q, more("+ Quick reply", function () { d.quick_replies.push({ id: rid("q"), title: "" }); }, d.quick_replies.length >= 13));
@@ -1034,6 +1129,7 @@ function randomizerForm(n) {
   return out;
 }
 function renderPanel() {
+  phoneUpd = null;
   var n = sel && node(sel);
   panel.hidden = !n;
   panel.innerHTML = "";
@@ -1043,6 +1139,7 @@ function renderPanel() {
   add(panel, [
     h("div", { class: "ph" }, [h("span", { class: "ic", icon: k.ic }), k.t, h("button", { class: "x", title: "Close", onclick: function () { select(null); } }, "×")]),
     h("div", { class: "pb" }, body),
+    RO && CAN ? h("div", { class: "ro-hint" }, [h("span", { text: "Viewing the live version." }), h("button", { class: "lnk", onclick: enterEdit }, "Edit to add texts, buttons or steps →")]) : null,
     RO || n.kind === "trigger" ? null : h("div", { class: "foot" }, [
       h("button", { class: "ghost", onclick: function () { duplicate(n.id); } }, "Duplicate"),
       h("button", { class: "dz", onclick: function () { removeNode(n.id); } }, "Delete step")
@@ -1053,7 +1150,7 @@ function renderPanel() {
 // ---------- changes, undo, autosave, publish ----------
 function changed(structural) {
   if (RO) return;
-  if (structural) { prune(); renderNodes(); renderPanel(); } else renderNodes();
+  if (structural) { prune(); renderNodes(); renderPanel(); } else { renderNodes(); if (phoneUpd) phoneUpd(); }
   problems = [];
   renderProblems();
   clearTimeout(snapT);

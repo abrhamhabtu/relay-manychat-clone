@@ -99,18 +99,28 @@ export async function page(active: Section, body: string, who: Role, env: Env, o
     .join("");
   const who2 = switcher(acct, others, who);
   const key = active.toLowerCase();
+  const demoOn = env.DEMO_ON === "1";
+  const canDemo = Boolean(env.DEMO_DB);
+  const demoHref = canDemo ? `/admin/demo?to=${demoOn ? "off" : "on"}` : "/admin/help#demo";
+  const modeSwitch = `<a class="mode${demoOn ? " is-demo" : ""}${canDemo ? "" : " na"}" href="${demoHref}" role="switch" aria-checked="${demoOn}" aria-label="Demo mode" title="${
+    canDemo ? (demoOn ? "You're looking at sample data. Click for your real data." : "Look around with sample data. Your real data isn't touched.") : "Demo mode needs its own database: run npm run setup"
+  }"><span class="m-live"><i></i>Live</span><span class="m-demo">Demo</span></a>`;
+  const demoBar = demoOn
+    ? `<div class="demo-bar" role="status"><span class="db-k">Demo mode</span><span class="db-t">Sample data from made-up people. Nothing here touches your real contacts or reaches Instagram.</span><form method="post" action="/admin/demo/reset"><button class="db-b" title="Fill the demo again with fresh, recent sample data">${icon("clock", 14)}Refresh sample data</button></form><a class="db-x" href="/admin/demo?to=off">Back to live ${icon("arrow", 14)}</a></div>`
+    : "";
   const title = opts.title ?? TITLE[active];
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>${esc(title)} · Relay</title>${HEAD}</head><body class="p-${key}">
+<title>${demoOn ? "Demo · " : ""}${esc(title)} · Relay</title>${HEAD}</head><body class="p-${key}${demoOn ? " demo" : ""}">
 <aside class="side" aria-label="Main navigation"><a class="brand" href="/admin/dashboard"><span class="logo" aria-hidden="true">${LOGO}</span><span class="l">Relay</span></a>
 ${who2}
 <nav>${nav}</nav><div class="gap"></div>
 <div class="fold"><button type="button" onclick="foldNav(this)" aria-label="Collapse navigation" aria-expanded="true" title="Collapse">${icon("fold", 20, 1.8)}</button></div>
 <div class="foot"><a class="nv${active === "Setup" ? " on" : ""}" href="/admin/setup" title="Setup guide">${icon("compass", 24, 1.7)}<span class="l">Setup guide${prog && prog.done < prog.total ? `<em class="nb">${prog.done}/${prog.total}</em>` : ""}</span></a>
+<a class="nv demo-nv${demoOn ? " on-demo" : ""}" href="${demoHref}" title="Demo mode" role="switch" aria-checked="${demoOn}">${icon("shapes", 24, 1.7)}<span class="l">Demo mode<span class="tg${demoOn ? " on" : ""}"><i></i></span></span></a>
 <button type="button" class="nv" onclick="relayPalette()" title="Search and jump (⌘K)">${icon("search", 24, 1.7)}<span class="l">Search<kbd>⌘K</kbd></span></button>
 <a class="nv${active === "Profile" ? " on" : ""}" href="/admin/profile" title="My Profile">${meAvatar(acct)}<span class="l">My Profile</span></a>
 <button type="button" class="nv" onclick="flipTheme()" title="Switch between light and dark" aria-label="Switch between light and dark"><span class="th-d">${icon("moon", 24, 1.7)}<span class="l">Dark mode</span></span><span class="th-l">${icon("sun", 24, 1.7)}<span class="l">Light mode</span></span></button></div></aside>
-<main class="m-${key}"><header class="tb"><h1>${esc(title)}</h1><div class="tb-r">${opts.actions ?? ""}<a class="me" href="/admin/profile" aria-label="My Profile">${meAvatar(acct)}</a></div></header>
+<main class="m-${key}">${demoBar}<header class="tb"><h1>${esc(title)}</h1><div class="tb-r">${opts.actions ?? ""}${modeSwitch}<a class="me" href="/admin/profile" aria-label="My Profile">${meAvatar(acct)}</a></div></header>
 <div class="wrap">
 ${body}
 </div></main></body></html>`;

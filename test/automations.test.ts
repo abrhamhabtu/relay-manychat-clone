@@ -96,7 +96,7 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllGlobals());
 
-const sends = () => calls.filter((c) => c.url.endsWith("/me/messages"));
+const sends = () => calls.filter((c) => c.url.endsWith("/me/messages") && c.body?.message);
 const sent = () => sends().map((c) => c.body.message);
 const textOf = (m: any) => m.text ?? m.attachment?.payload?.text;
 const getT = (env: Env, id: number) => env.DB.prepare(`SELECT * FROM triggers WHERE id = ?1`).bind(id).first<Trigger>();
