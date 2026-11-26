@@ -47,7 +47,7 @@ export async function checkFollows(env: Env, now: number): Promise<number> {
   if (!token) return 0;
   const { results } = await env.DB.prepare(
     `SELECT DISTINCT l.subscriber_id AS id, l.follows AS f FROM flow_starts s JOIN leads l ON l.subscriber_id = s.subscriber_id
-     WHERE s.status = 'sent' AND s.created_at >= ?1 AND l.members IS NULL AND l.subscriber_id NOT LIKE 'g:%'
+     WHERE s.status = 'sent' AND s.created_at >= ?1 AND l.members IS NULL AND l.subscriber_id NOT LIKE 'g:%' AND l.subscriber_id NOT LIKE 'fb:%'
        AND (l.follow_checked_at IS NULL OR (COALESCE(l.follows, 0) = 0 AND l.follow_checked_at < ?2))
      LIMIT 25`,
   )

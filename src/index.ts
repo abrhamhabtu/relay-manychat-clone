@@ -1,3 +1,5 @@
+import { messengerToken, setPageToken, toInstagramShape } from "./messenger";
+import { handleFbAuth, messengerAdmin } from "./messenger_admin";
 import { demoAvailable, demoEnv, demoResetRoute, demoToggle, demoWanted, ensureDemoData } from "./demo";
 import { checkFollows, snapshotFollowers } from "./growth";
 import { IG_HANDLE } from "./brand";
@@ -30,7 +32,9 @@ import { ping } from "./live";
 
 export { LiveHub } from "./live";
 
-async function handleMeta(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+// Instagram's webhook (/meta) and Messenger's (/messenger): Messenger's is translated into Instagram's shape first
+// (src/messenger.ts), so both run the same code from here on.
+async function handleMeta(req: Request, env: Env, ctx: ExecutionContext, channel: "ig" | "fb" = "ig"): Promise<Response> {
   const url = new URL(req.url);
   if (req.method === "GET") {
     // Webhook verification handshake from the App Dashboard.
@@ -38,12 +42,15 @@ async function handleMeta(req: Request, env: Env, ctx: ExecutionContext): Promis
     return ok ? new Response(url.searchParams.get("hub.challenge") ?? "") : new Response("forbidden", { status: 403 });
   }
   const raw = await req.text();
-  if (!(await verifySignature(env.META_APP_SECRET, raw, req.headers.get("X-Hub-Signature-256")))) {
+  const secret = channel === "fb" ? env.FB_APP_SECRET : env.META_APP_SECRET;
+  if (!secret || !(await verifySignature(secret, raw, req.headers.get("X-Hub-Signature-256")))) {
     return new Response("bad signature", { status: 401 });
   }
   await webhookSeen(env.DB, Date.now()); // so a silent webhook can be noticed (src/health.ts)
-  const token = await getSetting(env.DB, "ig_token");
-  const payload = JSON.parse(raw);
+  const igToken = await getSetting(env.DB, "ig_token");
+  // Calls about Messenger contacts swap in the Page token on their own (graph() in src/meta.ts): any token string works.
+  const token = channel === "fb" ? (messengerToken() ? (igToken ?? "messenger") : null) : igToken;
+  const payload = toInstagramShape(JSON.parse(raw));
   for (const c of parseComments(payload)) await handleComment(env.DB, token, env.SKOOL_LINK, c, Date.now());
   const signals = flowSignals(payload);
   const touched = new Set<string>();
@@ -165,6 +172,7 @@ async function handleRevoke(req: Request, env: Env, pathname: string): Promise<R
 // gets a page that retries itself, everything else a 503 (Meta retries webhooks on a non-2xx).
 async function guarded(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   try {
+    setPageToken(await getSetting(env.DB, "fb_page_token").catch(() => null)); // Messenger, when a Page is connected
     return await route(req, env, ctx);
   } catch (e) {
     const { pathname } = new URL(req.url);
@@ -185,6 +193,8 @@ async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Res
     const { pathname } = new URL(req.url);
 
     if (pathname === "/meta") return handleMeta(req, await withSettings(env), ctx);
+    if (pathname === "/messenger") return handleMeta(req, await withSettings(env), ctx, "fb");
+    if (pathname === "/auth/fb/start" || pathname === "/auth/fb/callback") return handleFbAuth(req, env, pathname);
     const link = pathname.match(/^\/l\/([A-Za-z0-9]+)$/);
     if (link) return handleClick(req, env, link[1], Date.now());
     if (pathname === "/auth/start" || pathname === "/auth/login" || pathname === "/auth/callback") return handleAuth(req, env, pathname);
@@ -240,6 +250,7 @@ async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Res
       // Demo mode: the console runs on the sample database (src/demo.ts). Webhooks and the cron never do.
       const demo = demoAvailable(env) && demoWanted(req, env);
       const base = demo ? demoEnv(env) : env;
+      if (demo) setPageToken(null); // nothing in demo can reach Facebook
       if (demo) await ensureDemoData(base, Date.now()).catch((err) => console.error("demo data", err));
       if (pathname.startsWith("/admin/media/")) return mediaRoute(base.DB, req, pathname, who === "review");
       if (pathname === "/admin/live/ws") return base.LIVE ? base.LIVE.get(base.LIVE.idFromName("inbox")).fetch(req) : new Response("live updates off", { status: 501 });
@@ -247,6 +258,8 @@ async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Res
       if (pathname === "/admin/demo/reset" && req.method === "POST") return demoResetRoute(req, e);
       if (pathname.startsWith("/admin/flows")) return req.method === "POST" ? flowsAdminPost(e, req, pathname, who) : flowsPage(e, req, pathname, who);
       if (pathname.startsWith("/admin/automations/") && req.method === "POST") return flowsAdminPost(e, req, pathname, who);
+      const ms = demo ? null : await messengerAdmin(e, req, pathname, who);
+      if (ms) return ms;
       const own = await consoleRoute(e, req, pathname, who);
       if (own) return own;
       if (req.method === "POST") return handleAdminPost(e, req, pathname, who);
@@ -262,11 +275,13 @@ export default {
   fetch: guarded,
 
   async queue(batch: MessageBatch<SendJob>, env: Env): Promise<void> {
+    setPageToken(await getSetting(env.DB, "fb_page_token").catch(() => null));
     await runSendJobs(await withSettings(env), batch.messages.map((m) => m.body));
     batch.ackAll();
   },
 
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    setPageToken(await getSetting(env.DB, "fb_page_token").catch(() => null));
     ctx.waitUntil(
       withSettings(env).then((e) =>
         // Each step on its own: one failing never stops the rest, and five failures in a row text the owner.

@@ -165,6 +165,45 @@ Instagram only reports follows and unfollows for accounts with 100+ followers; t
 
 ---
 
+## Part 6¾ · Add Facebook Messenger (optional)
+
+Relay can answer your **Facebook Page** too. Messenger DMs and comments on the Page's posts run the **same automations**
+as Instagram and land in the same Inbox, with a small blue badge on Messenger contacts. It uses the Meta app you made in
+Part 4. About 15 minutes, plus Meta's review (see step 8).
+
+The console's **Setup guide → Optional: add Facebook Messenger** has these steps with your own addresses and Copy buttons.
+
+1. On [developers.facebook.com/apps](https://developers.facebook.com/apps), open your app → **Add use case** (or **Add
+   product**) → **Engage with customers on Messenger from Meta**.
+2. **App settings → Basic**: copy the **App ID** and **App Secret**. These are the app's own keys, not the Instagram ones.
+3. Add them to the `.env` file in your Relay folder, then run setup again:
+
+   ```
+   FB_APP_ID=your app id
+   FB_APP_SECRET=your app secret
+   ```
+
+   ```bash
+   npm run setup
+   ```
+
+4. **Messenger → Messenger API Settings → Configure webhooks**: callback URL `https://YOUR-RELAY/messenger`, the same
+   verify token as Instagram, **Verify and save**, then subscribe to `messages`, `messaging_postbacks`,
+   `message_reads`, `message_echoes`, `message_reactions` and `feed`.
+5. Add **Facebook Login for Business** → **Settings** → **Valid OAuth Redirect URIs**: `https://YOUR-RELAY/auth/fb/callback`.
+6. In the console: **Accounts → Facebook Messenger → Connect your Facebook Page**. Pick the Page and allow everything.
+7. Test: from a Facebook account with a role on your app (**App roles → Roles**), message your Page. ✅ It shows up in
+   the Inbox with a blue badge.
+8. **Open it to everyone.** Until Meta approves your app, Messenger only works for people with a role on it. In **App
+   Review**, request **Advanced Access** for `pages_messaging` (and `pages_manage_engagement` to reply to comments
+   publicly). Meta asks for Business Verification and a short screen recording. Instagram doesn't need this for your
+   own account; Messenger does.
+
+Automations are shared: a comment keyword set to **any post** answers comments on your Facebook Page's posts too, and
+DM keywords answer on both. Story automations are Instagram only.
+
+---
+
 ## Part 7 · More than one Instagram page
 
 Each page gets its own Relay install: its own address, database, inbox and numbers, so nothing ever mixes.

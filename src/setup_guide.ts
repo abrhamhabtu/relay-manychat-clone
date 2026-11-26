@@ -6,6 +6,7 @@
 import { esc, page, type Role } from "./admin";
 import * as db from "./db";
 import type { Env } from "./setter";
+import { connectedPage, messengerReady } from "./messenger_admin";
 import { icon } from "./theme";
 
 export interface SetupCheck {
@@ -54,6 +55,7 @@ interface Chapter {
   title: string;
   time: string;
   check?: SetupCheck["key"];
+  done?: boolean; // optional parts: ticked by their own state, never "next"
   body: string;
 }
 
@@ -67,6 +69,9 @@ export async function setupPage(env: Env, req: Request, who: Role): Promise<Resp
   const admin = who === "admin";
   const verify = admin ? env.META_VERIFY_TOKEN || "(run npm run setup to create it)" : "(owner only)";
 
+  const realEnv = env.REAL_DB ? { ...env, DB: env.REAL_DB } : env;
+  const fbPage = await connectedPage(realEnv).catch(() => null);
+  const fbReady = messengerReady(env);
   const step = (title: string, html: string) => `<li><b>${title}</b>${html ? `<div>${html}</div>` : ""}</li>`;
   const see = (t: string) => `<p class="see">${icon("info", 14)}<span><b>What you'll see:</b> ${t}</span></p>`;
   const trap = (t: string) => `<p class="trap"><b>If it goes wrong:</b> ${t}</p>`;
@@ -222,17 +227,35 @@ ${step("Publish", "From now on everyone who comments the keyword gets the DM, in
 </ol>
 ${see("this check turning green, and the automation's numbers on <a href=\"/admin/dashboard\">Home</a>.")}`,
     },
+    {
+      id: "messenger",
+      title: "Optional: add Facebook Messenger",
+      time: "15 min",
+      done: Boolean(fbPage),
+      body: `<p>Relay can answer your <b>Facebook Page</b> too: DMs on Messenger and comments on the Page's posts run the same automations, and land in the same Inbox with a blue badge. It uses the Meta app you already made.</p>
+<ol class="gsteps">
+${step("Add Messenger to your Meta app", `On <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener">developers.facebook.com/apps</a>, open your app. Click <b>Add use case</b> (or <b>Add product</b>) and pick <b>Engage with customers on Messenger from Meta</b> (it may just say <b>Messenger</b>).`)}
+${step("Copy the App ID and App Secret", `Left menu: <b>App settings → Basic</b>. Copy <b>App ID</b> and <b>App Secret</b> (click Show). These are the app's own keys, <b>not</b> the Instagram app ID and secret from Part 4.`)}
+${step("Give them to Relay", `Open the <code>.env</code> file in your Relay folder and add two lines: ${copy("FB_APP_ID=")} ${copy("FB_APP_SECRET=")} with your values after the <code>=</code>. Then run ${copy("npm run setup")}. ${fbReady ? `<span class="ok-inline">${icon("check", 13, 2.5)} Relay has them.</span>` : ""}`)}
+${step("Point Messenger at Relay", `In the app: <b>Messenger → Messenger API Settings → Configure webhooks</b>. Callback URL ${copy(`${origin}/messenger`)} Verify token ${copy(verify, "Copy", admin)} Click <b>Verify and save</b>, then subscribe to: <span class="flds"><code>messages</code> <code>messaging_postbacks</code> <code>message_reads</code> <code>message_echoes</code> <code>message_reactions</code> <code>feed</code></span>`)}
+${step("Allow the sign-in address", `Add the <b>Facebook Login for Business</b> product if it isn't there, open its <b>Settings</b>, and paste into <b>Valid OAuth Redirect URIs</b>: ${copy(`${origin}/auth/fb/callback`)} Save.`)}
+${step("Connect your Page", fbPage ? `<span class="ok-inline">${icon("check", 13, 2.5)} Connected to <b>${esc(fbPage.name)}</b>.</span>` : fbReady && admin ? `<a class="btn-x" href="/auth/fb/start">Connect your Facebook Page ${icon("chevron", 14)}</a> Log in, choose the Page, and allow every permission.` : "Once the keys are in, a <b>Connect your Facebook Page</b> button appears here and on Accounts &amp; platforms.")}
+${step("Test it", "From a Facebook account that has a role on your app (App roles → Roles), message your Page. It shows up in the Inbox with a blue Messenger badge, and keyword automations answer it.")}
+${step("Open it to everyone (App Review)", `Until Meta approves your app, Messenger only works for people with a role on it. In <b>App Review → Permissions and features</b>, request <b>Advanced Access</b> for <code>pages_messaging</code> (and <code>pages_manage_engagement</code> for public comment replies). Meta asks for Business Verification and a short screen recording; it usually takes a few days. Instagram doesn't need this for your own account; Messenger does.`)}
+</ol>
+${trap("\"The URL couldn't be validated\": the App Secret isn't in yet (run <code>npm run setup</code> after adding it) or the verify token differs. Sign-in error about a redirect URI: paste the address in step 5 again.")}`,
+    },
   ];
 
   const firstOpen = chapters.find((c) => !c.check || !is(c.check))?.id;
   const nextUp = chapters.find((c) => c.check && !is(c.check));
   const chapterHtml = chapters
     .map((c, i) => {
-      const ok = c.check ? is(c.check) : null;
+      const ok = c.check ? is(c.check) : c.done === undefined ? null : c.done;
       const state = ok === true ? "ok" : ok === false ? "todo" : "manual";
       const open = (nextUp ? c.id === nextUp.id : c.id === firstOpen) || (i === 0 && done <= 1);
       return `<details class="gch ${state}" id="${c.id}"${open ? " open" : ""}><summary><span class="gn">${String(i + 1).padStart(2, "0")}</span><span class="gt">${esc(c.title)}</span><span class="gm">${c.time}</span><span class="gs" data-ch="${c.id}">${
-        ok === true ? `${icon("check", 13, 2.5)}Done` : ok === false ? "To do" : ""
+        ok === true ? `${icon("check", 13, 2.5)}Done` : ok === false ? (c.done === undefined ? "To do" : "Optional") : ""
       }</span>${icon("chevron", 16)}</summary><div class="gb">${c.body}${
         ok === null ? `<label class="mark"><input type="checkbox" data-mark="${c.id}"> I've done this part</label>` : ""
       }</div></details>`;

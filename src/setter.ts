@@ -30,6 +30,8 @@ export interface Env {
   TRANSPORT: string; // "meta" | "manychat"
   META_IG_APP_ID: string;
   META_APP_SECRET: string; // Instagram app secret (API setup with Instagram login)
+  FB_APP_ID?: string; // optional, Messenger: the Meta app's own App ID (App settings → Basic)
+  FB_APP_SECRET?: string; // optional, Messenger: the Meta app's App Secret, which signs Page webhooks
   META_VERIFY_TOKEN: string;
   SKOOL_AUTH_TOKEN?: string;
   ALERT_TOPIC?: string; // ntfy.sh topic for phone alerts (src/health.ts) // The owner's Skool auth_token cookie (one-year JWT): reads new members for join matching

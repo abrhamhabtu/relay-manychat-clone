@@ -59,7 +59,7 @@ Switching refills the demo with that workspace (a few seconds). **Refresh** keep
 | **Growth** | 60 days of follower counts, reach, views, posts, and people who followed after a DM |
 | **Contacts** | Around 800 invented people with tags (names are random mixes like "Maya Park") |
 | **Automation** | Six automations: comment keywords, a story reply, a DM keyword and a draft |
-| **Inbox** | Conversations with buttons tapped, links opened and replies |
+| **Inbox** | Conversations with buttons tapped, links opened and replies; about a quarter of plain DMs came in on Messenger (blue badge) |
 
 None of these people exist. The sample accounts (Demo Studio, Bloom Bakery, Peak Coaching) aren't real pages either.
 

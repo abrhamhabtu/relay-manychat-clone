@@ -2,7 +2,7 @@
 
 <h1 align="center">Relay</h1>
 
-<p align="center"><b>Instagram DM automation you own.</b><br>Comment-to-DM, story replies, keyword DMs, a visual flow builder, a live inbox and your numbers.<br>Open source, self-hosted on your own Cloudflare account, no per-contact pricing.</p>
+<p align="center"><b>Instagram and Messenger DM automation you own.</b><br>Comment-to-DM, story replies, keyword DMs, a visual flow builder, a live inbox and your numbers.<br>Open source, self-hosted on your own Cloudflare account, no per-contact pricing.</p>
 
 <p align="center"><a href="#try-it-in-two-minutes"><b>Try the demo</b></a> · <a href="docs/GETTING-STARTED.md"><b>Getting started →</b></a> · <a href="docs/DEMO-MODE.md">Demo mode</a> · <a href="docs/HOW-IT-WORKS.md">How it works</a> · <a href="docs/TROUBLESHOOTING.md">Troubleshooting</a></p>
 
@@ -40,7 +40,8 @@ Relay started as a fork of [FewChat](https://github.com/jasonc00person/fewchat) 
 - **A console that feels native.** San Francisco type, frosted glass, soft depth, capsule buttons and iOS-style controls, in light and dark, on desktop and phone.
 - **Demo mode.** One switch at the top right fills every page with sample data from its own database, in three workspaces (a creator, a local bakery, a fitness coach). Your real contacts are never touched and nothing can reach Instagram.
 - **Messages that feel human.** Send up to 10 texts in a row per step, each its own bubble with typing dots in between, and watch a **live iPhone preview** of exactly what people will see as you type. A **+** on the phone adds a text; a **+** on any card adds the next step.
-- **Honest about platforms.** Instagram works today. Accounts & platforms shows what's possible next (Messenger, WhatsApp), what needs the platform's approval (TikTok) and what isn't possible (Threads DMs).
+- **Facebook Messenger.** Connect your Facebook Page and its DMs and post comments run the same automations, in the same Inbox (blue badge). Built in; switch it on with your Meta app's keys ([guide](docs/GETTING-STARTED.md), Part 6¾).
+- **Honest about platforms.** Accounts & platforms shows what works (Instagram, Messenger), what's possible next (WhatsApp), what needs the platform's approval (TikTok) and what isn't possible (Threads DMs).
 - **Several Instagram pages.** An **Accounts** page and a switcher at the top of the sidebar link every page you run, each on its own install so their data never mixes.
 - **Growth.** Followers over time, reach, views, profile link taps and follows/unfollows straight from Instagram's insights, your latest posts with the comments that became DMs, and **who followed you after an automation DM'd them**, per automation.
 - **A Setup guide inside the console.** Twelve parts, every click explained, your own addresses filled in with Copy buttons, and six live checks that tick themselves off as each piece starts working. The same steps are in [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md).

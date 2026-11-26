@@ -5,6 +5,7 @@
 // page and the switcher at the top of the sidebar link them together: the list lives in the `accounts` setting of
 // each install, so every console can jump to the others. Nothing here sends anything to the other installs.
 
+import { connectedPage, messengerReady, type ConnectedPage } from "./messenger_admin";
 import { esc, me, meAvatar, page, type Role } from "./admin";
 import { ORIGIN } from "./brand";
 import * as db from "./db";
@@ -95,16 +96,34 @@ ${rows ? `<hr><h6>Your other pages</h6>${rows}` : ""}<hr><a class="mg" href="/ad
 // Where Relay can talk to people, honestly: what works today, what's possible next, and what the platform doesn't allow.
 const PLATFORMS: { name: string; tone: string; mark: string; state: "live" | "next" | "gated" | "no"; label: string; text: string }[] = [
   { name: "Instagram", mark: "IG", tone: "linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 60%,#962fbf 80%,#4f5bd5)", state: "live", label: "Live", text: "Comment-to-DM, story replies, DM keywords, the inbox and Growth. Official Instagram API." },
-  { name: "Facebook Messenger", mark: "M", tone: "linear-gradient(135deg,#00b2ff,#006aff)", state: "next", label: "Possible next", text: "Same Meta app and the same rules as Instagram (24-hour window, one private reply per comment). Not built yet." },
+  { name: "Facebook Messenger", mark: "M", tone: "linear-gradient(135deg,#00b2ff,#006aff)", state: "next", label: "", text: "" },
   { name: "WhatsApp", mark: "W", tone: "linear-gradient(135deg,#5af07a,#1fa855)", state: "next", label: "Possible next", text: "Through Meta's WhatsApp Cloud API. Replies are free inside 24 hours; messages after that need paid, pre-approved templates. Not built yet." },
   { name: "TikTok", mark: "T", tone: "linear-gradient(135deg,#25f4ee,#000 45%,#000 55%,#fe2c55)", state: "gated", label: "Needs TikTok's approval", text: "TikTok's Business Messaging API needs a Business account, a developer app and TikTok's approval, and isn't offered in the EU, UK or Switzerland. Not built yet." },
   { name: "Threads", mark: "@", tone: "linear-gradient(135deg,#3a3a3c,#000)", state: "no", label: "Not possible", text: "Threads' API covers posts and replies, not direct messages." },
 ];
-function platformsCard(): string {
-  return `<div class="card plat"><div class="ph"><div><h2>Platforms</h2><p>Where Relay can reach people. Want one of the next ones? <a href="https://github.com/abrhamhabtu/relay-manychat-clone/issues" target="_blank" rel="noopener">Ask or help build it on GitHub</a>.</p></div></div>
-<div class="plat-g">${PLATFORMS.map(
-    (p) => `<div class="pf ${p.state}"><span class="pf-m" style="background:${p.tone}">${esc(p.mark)}</span><div class="pf-t"><b>${esc(p.name)}</b><span class="pf-s">${esc(p.label)}</span><p>${esc(p.text)}</p></div></div>`,
-  ).join("")}</div></div>`;
+function messengerState(env: Env, pg: ConnectedPage | null, admin: boolean): { state: "live" | "next" | "gated" | "no"; label: string; text: string; act: string } {
+  if (env.DEMO_ON === "1") return { state: "next", label: "Built in", text: "DMs and comments on your Facebook Page run the same automations as Instagram. Switch to Live to connect your Page.", act: "" };
+  if (pg)
+    return {
+      state: "live",
+      label: "Live",
+      text: `Connected to ${esc(pg.name)}. DMs and comments on its posts run the same automations as Instagram, and show in the Inbox with a blue badge.`,
+      act: admin ? `<form method="post" action="/admin/messenger/disconnect"><button class="ghost pf-b">Disconnect</button></form>` : "",
+    };
+  if (messengerReady(env))
+    return { state: "gated", label: "Ready to connect", text: "Your Meta app's keys are in. Connect the Facebook Page Relay should answer for.", act: admin ? `<a class="pf-go" href="/auth/fb/start">Connect your Facebook Page ${icon("chevron", 14)}</a>` : "" };
+  return { state: "next", label: "Built in · off", text: "Same Meta app, same rules as Instagram. Add your app's App ID and App Secret to switch it on (about 15 minutes).", act: `<a class="pf-go soft" href="/admin/setup#messenger">How to switch it on ${icon("chevron", 14)}</a>` };
+}
+function platformsCard(env: Env, pg: ConnectedPage | null, admin: boolean, igOn: boolean): string {
+  const ms = messengerState(env, pg, admin);
+  const ig = igOn || env.DEMO_ON === "1"
+    ? null
+    : { state: "next" as const, label: "Not connected yet", text: "Comment-to-DM, story replies, DM keywords, the inbox and Growth, through the official Instagram API.", act: admin ? `<a class="pf-go" href="/admin/setup">Finish setting up ${icon("chevron", 14)}</a>` : "" };
+  return `<div class="card plat"><div class="ph"><div><h2>Platforms</h2><p>Where Relay can reach people. Want another one? <a href="https://github.com/abrhamhabtu/relay-manychat-clone/issues" target="_blank" rel="noopener">Ask or help build it on GitHub</a>.</p></div></div>
+<div class="plat-g">${PLATFORMS.map((p) => {
+    const m = p.name === "Facebook Messenger" ? ms : p.name === "Instagram" && ig ? ig : { ...p, text: esc(p.text), act: "" };
+    return `<div class="pf ${m.state}"><span class="pf-m" style="background:${p.tone}">${pg && p.name === "Facebook Messenger" && pg.pic ? `<img src="${esc(pg.pic)}" alt="" referrerpolicy="no-referrer">` : esc(p.mark)}</span><div class="pf-t"><b>${esc(p.name)}</b><span class="pf-s">${esc(m.label)}</span><p>${m.text}</p>${m.act}</div></div>`;
+  }).join("")}</div></div>`;
 }
 
 export async function accountsPage(env: Env, who: Role, note: string | null): Promise<Response> {
@@ -135,7 +154,7 @@ export async function accountsPage(env: Env, who: Role, note: string | null): Pr
   const body = `${note ? `<div class="card" role="status" style="border-color:var(--pri)">${esc(note)}</div>` : ""}
 <p class="kicker" style="margin:0 0 12px;color:var(--mut)">${others.length + 1} Instagram ${others.length ? "pages" : "page"}</p>
 <div class="acc-grid">${here}${cards}${add}</div>
-${platformsCard()}
+${platformsCard(env, await connectedPage(env).catch(() => null), who === "admin", Boolean(acct?.username))}
 <div class="cols"><div class="card"><div class="ph"><div><h2>Add a new Instagram page</h2><p>Each page runs on its own Relay install: its own address, database, inbox and numbers. It takes about 20 minutes, and most of it is Meta's site.</p></div></div>
 <ol class="steps">
 <li>Make sure the new page is a <b>Professional</b> account: in the Instagram app, Settings → Account type and tools → Switch to professional.</li>

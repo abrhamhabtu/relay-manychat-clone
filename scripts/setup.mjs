@@ -192,7 +192,7 @@ function setEnv(key, value) {
   else lines.push(`${key}=${value}`);
   writeFileSync(ENV_FILE, lines.join("\n").replace(/\n*$/, "\n"));
 }
-const SECRET_NAMES = ["INBOUND_SECRET", "ADMIN_PASSWORD", "META_VERIFY_TOKEN", "META_APP_SECRET", "ANTHROPIC_API_KEY", "REVIEW_PASSWORD", "SKOOL_AUTH_TOKEN", "ALERT_TOPIC", "MANYCHAT_API_KEY"];
+const SECRET_NAMES = ["INBOUND_SECRET", "ADMIN_PASSWORD", "META_VERIFY_TOKEN", "META_APP_SECRET", "ANTHROPIC_API_KEY", "REVIEW_PASSWORD", "SKOOL_AUTH_TOKEN", "ALERT_TOPIC", "MANYCHAT_API_KEY", "FB_APP_ID", "FB_APP_SECRET"];
 const hex = (bytes) => randomBytes(bytes).toString("hex");
 // A password a person can read and type: four groups, no look-alike characters.
 function password() {

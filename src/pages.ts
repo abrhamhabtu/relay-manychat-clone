@@ -4,9 +4,9 @@ import { FAVICON } from "./theme";
 
 const PRIVACY = `<h1>Privacy Policy</h1>
 <p>Last updated October 28, 2026.</p>
-<p>This app is operated by ${BUSINESS} (${SITE}) to manage Instagram direct messages and comments for the Instagram account @${IG_HANDLE}. It is not offered to other businesses or users.</p>
+<p>This app is operated by ${BUSINESS} (${SITE}) to manage direct messages and comments for the Instagram account @${IG_HANDLE} and, if connected, its Facebook Page on Messenger. It is not offered to other businesses or users.</p>
 <h2>What we collect</h2>
-<p>When you send a direct message to @${IG_HANDLE}, or comment on one of its posts, reels or live videos, we receive the message or comment text, your Instagram-scoped user ID, and your public username and name through the official Instagram API.</p>
+<p>When you send a direct message to @${IG_HANDLE} (on Instagram or Messenger), or comment on one of its posts, reels or live videos, we receive the message or comment text, your app-scoped user ID, and your public username and name through Meta's official APIs.</p>
 <h2>How we use it</h2>
 <p>Only to read and reply to your messages, and to send you the resource you asked for when your comment includes a keyword the account advertised (for example "Comment AI and I'll send you the guide"). Replies may be drafted by an AI model (Anthropic's Claude), and a person may review them before sending. We do not sell your data, use it for advertising, or share it with anyone else.</p>
 <h2>Retention</h2>

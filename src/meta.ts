@@ -2,6 +2,7 @@
 // for the token. App: Relay (Instagram app id in META_IG_APP_ID).
 
 import type { MessageUpdate, Part } from "./attachments";
+import { FB, routeMessenger } from "./messenger";
 
 const GRAPH = "https://graph.instagram.com/v26.0";
 export const SCOPES = "instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_manage_insights";
@@ -268,10 +269,15 @@ export function parseComments(payload: unknown): MetaComment[] {
   return out;
 }
 
+// Every Graph call goes through here. A call naming a Messenger id ("fb:…") goes to Facebook with the Page's token
+// instead (src/messenger.ts), so the rest of Relay sends to Instagram and Messenger the same way.
 export async function graph<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${GRAPH}${path}`, init);
-  const body = (await res.json().catch(() => ({}))) as T & { error?: { message?: string; code?: number } };
-  if (!res.ok || body.error) throw new Error(`instagram ${res.status}${body.error?.code ? ` code ${body.error.code}` : ""}: ${body.error?.message ?? "request failed"}`);
+  const fbRoute = routeMessenger(path, init);
+  if (fbRoute?.skip) return fbRoute.skip as T;
+  const res = await fetch(fbRoute ? fbRoute.url : `${GRAPH}${path}`, fbRoute ? fbRoute.init : init);
+  const body = (await res.json().catch(() => ({}))) as T & { error?: { message?: string; code?: number }; recipient_id?: string };
+  if (!res.ok || body.error) throw new Error(`${fbRoute ? "messenger" : "instagram"} ${res.status}${body.error?.code ? ` code ${body.error.code}` : ""}: ${body.error?.message ?? "request failed"}`);
+  if (fbRoute && typeof body.recipient_id === "string") body.recipient_id = FB + body.recipient_id;
   return body;
 }
 

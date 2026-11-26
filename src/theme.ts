@@ -97,7 +97,7 @@ document.querySelectorAll("[data-theme-btn]").forEach(function(b){b.setAttribute
 function flipTheme(){var d=document.documentElement;setTheme((d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches)?"light":"dark")}
 function foldNav(b){var min=document.documentElement.classList.toggle("nav-min");try{localStorage.setItem("nav",min?"min":"max")}catch(e){}
 b.setAttribute("aria-expanded",String(!min));b.setAttribute("aria-label",min?"Expand navigation":"Collapse navigation");b.title=min?"Expand":"Collapse"}
-var RELAY_CMDS=[["Home","/admin/dashboard","Page"],["Growth","/admin/growth","Page"],["Contacts","/admin/contacts","Page"],["Automation","/admin/automations","Page"],["AI","/admin/ai","Page"],["Inbox","/admin/inbox","Page"],["Accounts","/admin/accounts","Page"],["Settings","/admin/settings","Page"],["Setup guide","/admin/setup","Page"],["Help","/admin/help","Page"],["My Profile","/admin/profile","Page"],["New automation","/admin/automations?new=1","Action"],["Link another Instagram page","/admin/accounts","Action"],["Switch light / dark","#theme","Action"],["Refresh Instagram numbers","/admin/growth?refresh=1","Action"],["Instagram connection","/admin/profile","Action"],["Switch Live / Demo mode","/admin/demo?to=toggle","Action"],["Log out","/logout","Action"]];
+var RELAY_CMDS=[["Home","/admin/dashboard","Page"],["Growth","/admin/growth","Page"],["Contacts","/admin/contacts","Page"],["Automation","/admin/automations","Page"],["AI","/admin/ai","Page"],["Inbox","/admin/inbox","Page"],["Accounts","/admin/accounts","Page"],["Settings","/admin/settings","Page"],["Setup guide","/admin/setup","Page"],["Help","/admin/help","Page"],["My Profile","/admin/profile","Page"],["New automation","/admin/automations?new=1","Action"],["Link another Instagram page","/admin/accounts","Action"],["Switch light / dark","#theme","Action"],["Refresh Instagram numbers","/admin/growth?refresh=1","Action"],["Instagram connection","/admin/profile","Action"],["Connect Facebook Messenger","/admin/accounts","Action"],["Switch Live / Demo mode","/admin/demo?to=toggle","Action"],["Log out","/logout","Action"]];
 function relayPalette(){var o=document.getElementById("pal");if(o){o.remove();return}
 o=document.createElement("div");o.id="pal";o.innerHTML='<div class="pal-bg"></div><div class="pal" role="dialog" aria-label="Search and jump"><input placeholder="Jump to a page, or search contacts and the inbox…" aria-label="Search"><ul role="listbox"></ul><p class="pal-f"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></p></div>';
 document.body.appendChild(o);var i=o.querySelector("input"),ul=o.querySelector("ul"),sel=0,items=[];
@@ -1080,4 +1080,23 @@ body.demo .fe{height:calc(100vh - 42px);height:calc(100dvh - 42px)}
 .pf.no .pf-s{background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--mut)}
 .pf.no .pf-m{filter:grayscale(1);opacity:.6}
 .pf p{margin:5px 0 0;color:var(--mut);font-size:12.5px;line-height:17px}
+
+/* Messenger */
+.avb{position:relative;display:inline-flex;flex:none}
+.ch-fb{position:absolute;right:-2px;bottom:-2px;width:17px;height:17px;border-radius:50%;border:2px solid var(--bg);background:linear-gradient(135deg,#00b2ff,#006aff) center/10px no-repeat;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='m5 15 5-6 3 3 6-5-5 6-3-3z'/%3E%3C/svg%3E"),linear-gradient(135deg,#00b2ff,#006aff)}
+.conv .avb .ch-fb{top:-2px;bottom:auto;width:20px;height:20px;background-size:12px,auto}
+.p-inbox .lh h1{font-weight:700!important;letter-spacing:-.028em}
+.pf-m img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.pf-m{overflow:hidden}
+.pf-go{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:7px 14px;border-radius:980px;background:var(--grad);color:#fff;font-weight:600;font-size:12.5px;opacity:1;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 6px 14px -6px rgba(242,84,27,.55)}
+.pf-go:hover{opacity:1;filter:brightness(1.06)}
+.pf-go.soft{background:color-mix(in srgb,var(--pri) 11%,transparent);color:var(--pri);box-shadow:none}
+.pf .pf-b{margin:10px 0 0;padding:6px 14px;font-size:12.5px}
+.pf form{margin:0}
+.pgl{display:grid;gap:8px}
+.ok-inline{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-weight:600}
+.gch.todo .gs{color:var(--pri)}
+.pgc{display:flex!important;align-items:center;gap:12px;width:100%;margin:0!important;padding:12px!important;border-radius:14px!important;background:color-mix(in srgb,var(--ink) 4%,transparent)!important;color:var(--ink)!important;box-shadow:none!important;text-align:left}
+.pgc:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)!important}
+.pgc b{display:block;font-size:14px}.pgc small{display:block;color:var(--mut);font-size:12px;font-weight:400}.pgc svg{margin-left:auto;color:var(--mut)}
 </style>`;

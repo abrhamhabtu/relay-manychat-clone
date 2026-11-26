@@ -84,7 +84,8 @@ export function demoSeed(now, personaKey = "creator") {
     const base = 6 + (44 - d) * 0.45 + (dow === 0 || dow === 6 ? -3 : 2) + (d === 12 || d === 5 ? 22 : 0); // growth, weekdays, two viral days
     const n = Math.max(1, Math.round(base * (0.7 + rnd() * 0.6)));
     for (let i = 0; i < n; i++) {
-      const id = String(++lead), at = now - d * DAY - Math.floor(rnd() * 20 * HOUR) - HOUR;
+      const rawId = String(++lead), at = now - d * DAY - Math.floor(rnd() * 20 * HOUR) - HOUR;
+      const id = rawId; // Messenger contacts get "fb:" below, once we know they came in by DM
       if (at > now - 5 * MIN) continue;
       const first = pick(firsts), last = pick(lasts), named = rnd() < 0.75;
       const user = (first + (rnd() < 0.5 ? "." : "_") + last).toLowerCase() + (rnd() < 0.4 ? Math.floor(rnd() * 90) : "");
@@ -109,6 +110,15 @@ export function demoSeed(now, personaKey = "creator") {
         if (replied) { msg("lead", pick(P.replies), at + 20 * MIN); if (rnd() < 0.6) msg("bot", "anytime, lmk how it goes", at + 40 * MIN); }
         if (rnd() < 0.8) out.push(`INSERT INTO lead_tags (subscriber_id, tag, created_at) VALUES (${q(id)}, ${q(tags[tid - 1] ?? "hot")}, ${at});`);
       } else {
+        // About one in four plain DMs came in on the Page's Messenger: same thread, blue badge.
+        if (rnd() < 0.25) {
+          const fbId = "fb:" + rawId;
+          out[out.length - 1] = `INSERT INTO leads (subscriber_id, username, first_name, created_at, last_inbound_at) VALUES (${q(fbId)}, NULL, ${q(first + " " + last)}, ${at}, ${at});`;
+          const fmsg = (role, text, t) => out.push(`INSERT INTO messages (subscriber_id, role, text, created_at, mid) VALUES (${q(fbId)}, ${q(role)}, ${q(text)}, ${t}, 'm${++mid}');`);
+          fmsg("lead", pick(P.opens), at);
+          if (rnd() < 0.6) fmsg("bot", "hey! thanks for the message, happy to help 🙂", at + 30 * MIN);
+          continue;
+        }
         msg("lead", pick(P.opens), at);
         if (rnd() < 0.5) { msg("bot", "hey! thanks for the message, happy to help 🙂", at + 30 * MIN); if (rnd() < 0.5) msg("lead", pick(P.replies), at + 50 * MIN); }
       }

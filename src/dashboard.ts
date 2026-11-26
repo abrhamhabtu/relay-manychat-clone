@@ -3,6 +3,7 @@
 // routing for all of them. Home is src/home.ts, Contacts src/contacts.ts, My Profile and Help src/console_pages.ts.
 // The reviewer login sees only test threads (leads.test = 1) and never Settings. Styles: theme.ts.
 
+import { isMessenger } from "./messenger";
 import { accountsPage, accountsPost } from "./accounts";
 import { setupPage } from "./setup_guide";
 import { growthPage } from "./growth";
@@ -57,6 +58,8 @@ const initial = (l: Named) => esc((l.username || l.first_name || "?").replace(/^
 const AV = ["#c73a0c", "#2c7a35", "#8a5a00", "#1f6f8b", "#a3245b", "#5b4a9e", "#4b5563", "#16140f"];
 // Their Instagram picture when we have one (an expired CDN link falls back to the initial underneath).
 export const avatar = (l: Named & { profile_pic?: string | null }, cls = "") =>
+  isMessenger(l.subscriber_id) ? `<span class="avb" title="Messenger">${avatarCore(l, cls)}<i class="ch-fb" aria-label="Messenger"></i></span>` : avatarCore(l, cls);
+const avatarCore = (l: Named & { profile_pic?: string | null }, cls = "") =>
   `<span class="av ${cls}" style="background:${AV[[...l.subscriber_id].reduce((a, c) => a + c.charCodeAt(0), 0) % AV.length]}">${initial(l)}${
     l.profile_pic ? `<img src="${esc(l.profile_pic)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""
   }</span>`;
